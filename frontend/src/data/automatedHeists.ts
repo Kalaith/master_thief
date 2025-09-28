@@ -446,7 +446,7 @@ export function calculateHeistOutcome(heist: AutomatedHeist, team: TeamMember[])
   
   let payout = 0;
   let experience = 0;
-  let injuries: string[] = [];
+  const injuries: string[] = [];
   let masteryGained = 0;
   
   if (success) {

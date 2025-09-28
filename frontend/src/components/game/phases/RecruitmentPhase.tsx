@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useGameStore } from '../../../stores/gameStore';
-import { gameData } from '../../../data/gameData';
-import TeamMemberCard from '../ui/TeamMemberCard';
+import { characters } from '../../../data/characters';
+import EnhancedCharacterCard from '../ui/EnhancedCharacterCard';
 
 const RecruitmentPhase: React.FC = () => {
-  const { selectedTeam, budget, setCurrentPhase } = useGameStore();
+  const { selectedTeam, budget, addTeamMember, removeTeamMember, setCurrentPhase } = useGameStore();
+  const [showDetailedStats, setShowDetailedStats] = useState(false);
 
   const canProceed = selectedTeam.length > 0;
 
@@ -14,12 +15,12 @@ const RecruitmentPhase: React.FC = () => {
     }
   };
 
-  // Group members by rarity for better organization
-  const membersByRarity = gameData.team_members.reduce((acc, member) => {
-    if (!acc[member.rarity]) acc[member.rarity] = [];
-    acc[member.rarity].push(member);
+  // Group characters by rarity for better organization
+  const charactersByRarity = characters.reduce((acc, character) => {
+    if (!acc[character.rarity]) acc[character.rarity] = [];
+    acc[character.rarity].push(character);
     return acc;
-  }, {} as Record<string, typeof gameData.team_members>);
+  }, {} as Record<string, typeof characters>);
 
   const rarityOrder = ['common', 'uncommon', 'rare', 'epic', 'legendary'];
 
@@ -44,14 +45,27 @@ const RecruitmentPhase: React.FC = () => {
           <div className="flex items-center gap-4 border-b border-gold-500/30 pb-3">
             <h3 className="text-2xl font-serif font-bold text-gold-300">Available Associates</h3>
             <span className="text-noir-400 text-sm">
-              ({gameData.team_members.length} specialists in the network)
+              ({characters.length} specialists in the network)
             </span>
+          </div>
+
+          {/* Detailed Stats Toggle */}
+          <div className="flex justify-end">
+            <label className="flex items-center text-noir-300">
+              <input
+                type="checkbox"
+                checked={showDetailedStats}
+                onChange={(e) => setShowDetailedStats(e.target.checked)}
+                className="mr-2"
+              />
+              Show Detailed Stats
+            </label>
           </div>
           
           {/* Members grouped by rarity */}
           {rarityOrder.map((rarity) => {
-            const members = membersByRarity[rarity] || [];
-            if (members.length === 0) return null;
+            const chars = charactersByRarity[rarity] || [];
+            if (chars.length === 0) return null;
             
             return (
               <div key={rarity} className="space-y-4">
@@ -62,15 +76,16 @@ const RecruitmentPhase: React.FC = () => {
                   <div className="flex-1 h-px bg-gradient-to-r from-current to-transparent opacity-30"></div>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-                  {members.map((member) => (
-                    <TeamMemberCard 
-                      key={member.id} 
-                      member={member} 
-                      isSelected={selectedTeam.some(m => m.id === member.id)}
-                      canAfford={budget >= member.cost}
-                      showAddRemove={true}
-                    />
-                  ))}
+                  {chars
+                    .filter((char) => !selectedTeam.find((t) => t.id === char.id))
+                    .map((character) => (
+                      <EnhancedCharacterCard
+                        key={character.id}
+                        character={character}
+                        onRecruit={addTeamMember}
+                        showDetailedStats={showDetailedStats}
+                      />
+                    ))}
                 </div>
               </div>
             );
@@ -98,27 +113,13 @@ const RecruitmentPhase: React.FC = () => {
             ) : (
               <div className="space-y-4">
                 {selectedTeam.map((member) => (
-                  <div
-                    key={member.id}
-                    className={`bg-noir-700 border-2 rounded-lg p-4 rarity-${member.rarity}`}
-                  >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <div className="font-serif font-bold text-gold-300">{member.name}</div>
-                        <div className="text-sm text-noir-300">{member.specialty}</div>
-                        <div className={`text-xs font-bold uppercase rarity-${member.rarity}`}>
-                          {member.rarity}
-                        </div>
-                      </div>
-                      <TeamMemberCard 
-                        member={member} 
-                        isSelected={true}
-                        canAfford={true}
-                        showAddRemove={true}
-                        compact={true}
-                      />
-                    </div>
-                  </div>
+                  <EnhancedCharacterCard
+                    key={`team-${member.id}`}
+                    character={member}
+                    onRemove={removeTeamMember}
+                    isRecruited={true}
+                    showDetailedStats={showDetailedStats}
+                  />
                 ))}
                 
                 {/* Crew Summary */}

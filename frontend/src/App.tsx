@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { useGameStore } from './stores/gameStore';
-import Phase1Demo from './components/game/phases/Phase1Demo';
+import HeistGame from './components/game/HeistGame';
 
 const App: React.FC = () => {
-  const { initializeGame } = useGameStore();
+  const { loadGame } = useGameStore();
 
   useEffect(() => {
-    initializeGame();
-  }, [initializeGame]);
+    loadGame();
+  }, [loadGame]);
 
-  return <Phase1Demo />;
+  return <HeistGame />;
 };
 
 export default App;

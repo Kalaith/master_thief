@@ -25,6 +25,9 @@ interface GameStore extends GameState {
   completeHeist: (success: boolean, payout: number) => void;
   resetForNextHeist: () => void;
   initializeGame: () => void;
+  newGame: () => void;
+  saveGame: () => void;
+  loadGame: () => void;
   
   // Enhanced Phase 1 actions
   startAutomatedHeist: (heist: AutomatedHeist, team: TeamMember[]) => void;
@@ -37,7 +40,7 @@ interface GameStore extends GameState {
 
 const initialState: GameState = {
   // Core resources
-  budget: 15000,
+  budget: 1500, // Enough for one common thief
   reputation: 0,
   notoriety: 0,
   
@@ -92,6 +95,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
           selectedTeam: [...state.selectedTeam, member],
           budget: state.budget - member.cost,
         });
+        // Auto-save after team changes
+        setTimeout(() => get().saveGame(), 0);
       }
     }
   },
@@ -105,6 +110,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         selectedTeam: state.selectedTeam.filter(m => m.id !== memberId),
         budget: state.budget + member.cost,
       });
+      // Auto-save after team changes
+      setTimeout(() => get().saveGame(), 0);
     }
   },
 
@@ -147,6 +154,69 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
+  newGame: () => {
+    // Clear all local storage
+    localStorage.removeItem('masterThief_gameState');
+    localStorage.removeItem('masterThief_currentPhase');
+    
+    // Reset to initial state
+    set({
+      ...initialState,
+      currentPhase: 'recruitment-phase',
+    });
+  },
+
+  saveGame: () => {
+    const state = get();
+    try {
+      const gameStateToSave = {
+        budget: state.budget,
+        reputation: state.reputation,
+        notoriety: state.notoriety,
+        selectedTeam: state.selectedTeam,
+        playerProgress: state.playerProgress,
+        heistsCompleted: state.heistsCompleted,
+        totalEarnings: state.totalEarnings,
+        equipmentInventory: state.equipmentInventory,
+        craftingMaterials: state.craftingMaterials,
+        achievements: state.achievements
+      };
+      
+      localStorage.setItem('masterThief_gameState', JSON.stringify(gameStateToSave));
+      localStorage.setItem('masterThief_currentPhase', state.currentPhase);
+    } catch (error) {
+      console.error('Failed to save game:', error);
+    }
+  },
+
+  loadGame: () => {
+    try {
+      const savedGameState = localStorage.getItem('masterThief_gameState');
+      const savedCurrentPhase = localStorage.getItem('masterThief_currentPhase');
+      
+      if (savedGameState) {
+        const parsedState = JSON.parse(savedGameState);
+        set({
+          ...parsedState,
+          currentPhase: savedCurrentPhase || 'recruitment-phase',
+          availableCharacters: characters, // Always load fresh characters
+          automatedHeists: [], // Don't persist active heists
+          activeAutomatedHeists: [],
+          selectedHeist: null,
+          currentEncounter: 0,
+          encounterResults: []
+        });
+      }
+    } catch (error) {
+      console.error('Failed to load game:', error);
+      // If loading fails, initialize fresh game
+      set({
+        ...initialState,
+        currentPhase: 'recruitment-phase',
+      });
+    }
+  },
+
   // Enhanced Phase 1 actions
   startAutomatedHeist: (heist: AutomatedHeist, team: TeamMember[]) => {
     const state = get();
@@ -184,6 +254,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           totalExperience: state.playerProgress.totalExperience + experience
         }
       });
+      
+      // Auto-save after heist completion
+      setTimeout(() => get().saveGame(), 0);
     }
   },
 

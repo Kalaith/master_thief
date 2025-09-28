@@ -17,6 +17,7 @@ export const gameData: GameData = {
           description: "Sweet-talk or slip past the casino muscle",
           primary_skill: "social",
           difficulty: 9,
+          complexity: "simple",
           failure_consequence: "Bouncer becomes suspicious of your intentions"
         },
         {
@@ -24,6 +25,7 @@ export const gameData: GameData = {
           description: "Crack the house's nightly take safe",
           primary_skill: "lockpicking",
           difficulty: 11,
+          complexity: "moderate",
           failure_consequence: "Alarm triggers, need to work faster"
         },
         {
@@ -31,6 +33,7 @@ export const gameData: GameData = {
           description: "Navigate through the maze of speakeasy tunnels",
           primary_skill: "stealth",
           difficulty: 10,
+          complexity: "simple",
           failure_consequence: "Security spots you during escape"
         }
       ]
@@ -47,6 +50,7 @@ export const gameData: GameData = {
           description: "Dance through the web of red laser beams",
           primary_skill: "athletics",
           difficulty: 15,
+          complexity: "complex",
           failure_consequence: "Silent alarm activated, time pressure increases"
         },
         {
@@ -54,6 +58,7 @@ export const gameData: GameData = {
           description: "Convince the cultured curator you're meant to be here",
           primary_skill: "social",
           difficulty: 14,
+          complexity: "moderate",
           failure_consequence: "Curator calls for additional security"
         },
         {
@@ -61,6 +66,7 @@ export const gameData: GameData = {
           description: "Extract the golden artifact without triggering sensors",
           primary_skill: "lockpicking",
           difficulty: 16,
+          complexity: "complex",
           failure_consequence: "Display case alarm sounds throughout the museum"
         }
       ]
@@ -77,6 +83,7 @@ export const gameData: GameData = {
           description: "Disable the watchful electronic eyes",
           primary_skill: "hacking",
           difficulty: 12,
+          complexity: "moderate",
           failure_consequence: "Guards are alerted to suspicious activity"
         },
         {
@@ -84,6 +91,7 @@ export const gameData: GameData = {
           description: "Open the massive steel vault with finesse",
           primary_skill: "lockpicking",
           difficulty: 15,
+          complexity: "complex",
           failure_consequence: "Time-lock alarm triggers, police response accelerated"
         },
         {
@@ -91,6 +99,7 @@ export const gameData: GameData = {
           description: "Avoid or neutralize the roving security guards",
           primary_skill: "stealth",
           difficulty: 13,
+          complexity: "moderate",
           failure_consequence: "Combat encounter - risk of injuries and noise"
         }
       ]
@@ -107,6 +116,7 @@ export const gameData: GameData = {
           description: "Hack your way to the penthouse floors",
           primary_skill: "hacking",
           difficulty: 14,
+          complexity: "moderate",
           failure_consequence: "Elevator lockdown - must find alternate route"
         },
         {
@@ -114,6 +124,7 @@ export const gameData: GameData = {
           description: "Crack the executive's private treasure trove",
           primary_skill: "lockpicking",
           difficulty: 17,
+          complexity: "complex",
           failure_consequence: "Secondary alarm system activates"
         },
         {
@@ -121,6 +132,7 @@ export const gameData: GameData = {
           description: "Navigate through the executive meeting space undetected",
           primary_skill: "stealth",
           difficulty: 15,
+          complexity: "complex",
           failure_consequence: "Late-night executives spot suspicious movement"
         }
       ]

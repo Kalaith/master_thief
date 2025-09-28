@@ -63,7 +63,7 @@ export function resolveEncounter(
     
     // Special equipment type bonuses for encounters
     if (item && encounter.equipment_bonuses && encounter.equipment_bonuses[item.type]) {
-      equipmentBonus += encounter.equipment_bonuses[item.type];
+      equipmentBonus += encounter.equipment_bonuses[item.type]!;
     }
   });
   
@@ -411,7 +411,7 @@ export function simulateAutomatedHeist(
   const results: EncounterResult[] = [];
   let totalExperience = 0;
   let totalStress = 0;
-  let injuries: string[] = [];
+  const injuries: string[] = [];
   let success = true;
   
   // Simulate each encounter
