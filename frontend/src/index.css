@@ -1,0 +1,320 @@
+@import 'tailwindcss';
+@import './styles/game-components.css';
+
+:root {
+  /* Daemon Directorate Color System - Dark Theme Always */
+
+  /* Core Brand Colors */
+  --daemon-dark: #0a0a0a; /* Primary background - near-black abyss */
+  --daemon-panel: #141414; /* UI panels and cards - dark charcoal */
+  --daemon-surface: #1a1a1a; /* Interactive surfaces - slightly lighter */
+
+  --daemon-primary: #b11226; /* Infernal red - primary actions */
+  --daemon-primary-hover: #e01b2f; /* Brighter red for hover states */
+  --daemon-secondary: #660000; /* Dark blood red - borders and accents */
+  --daemon-danger: #cc3333; /* Error states and warnings */
+
+  /* Hierarchy Colors */
+  --daemon-gold: #d4af37; /* Executive tier - use sparingly */
+  --daemon-silver: #c0c0c0; /* Management tier */
+  --daemon-bronze: #cd7f32; /* Supervisor tier */
+
+  /* Text Colors */
+  --daemon-text: #cccccc; /* Standard readable text */
+  --daemon-text-bright: #f5f5f5; /* Headers and emphasis */
+  --daemon-text-muted: #999999; /* Secondary information */
+  --daemon-text-dim: #666666; /* Disabled or placeholder text */
+
+  /* Status Colors */
+  --daemon-success: #2d5a2d; /* Success states - dark green */
+  --daemon-warning: #8b6914; /* Warning states - dark amber */
+  --daemon-info: #1e3a5f; /* Information - dark blue */
+
+  /* RGB versions for opacity control */
+  --daemon-primary-rgb: 177, 18, 38;
+  --daemon-gold-rgb: 212, 175, 55;
+  --daemon-success-rgb: 45, 90, 45;
+  --daemon-warning-rgb: 139, 105, 20;
+  --daemon-danger-rgb: 204, 51, 51;
+  --daemon-text-rgb: 204, 204, 204;
+  --daemon-text-bright-rgb: 245, 245, 245;
+  --daemon-secondary-rgb: 102, 0, 0;
+
+  /* Semantic mappings for consistency with existing code */
+  --color-background: var(--daemon-dark);
+  --color-surface: var(--daemon-panel);
+  --color-text: var(--daemon-text);
+  --color-text-secondary: var(--daemon-text-muted);
+  --color-primary: var(--daemon-primary);
+  --color-primary-hover: var(--daemon-primary-hover);
+  --color-primary-active: var(--daemon-primary-hover);
+  --color-border: var(--daemon-secondary);
+  --color-card-border: var(--daemon-secondary);
+  --color-error: var(--daemon-danger);
+  --color-success: var(--daemon-success);
+  --color-warning: var(--daemon-warning);
+  --color-info: var(--daemon-info);
+  --color-focus-ring: rgba(var(--daemon-primary-rgb), 0.4);
+  --color-btn-primary-text: var(--daemon-text-bright);
+
+  /* Status background utilities */
+  --color-bg-success: rgba(var(--daemon-success-rgb), 0.2);
+  --color-bg-warning: rgba(var(--daemon-warning-rgb), 0.2);
+  --color-bg-error: rgba(var(--daemon-danger-rgb), 0.2);
+  --color-bg-info: rgba(var(--daemon-info-rgb), 0.2);
+
+  /* Legacy support colors - minimal set required */
+  --color-cream-50: var(--daemon-text-bright);
+  --color-cream-100: var(--daemon-panel);
+  --color-gray-200: var(--daemon-text-bright);
+  --color-gray-300: var(--daemon-text);
+  --color-gray-400: var(--daemon-text-muted);
+  --color-slate-500: var(--daemon-text-muted);
+  --color-charcoal-700: var(--daemon-dark);
+  --color-charcoal-800: var(--daemon-panel);
+  --color-slate-900: var(--daemon-text-bright);
+  --color-red-500: var(--daemon-primary);
+  --color-red-400: var(--daemon-primary-hover);
+  --color-orange-500: var(--daemon-warning);
+  --color-orange-400: var(--daemon-warning);
+
+  /* Common style patterns */
+  --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  --focus-outline: 2px solid var(--color-primary);
+  --status-bg-opacity: 0.2;
+  --status-border-opacity: 0.3;
+  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  --color-select-caret: var(--daemon-text-bright);
+
+  /* Legacy RGB versions */
+  --color-success-rgb: var(--daemon-success-rgb);
+  --color-error-rgb: var(--daemon-danger-rgb);
+  --color-warning-rgb: var(--daemon-warning-rgb);
+  --color-info-rgb: var(--daemon-info-rgb);
+  --color-brown-600-rgb: var(--daemon-secondary-rgb);
+  --color-teal-500-rgb: var(--daemon-primary-rgb);
+  --color-slate-900-rgb: var(--daemon-text-bright-rgb);
+  --color-slate-500-rgb: var(--daemon-text-rgb);
+  --color-red-500-rgb: var(--daemon-primary-rgb);
+  --color-red-400-rgb: var(--daemon-primary-rgb);
+  --color-orange-500-rgb: var(--daemon-warning-rgb);
+  --color-orange-400-rgb: var(--daemon-warning-rgb);
+
+  /* Typography */
+  --font-family-base:
+    'FKGroteskNeue', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
+  --font-family-mono:
+    'Berkeley Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    monospace;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --letter-spacing-tight: -0.01em;
+
+  /* Spacing */
+  --space-0: 0;
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-base: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --shadow-inset-sm:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+
+  /* Animation */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+}
+
+/* Daemon Directorate uses consistent dark theme - no light mode overrides needed */
+
+@layer base {
+  html {
+    font-size: 14px;
+    font-family: 'Inter', 'system-ui', 'sans-serif';
+    line-height: 1.5;
+    color: var(--daemon-text);
+    background-color: var(--daemon-dark);
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: var(--daemon-dark);
+    color: var(--daemon-text);
+    font-family: 'Inter', 'system-ui', 'sans-serif';
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+
+  #app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--daemon-dark);
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--daemon-text-bright);
+    letter-spacing: -0.01em;
+    font-family: 'Cinzel Decorative', 'serif';
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+  h2 {
+    font-size: 24px;
+  }
+  h3 {
+    font-size: 20px;
+  }
+  h4 {
+    font-size: 18px;
+  }
+  h5 {
+    font-size: 16px;
+  }
+  h6 {
+    font-size: 14px;
+  }
+
+  p {
+    margin: 0 0 16px 0;
+    color: var(--daemon-text);
+  }
+
+  a {
+    color: var(--daemon-primary);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  a:hover {
+    color: var(--daemon-primary-hover);
+  }
+
+  code,
+  pre {
+    font-family: 'JetBrains Mono', 'Consolas', 'monospace';
+    background-color: var(--daemon-surface);
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--daemon-text-bright);
+  }
+
+  code {
+    padding: 2px 4px;
+  }
+
+  pre {
+    padding: 16px;
+    margin: 16px 0;
+    overflow: auto;
+    border: 1px solid var(--daemon-secondary);
+  }
+
+  pre code {
+    background: transparent;
+    padding: 0;
+  }
+}
+
+@layer utilities {
+  .sr-only {
+    @apply absolute w-1 h-1 p-0 -m-1 overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  :focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: 2px;
+  }
+}
+
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2')
+    format('woff2');
+}
+
+/* Daemon Directorate form styles */
+select.form-control {
+  background-image: var(--select-caret-dark);
+  background-color: var(--daemon-surface);
+  border: 1px solid var(--daemon-secondary);
+  color: var(--daemon-text);
+}
+
+select.form-control:focus {
+  border-color: var(--daemon-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--daemon-primary-rgb), 0.2);
+}
+
+.btn--outline {
+  border: 1px solid var(--daemon-secondary);
+  background: transparent;
+  color: var(--daemon-text);
+}
+
+.btn--outline:hover {
+  border-color: var(--daemon-primary);
+  color: var(--daemon-text-bright);
+}

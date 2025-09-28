@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Thief: Heist Planner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Game Header -->
+        <header class="game-header">
+            <h1>🎭 Master Thief</h1>
+            <div class="game-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Budget:</span>
+                    <span class="stat-value" id="player-budget">$15,000</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Heists Completed:</span>
+                    <span class="stat-value" id="heists-completed">0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Recruitment Phase -->
+        <section class="game-phase" id="recruitment-phase">
+            <div class="phase-header">
+                <h2>🎯 Recruit Your Crew</h2>
+                <p>Choose your team wisely. Each specialist brings unique skills to the job.</p>
+            </div>
+            
+            <div class="team-selection">
+                <div class="available-members">
+                    <h3>Available Specialists</h3>
+                    <div class="members-grid" id="available-members-grid">
+                        <!-- Team members will be populated here -->
+                    </div>
+                </div>
+                
+                <div class="selected-team">
+                    <h3>Your Crew</h3>
+                    <div class="selected-members" id="selected-members">
+                        <div class="empty-slot">Select team members...</div>
+                    </div>
+                    <button class="btn btn--primary" id="proceed-to-heist" disabled>Plan Heist</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Heist Selection Phase -->
+        <section class="game-phase hidden" id="heist-selection-phase">
+            <div class="phase-header">
+                <h2>🏛️ Choose Your Target</h2>
+                <p>Select a heist that matches your crew's capabilities.</p>
+            </div>
+            
+            <div class="heist-options" id="heist-options">
+                <!-- Heist targets will be populated here -->
+            </div>
+            
+            <div class="phase-actions">
+                <button class="btn btn--outline" id="back-to-recruitment">Back to Recruitment</button>
+                <button class="btn btn--primary" id="proceed-to-planning" disabled>Review Plan</button>
+            </div>
+        </section>
+
+        <!-- Planning Phase -->
+        <section class="game-phase hidden" id="planning-phase">
+            <div class="phase-header">
+                <h2>📋 Final Preparations</h2>
+                <p>Review the intel and finalize your approach.</p>
+            </div>
+            
+            <div class="planning-content">
+                <div class="target-intel" id="target-intel">
+                    <!-- Target information will be displayed here -->
+                </div>
+                
+                <div class="crew-summary">
+                    <h3>Your Crew</h3>
+                    <div class="crew-cards" id="crew-summary">
+                        <!-- Selected crew will be shown here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="phase-actions">
+                <button class="btn btn--outline" id="back-to-heist-selection">Change Target</button>
+                <button class="btn btn--primary" id="start-heist">Execute Heist</button>
+            </div>
+        </section>
+
+        <!-- Execution Phase -->
+        <section class="game-phase hidden" id="execution-phase">
+            <div class="phase-header">
+                <h2>⚡ Heist in Progress</h2>
+                <div class="heist-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="heist-progress-fill"></div>
+                    </div>
+                    <span class="progress-text" id="progress-text">Encounter 1 of 3</span>
+                </div>
+            </div>
+            
+            <div class="encounter-content" id="encounter-content">
+                <div class="encounter-description">
+                    <h3 id="encounter-name"></h3>
+                    <p id="encounter-description"></p>
+                </div>
+                
+                <div class="team-selection-encounter">
+                    <h4>Choose your specialist:</h4>
+                    <div class="encounter-team-options" id="encounter-team-options">
+                        <!-- Available team members for this encounter -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dice Rolling Modal -->
+            <div class="modal hidden" id="dice-modal">
+                <div class="modal-content">
+                    <div class="dice-container">
+                        <div class="dice" id="dice">
+                            <div class="dice-face">🎲</div>
+                        </div>
+                        <div class="roll-info">
+                            <p id="roll-calculation"></p>
+                        </div>
+                    </div>
+                    <div class="outcome-result" id="outcome-result">
+                        <!-- Roll outcome will be displayed here -->
+                    </div>
+                    <button class="btn btn--primary" id="continue-heist" style="display: none;">Continue</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Phase -->
+        <section class="game-phase hidden" id="results-phase">
+            <div class="phase-header">
+                <h2 id="results-title">🎉 Mission Complete</h2>
+            </div>
+            
+            <div class="results-content">
+                <div class="heist-outcome" id="heist-outcome">
+                    <!-- Results will be populated here -->
+                </div>
+                
+                <div class="rewards-section" id="rewards-section">
+                    <!-- Rewards and penalties will be shown here -->
+                </div>
+                
+                <div class="crew-status" id="crew-status">
+                    <!-- Team member status will be displayed here -->
+                </div>
+            </div>
+            
+            <div class="phase-actions">
+                <button class="btn btn--primary" id="plan-next-heist">Plan Next Heist</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

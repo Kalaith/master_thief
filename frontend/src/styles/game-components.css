@@ -1,0 +1,131 @@
+/* Game-specific component styles for Master Thief */
+
+/* Skill bars and game-specific components */
+.skill-bar {
+  width: 100%;
+  height: 8px;
+  background-color: var(--daemon-surface);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--daemon-secondary);
+}
+
+.skill-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--daemon-success) 0%, var(--daemon-warning) 60%, var(--daemon-danger) 100%);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+/* Status indicators */
+.status-active {
+  color: var(--daemon-success);
+}
+
+.status-injured {
+  color: var(--daemon-warning);
+}
+
+.status-captured {
+  color: var(--daemon-danger);
+}
+
+/* Game animations */
+@keyframes rollDice {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+}
+
+.dice.rolling {
+  animation: rollDice 0.5s ease-in-out infinite;
+}
+
+/* Outcome colors */
+.outcome-critical-failure {
+  color: var(--daemon-danger);
+}
+
+.outcome-failure {
+  color: var(--daemon-warning);
+}
+
+.outcome-neutral {
+  color: var(--daemon-info);
+}
+
+.outcome-success {
+  color: var(--daemon-success);
+}
+
+.outcome-critical-success {
+  color: var(--daemon-primary);
+}
+
+/* Responsive utilities for game layout */
+@media (max-width: 768px) {
+  .members-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-selection {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .heist-options {
+    grid-template-columns: 1fr;
+  }
+
+  .planning-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Game-specific hover effects */
+.member-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(var(--daemon-primary-rgb), 0.2);
+}
+
+.heist-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(var(--daemon-primary-rgb), 0.2);
+}
+
+/* Progress bar animations */
+.progress-fill {
+  transition: width 0.5s ease-out;
+  background: linear-gradient(90deg, var(--daemon-primary), var(--daemon-primary-hover));
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+/* Game phase transitions */
+.game-phase {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,175 @@
+import React, { useState, useEffect } from 'react';
+import type { TeamMember, Encounter, EncounterResult, OutcomeType } from '../../../types/game';
+import { gameData } from '../../../data/gameData';
+
+interface DiceModalProps {
+  member: TeamMember;
+  encounter: Encounter;
+  onResult: (result: EncounterResult) => void;
+  onClose: () => void;
+}
+
+const DiceModal: React.FC<DiceModalProps> = ({ member, encounter, onResult, onClose }) => {
+  const [isRolling, setIsRolling] = useState(false);
+  const [diceValue, setDiceValue] = useState<number | null>(null);
+  const [result, setResult] = useState<EncounterResult | null>(null);
+  const [showResult, setShowResult] = useState(false);
+
+  useEffect(() => {
+    // Auto-start rolling when modal opens
+    const timer = setTimeout(() => {
+      handleRoll();
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleRoll = () => {
+    setIsRolling(true);
+    setShowResult(false);
+
+    // Simulate dice rolling animation
+    setTimeout(() => {
+      const roll = Math.floor(Math.random() * 20) + 1;
+      const bonus = member.skills[encounter.primary_skill] || 0;
+      const total = roll + bonus;
+      const difficulty = encounter.difficulty;
+
+      // Determine outcome
+      let outcome: OutcomeType;
+      if (roll === 1) {
+        outcome = 'critical_failure';
+      } else if (roll === 20) {
+        outcome = 'critical_success';
+      } else if (total >= difficulty + 5) {
+        outcome = 'success';
+      } else if (total >= difficulty) {
+        outcome = 'neutral';
+      } else {
+        outcome = 'failure';
+      }
+
+      const encounterResult: EncounterResult = {
+        member,
+        encounter,
+        roll,
+        bonus,
+        total,
+        outcome,
+      };
+
+      setDiceValue(roll);
+      setResult(encounterResult);
+      setIsRolling(false);
+      setShowResult(true);
+    }, 1500);
+  };
+
+  const handleContinue = () => {
+    if (result) {
+      onResult(result);
+    }
+  };
+
+  const getOutcomeTitle = (outcome: OutcomeType): string => {
+    switch (outcome) {
+      case 'critical_failure':
+        return 'Critical Failure!';
+      case 'failure':
+        return 'Failure';
+      case 'neutral':
+        return 'Partial Success';
+      case 'success':
+        return 'Success!';
+      case 'critical_success':
+        return 'Critical Success!';
+    }
+  };
+
+  const getOutcomeColor = (outcome: OutcomeType): string => {
+    switch (outcome) {
+      case 'critical_failure':
+        return 'text-daemon-danger';
+      case 'failure':
+        return 'text-daemon-warning';
+      case 'neutral':
+        return 'text-daemon-info';
+      case 'success':
+        return 'text-daemon-success';
+      case 'critical_success':
+        return 'text-daemon-primary';
+    }
+  };
+
+  const getRandomOutcomeDescription = (outcome: OutcomeType): string => {
+    const descriptions = gameData.outcome_descriptions[outcome];
+    return descriptions[Math.floor(Math.random() * descriptions.length)];
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <div className="bg-daemon-panel border border-daemon-secondary rounded-lg p-8 max-w-md w-full mx-4">
+        {/* Dice Container */}
+        <div className="text-center mb-6">
+          <div
+            className={`inline-flex items-center justify-center w-20 h-20 bg-daemon-surface border-2 border-daemon-secondary rounded-lg text-2xl font-bold transition-transform duration-300 ${
+              isRolling ? 'animate-bounce' : ''
+            }`}
+          >
+            {diceValue !== null ? diceValue : '🎲'}
+          </div>
+        </div>
+
+        {/* Roll Information */}
+        <div className="text-center mb-6">
+          {!showResult ? (
+            <p className="text-daemon-text-muted">Rolling...</p>
+          ) : (
+            result && (
+              <div className="space-y-2">
+                <p className="text-daemon-text">
+                  <strong>{member.name}</strong> rolled {result.roll} + {result.bonus} = {result.total}
+                </p>
+                <p className="text-daemon-text-muted text-sm">Target: {encounter.difficulty}</p>
+              </div>
+            )
+          )}
+        </div>
+
+        {/* Outcome Result */}
+        {showResult && result && (
+          <div className="space-y-4 mb-6">
+            <div className={`text-center text-xl font-bold ${getOutcomeColor(result.outcome)}`}>
+              {getOutcomeTitle(result.outcome)}
+            </div>
+            <div className="text-center text-daemon-text">
+              {getRandomOutcomeDescription(result.outcome)}
+            </div>
+          </div>
+        )}
+
+        {/* Continue Button */}
+        {showResult && (
+          <div className="text-center">
+            <button
+              onClick={handleContinue}
+              className="py-3 px-6 bg-daemon-primary hover:bg-daemon-primaryHover text-white rounded-lg font-semibold transition-colors"
+            >
+              Continue
+            </button>
+          </div>
+        )}
+
+        {/* Close button (X) in corner */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-daemon-text-muted hover:text-daemon-text transition-colors"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default DiceModal;
