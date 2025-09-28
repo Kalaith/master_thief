@@ -10,14 +10,6 @@ const ResultsPhase: React.FC = () => {
     resetForNextHeist,
   } = useGameStore();
 
-  if (!selectedHeist || selectedTeam.length === 0) {
-    return (
-      <div className="text-center">
-        <p className="text-daemon-text-muted">No heist or team selected</p>
-      </div>
-    );
-  }
-
   // Calculate success
   const totalEncounters = encounterResults.length;
   const successfulEncounters = encounterResults.filter(r => 
@@ -31,12 +23,14 @@ const ResultsPhase: React.FC = () => {
   let heistSuccess = false;
   let payout = 0;
 
-  if (criticalFailures > 0) {
-    heistSuccess = false;
-  } else if (successfulEncounters >= totalEncounters * 0.5) {
-    heistSuccess = true;
-    const successRate = successfulEncounters / totalEncounters;
-    payout = Math.floor(selectedHeist.potential_payout * successRate);
+  if (selectedHeist) {
+    if (criticalFailures > 0) {
+      heistSuccess = false;
+    } else if (successfulEncounters >= totalEncounters * 0.5) {
+      heistSuccess = true;
+      const successRate = successfulEncounters / totalEncounters;
+      payout = Math.floor(selectedHeist.potential_payout * successRate);
+    }
   }
 
   React.useEffect(() => {
@@ -46,6 +40,22 @@ const ResultsPhase: React.FC = () => {
       completeHeist(false, 0);
     }
   }, [heistSuccess, payout, completeHeist]);
+
+  if (!selectedHeist || selectedTeam.length === 0) {
+    return (
+      <div className="text-center">
+        <p className="text-daemon-text-muted">No heist or team selected</p>
+      </div>
+    );
+  }
+
+  if (!selectedHeist || selectedTeam.length === 0) {
+    return (
+      <div className="text-center">
+        <p className="text-daemon-text-muted">No heist or team selected</p>
+      </div>
+    );
+  }
 
   const handlePlanNextHeist = () => {
     resetForNextHeist();

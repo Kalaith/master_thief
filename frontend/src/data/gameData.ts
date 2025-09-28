@@ -1,222 +1,156 @@
 // Game data for the Master Thief heist simulator
 import type { GameData } from '../types/game';
+import { characters } from './characters';
 
 export const gameData: GameData = {
-  team_members: [
-    {
-      id: 1,
-      name: "Shadow",
-      specialty: "Infiltration Expert",
-      background: "Ex-military sniper turned master burglar",
-      skills: {
-        stealth: 9,
-        athletics: 7,
-        combat: 8,
-        lockpicking: 6,
-        hacking: 4,
-        social: 5
-      },
-      special_ability: "Can move silently through any terrain",
-      cost: 5000
-    },
-    {
-      id: 2,
-      name: "Cipher",
-      specialty: "Tech Specialist",
-      background: "Former NSA programmer gone rogue",
-      skills: {
-        stealth: 5,
-        athletics: 4,
-        combat: 3,
-        lockpicking: 6,
-        hacking: 10,
-        social: 7
-      },
-      special_ability: "Can disable any electronic security system",
-      cost: 6000
-    },
-    {
-      id: 3,
-      name: "Viper",
-      specialty: "Social Engineer",
-      background: "Master of disguise and manipulation",
-      skills: {
-        stealth: 6,
-        athletics: 5,
-        combat: 4,
-        lockpicking: 5,
-        hacking: 6,
-        social: 10
-      },
-      special_ability: "Can talk their way past any human obstacle",
-      cost: 4500
-    },
-    {
-      id: 4,
-      name: "Wrench",
-      specialty: "Demolitions Expert",
-      background: "Former mining engineer with explosive personality",
-      skills: {
-        stealth: 4,
-        athletics: 8,
-        combat: 9,
-        lockpicking: 8,
-        hacking: 3,
-        social: 3
-      },
-      special_ability: "Can breach any physical barrier",
-      cost: 5500
-    },
-    {
-      id: 5,
-      name: "Silk",
-      specialty: "Cat Burglar",
-      background: "Acrobatic thief specializing in impossible entries",
-      skills: {
-        stealth: 8,
-        athletics: 10,
-        combat: 6,
-        lockpicking: 9,
-        hacking: 4,
-        social: 6
-      },
-      special_ability: "Can access any location through unconventional routes",
-      cost: 5200
-    },
-    {
-      id: 6,
-      name: "Ghost",
-      specialty: "Information Broker",
-      background: "Connected to criminal underworld networks",
-      skills: {
-        stealth: 7,
-        athletics: 5,
-        combat: 6,
-        lockpicking: 7,
-        hacking: 8,
-        social: 8
-      },
-      special_ability: "Provides valuable intel and escape routes",
-      cost: 4000
-    }
-  ],
+  team_members: characters,
   heist_targets: [
     {
       id: 1,
-      name: "First National Bank",
-      difficulty: "Medium",
-      potential_payout: 250000,
-      description: "Classic bank heist with vault, guards, and time pressure",
+      name: "Velvet Room Casino",
+      difficulty: "Easy",
+      potential_payout: 180000,
+      description: "Smoky speakeasy casino with loose security and looser morals",
       encounters: [
         {
-          name: "Security Cameras",
-          description: "Disable the surveillance system",
-          primary_skill: "hacking",
-          difficulty: 12,
-          failure_consequence: "Guards alerted to your presence"
+          name: "Bouncer Distraction",
+          description: "Sweet-talk or slip past the casino muscle",
+          primary_skill: "social",
+          difficulty: 9,
+          failure_consequence: "Bouncer becomes suspicious of your intentions"
         },
         {
-          name: "Vault Door",
-          description: "Open the main vault",
+          name: "Poker Room Safe",
+          description: "Crack the house's nightly take safe",
           primary_skill: "lockpicking",
-          difficulty: 15,
-          failure_consequence: "Alarm triggered, time pressure increased"
+          difficulty: 11,
+          failure_consequence: "Alarm triggers, need to work faster"
         },
         {
-          name: "Patrol Guards",
-          description: "Avoid or neutralize security patrol",
+          name: "Back Alley Escape",
+          description: "Navigate through the maze of speakeasy tunnels",
           primary_skill: "stealth",
-          difficulty: 11,
-          failure_consequence: "Combat encounter, potential injuries"
+          difficulty: 10,
+          failure_consequence: "Security spots you during escape"
         }
       ]
     },
     {
       id: 2,
-      name: "Art Museum",
+      name: "Metropolitan Art Museum",
       difficulty: "Hard",
-      potential_payout: 500000,
-      description: "High-security museum with priceless artifacts",
+      potential_payout: 750000,
+      description: "High-society museum filled with priceless artifacts and marble floors",
       encounters: [
         {
-          name: "Laser Grid",
-          description: "Navigate through security lasers",
+          name: "Laser Security Grid",
+          description: "Dance through the web of red laser beams",
           primary_skill: "athletics",
-          difficulty: 14,
-          failure_consequence: "Silent alarm triggered"
+          difficulty: 15,
+          failure_consequence: "Silent alarm activated, time pressure increases"
         },
         {
-          name: "Curator's Office",
-          description: "Convince the night curator you belong",
+          name: "Night Curator",
+          description: "Convince the cultured curator you're meant to be here",
           primary_skill: "social",
-          difficulty: 13,
-          failure_consequence: "Security called, need alternate route"
+          difficulty: 14,
+          failure_consequence: "Curator calls for additional security"
         },
         {
-          name: "Display Case",
-          description: "Extract artifact without triggering sensors",
+          name: "Pressure-Sensitive Display",
+          description: "Extract the golden artifact without triggering sensors",
           primary_skill: "lockpicking",
           difficulty: 16,
-          failure_consequence: "Pressure alarm activated"
+          failure_consequence: "Display case alarm sounds throughout the museum"
         }
       ]
     },
     {
       id: 3,
-      name: "Corporate Headquarters",
-      difficulty: "Easy",
-      potential_payout: 150000,
-      description: "Steal corporate secrets and petty cash",
+      name: "First National Bank Vault",
+      difficulty: "Medium",
+      potential_payout: 450000,
+      description: "Classic bank job - vault, guards, and that beautiful marble interior",
       encounters: [
         {
-          name: "Keycard Access",
-          description: "Bypass electronic door locks",
+          name: "Security Camera System",
+          description: "Disable the watchful electronic eyes",
           primary_skill: "hacking",
-          difficulty: 10,
-          failure_consequence: "Must find alternate entry point"
-        },
-        {
-          name: "Office Safe",
-          description: "Crack the executive's personal safe",
-          primary_skill: "lockpicking",
           difficulty: 12,
-          failure_consequence: "Only access to less valuable items"
+          failure_consequence: "Guards are alerted to suspicious activity"
         },
         {
-          name: "Security Guard",
-          description: "Deal with the lone night watchman",
-          primary_skill: "social",
-          difficulty: 9,
-          failure_consequence: "Guard becomes suspicious"
+          name: "Main Vault Door",
+          description: "Open the massive steel vault with finesse",
+          primary_skill: "lockpicking",
+          difficulty: 15,
+          failure_consequence: "Time-lock alarm triggers, police response accelerated"
+        },
+        {
+          name: "Night Patrol",
+          description: "Avoid or neutralize the roving security guards",
+          primary_skill: "stealth",
+          difficulty: 13,
+          failure_consequence: "Combat encounter - risk of injuries and noise"
+        }
+      ]
+    },
+    {
+      id: 4,
+      name: "Luxury Corporate Tower",
+      difficulty: "Hard",
+      potential_payout: 650000,
+      description: "Gleaming corporate headquarters with executive secrets and gold-trimmed offices",
+      encounters: [
+        {
+          name: "Executive Elevator Access",
+          description: "Hack your way to the penthouse floors",
+          primary_skill: "hacking",
+          difficulty: 14,
+          failure_consequence: "Elevator lockdown - must find alternate route"
+        },
+        {
+          name: "CEO's Personal Vault",
+          description: "Crack the executive's private treasure trove",
+          primary_skill: "lockpicking",
+          difficulty: 17,
+          failure_consequence: "Secondary alarm system activates"
+        },
+        {
+          name: "Board Room Infiltration",
+          description: "Navigate through the executive meeting space undetected",
+          primary_skill: "stealth",
+          difficulty: 15,
+          failure_consequence: "Late-night executives spot suspicious movement"
         }
       ]
     }
   ],
   outcome_descriptions: {
     critical_failure: [
-      "Disaster strikes! Your team member is caught red-handed.",
-      "Complete catastrophe! Alarms blare and police are en route.",
-      "Total failure! Your operative is captured and the heist is blown."
+      "Disaster strikes! Your associate is caught red-handed by the boys in blue.",
+      "Complete catastrophe! The whole operation goes south faster than a rat fleeing a sinking ship.",
+      "Total failure! Your operative gets pinched and the heat is now on the entire family."
     ],
     failure: [
-      "Things go wrong, but you can still salvage the situation.",
-      "A setback occurs, making the job more difficult.",
-      "Minor failure - you'll need to adapt your approach."
+      "Things don't go according to plan, but you're still in the game, capisce?",
+      "A minor setback occurs - nothing the family can't handle with finesse.",
+      "Small hiccup in the operation - time to show what real professionals can do."
     ],
     neutral: [
-      "Partial success with unexpected complications.",
-      "You succeed, but not without raising some suspicion.",
-      "Mixed results - you're through but something seems off."
+      "Partial success with some complications - could've been cleaner, could've been messier.",
+      "You get the job done, but something doesn't sit right. Keep your eyes peeled.",
+      "Mixed results - you're through, but there's a feeling someone's watching."
     ],
     success: [
-      "Clean execution! Your team member completes the task flawlessly.",
-      "Smooth operation - everything goes according to plan.",
-      "Perfect work! No one will ever know you were here."
+      "Clean execution! Your associate handles business like a true professional.",
+      "Smooth as silk - the operation goes off without a hitch, just like the old days.",
+      "Perfect work! Nobody will ever know the family paid a visit tonight."
     ],
     critical_success: [
-      "Exceptional performance! You discover an unexpected bonus.",
-      "Brilliant execution! Your operative finds additional opportunities.",
-      "Outstanding work! This couldn't have gone better."
+      "Exceptional performance! Your operative discovers an unexpected golden opportunity.",
+      "Brilliant execution! The job yields more than expected - the Don would be proud.",
+      "Outstanding work! This couldn't have gone better if it were orchestrated by the gods themselves."
     ]
   }
 };

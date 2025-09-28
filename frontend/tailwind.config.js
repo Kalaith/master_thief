@@ -11,36 +11,43 @@ export default {
       white: '#ffffff',
       black: '#000000',
 
-      // Daemon Directorate Color System
-      daemon: {
-        // Backgrounds
-        dark: '#0a0a0a', // Primary background - near-black abyss
-        panel: '#141414', // UI panels and cards - dark charcoal
-        surface: '#1a1a1a', // Interactive surfaces - slightly lighter
-
-        // Brand Colors
-        primary: '#b11226', // Infernal red - primary actions
-        primaryHover: '#e01b2f', // Brighter red for hover states
-        secondary: '#660000', // Dark blood red - borders and accents
-        danger: '#cc3333', // Error states and warnings
-
-        // Hierarchy Colors
-        gold: '#d4af37', // Executive tier - use sparingly
-        silver: '#c0c0c0', // Management tier
-        bronze: '#cd7f32', // Supervisor tier
-
-        // Text Colors
-        text: {
-          DEFAULT: '#cccccc', // Standard readable text
-          bright: '#f5f5f5', // Headers and emphasis
-          muted: '#999999', // Secondary information
-          dim: '#666666', // Disabled or placeholder text
-        },
-
-        // Status Colors
-        success: '#2d5a2d', // Success states - dark green
-        warning: '#8b6914', // Warning states - dark amber
-        info: '#1e3a5f', // Information - dark blue
+      // Mafia Noir Heist Color System
+      noir: {
+        50:  '#f5f5f5',
+        100: '#e5e5e5',
+        200: '#c2c2c2',
+        300: '#a3a3a3',
+        400: '#737373',
+        500: '#4a4a4a',
+        600: '#2f2f2f',
+        700: '#1f1f1f',
+        800: '#141414',
+        900: '#0a0a0a',
+      },
+      blood: {
+        500: '#8b0000',
+        600: '#600000',
+        700: '#3b0000',
+      },
+      gold: {
+        300: '#ffd166',
+        400: '#e6b422',
+        500: '#b8860b',
+      },
+      emerald: {
+        400: '#50c878',
+        500: '#046307',
+      },
+      royal: {
+        400: '#9370db',
+        500: '#663399',
+      },
+      rarity: {
+        common: '#737373',
+        uncommon: '#046307',
+        rare: '#9370db',
+        epic: '#8b0000',
+        legendary: '#e6b422',
       },
 
       // Fallback colors for compatibility (minimal set)
@@ -66,33 +73,36 @@ export default {
         500: '#eab308',
       },
 
-      // Legacy semantic colors - map to daemon colors
-      primary: '#b11226',
-      'primary-hover': '#e01b2f',
-      'primary-active': '#e01b2f',
+      // Mafia Noir semantic mappings
+      primary: '#8b0000',
+      'primary-hover': '#b8860b',
+      'primary-active': '#b8860b',
       background: '#0a0a0a',
       surface: '#141414',
-      text: '#cccccc',
+      text: '#c2c2c2',
       'text-secondary': '#999999',
-      border: '#660000',
-      'card-border': '#660000',
-      error: '#cc3333',
-      success: '#2d5a2d',
-      warning: '#8b6914',
-      info: '#1e3a5f',
+      border: '#b8860b',
+      'card-border': '#b8860b',
+      error: '#8b0000',
+      success: '#046307',
+      warning: '#e6b422',
+      info: '#663399',
     },
     extend: {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'], // Primary UI text
+        serif: ['Cinzel Decorative', 'serif'], // Elegant headers for mafia theme
         header: ['Cinzel Decorative', 'serif'], // Corporate titles
         mono: ['JetBrains Mono', 'Consolas', 'monospace'], // Data displays
         base: 'var(--font-family-base)', // Legacy support
       },
       boxShadow: {
-        infernal: '0 0 10px rgba(177, 18, 38, 0.4)',
-        'infernal-lg': '0 0 20px rgba(177, 18, 38, 0.6)',
-        gold: '0 0 10px rgba(212, 175, 55, 0.4)',
-        'gold-lg': '0 0 20px rgba(212, 175, 55, 0.6)',
+        noir: '0 0 10px rgba(139, 0, 0, 0.4)',
+        'noir-lg': '0 0 20px rgba(139, 0, 0, 0.6)',
+        gold: '0 0 10px rgba(230, 180, 34, 0.4)',
+        'gold-lg': '0 0 20px rgba(230, 180, 34, 0.6)',
+        emerald: '0 0 10px rgba(4, 99, 7, 0.4)',
+        royal: '0 0 10px rgba(147, 112, 219, 0.4)',
         // Legacy support
         xs: 'var(--shadow-xs)',
         sm: 'var(--shadow-sm)',
@@ -102,13 +112,13 @@ export default {
         focus: 'var(--focus-ring)',
       },
       keyframes: {
-        pulseInfernal: {
-          '0%, 100%': { boxShadow: '0 0 8px rgba(177, 18, 38, 0.4)' },
-          '50%': { boxShadow: '0 0 16px rgba(177, 18, 38, 0.8)' },
+        pulseNoir: {
+          '0%, 100%': { boxShadow: '0 0 8px rgba(139, 0, 0, 0.4)' },
+          '50%': { boxShadow: '0 0 16px rgba(139, 0, 0, 0.8)' },
         },
         pulseGold: {
-          '0%, 100%': { boxShadow: '0 0 8px rgba(212, 175, 55, 0.4)' },
-          '50%': { boxShadow: '0 0 16px rgba(212, 175, 55, 0.8)' },
+          '0%, 100%': { boxShadow: '0 0 8px rgba(230, 180, 34, 0.4)' },
+          '50%': { boxShadow: '0 0 16px rgba(230, 180, 34, 0.8)' },
         },
         fadeInUp: {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
@@ -116,7 +126,7 @@ export default {
         },
       },
       animation: {
-        pulseInfernal: 'pulseInfernal 2s infinite',
+        pulseNoir: 'pulseNoir 2s infinite',
         pulseGold: 'pulseGold 2s infinite',
         fadeInUp: 'fadeInUp 0.3s ease-out',
         'pulse-game': 'pulse 0.3s ease-in-out', // Legacy support

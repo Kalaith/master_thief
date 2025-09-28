@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useGameStore } from './stores/gameStore';
-import HeistGame from './components/game/HeistGame';
+import Phase1Demo from './components/game/phases/Phase1Demo';
 
 const App: React.FC = () => {
   const { initializeGame } = useGameStore();
@@ -9,7 +9,7 @@ const App: React.FC = () => {
     initializeGame();
   }, [initializeGame]);
 
-  return <HeistGame />;
+  return <Phase1Demo />;
 };
 
 export default App;

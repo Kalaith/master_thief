@@ -18,52 +18,55 @@ const DiceModal: React.FC<DiceModalProps> = ({ member, encounter, onResult, onCl
   useEffect(() => {
     // Auto-start rolling when modal opens
     const timer = setTimeout(() => {
-      handleRoll();
+      setIsRolling(true);
+      setShowResult(false);
+
+      // Simulate dice rolling animation
+      setTimeout(() => {
+        const roll = Math.floor(Math.random() * 20) + 1;
+        const skillBonus = member.skills[encounter.primary_skill] || 0;
+        const attributeModifier = encounter.primary_attribute ? 
+          Math.floor((member.attributes[encounter.primary_attribute] - 10) / 2) : 0;
+        const total = roll + skillBonus + attributeModifier;
+
+        // Determine outcome
+        let outcome: OutcomeType;
+        if (roll === 1) {
+          outcome = 'critical_failure';
+        } else if (roll === 20) {
+          outcome = 'critical_success';
+        } else if (total >= encounter.difficulty + 5) {
+          outcome = 'success';
+        } else if (total >= encounter.difficulty) {
+          outcome = 'neutral';
+        } else {
+          outcome = 'failure';
+        }
+
+        const encounterResult: EncounterResult = {
+          member,
+          encounter,
+          roll,
+          attributeModifier,
+          skillBonus,
+          equipmentBonus: 0,
+          situationalModifiers: 0,
+          total,
+          outcome,
+          experienceGained: outcome === 'success' || outcome === 'critical_success' ? 10 : 5,
+          stressInflicted: outcome === 'failure' || outcome === 'critical_failure' ? 10 : 5,
+          narrativeDescription: 'Dice roll completed'
+        };
+
+        setDiceValue(roll);
+        setResult(encounterResult);
+        setIsRolling(false);
+        setShowResult(true);
+      }, 1500);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, []);
-
-  const handleRoll = () => {
-    setIsRolling(true);
-    setShowResult(false);
-
-    // Simulate dice rolling animation
-    setTimeout(() => {
-      const roll = Math.floor(Math.random() * 20) + 1;
-      const bonus = member.skills[encounter.primary_skill] || 0;
-      const total = roll + bonus;
-      const difficulty = encounter.difficulty;
-
-      // Determine outcome
-      let outcome: OutcomeType;
-      if (roll === 1) {
-        outcome = 'critical_failure';
-      } else if (roll === 20) {
-        outcome = 'critical_success';
-      } else if (total >= difficulty + 5) {
-        outcome = 'success';
-      } else if (total >= difficulty) {
-        outcome = 'neutral';
-      } else {
-        outcome = 'failure';
-      }
-
-      const encounterResult: EncounterResult = {
-        member,
-        encounter,
-        roll,
-        bonus,
-        total,
-        outcome,
-      };
-
-      setDiceValue(roll);
-      setResult(encounterResult);
-      setIsRolling(false);
-      setShowResult(true);
-    }, 1500);
-  };
+  }, [member, encounter, onResult]);
 
   const handleContinue = () => {
     if (result) {
@@ -128,7 +131,7 @@ const DiceModal: React.FC<DiceModalProps> = ({ member, encounter, onResult, onCl
             result && (
               <div className="space-y-2">
                 <p className="text-daemon-text">
-                  <strong>{member.name}</strong> rolled {result.roll} + {result.bonus} = {result.total}
+                  <strong>{member.name}</strong> rolled {result.roll} + {result.skillBonus} = {result.total}
                 </p>
                 <p className="text-daemon-text-muted text-sm">Target: {encounter.difficulty}</p>
               </div>

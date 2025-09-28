@@ -1,33 +1,59 @@
-/* Game-specific component styles for Master Thief */
+/* Game-specific component styles for Master Thief - Mafia Noir Theme */
 
 /* Skill bars and game-specific components */
 .skill-bar {
   width: 100%;
   height: 8px;
-  background-color: var(--daemon-surface);
+  background-color: var(--noir-800);
   border-radius: var(--radius-full);
   overflow: hidden;
-  border: 1px solid var(--daemon-secondary);
+  border: 1px solid var(--gold-500);
 }
 
 .skill-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--daemon-success) 0%, var(--daemon-warning) 60%, var(--daemon-danger) 100%);
+  background: linear-gradient(90deg, var(--emerald-500) 0%, var(--gold-400) 60%, var(--blood-500) 100%);
   border-radius: var(--radius-full);
   transition: width 0.3s ease;
 }
 
 /* Status indicators */
 .status-active {
-  color: var(--daemon-success);
+  color: var(--status-success);
 }
 
 .status-injured {
-  color: var(--daemon-warning);
+  color: var(--status-warning);
 }
 
 .status-captured {
-  color: var(--daemon-danger);
+  color: var(--status-error);
+}
+
+/* Rarity indicators */
+.rarity-common {
+  color: var(--rarity-common);
+  border-color: var(--rarity-common);
+}
+
+.rarity-uncommon {
+  color: var(--rarity-uncommon);
+  border-color: var(--rarity-uncommon);
+}
+
+.rarity-rare {
+  color: var(--rarity-rare);
+  border-color: var(--rarity-rare);
+}
+
+.rarity-epic {
+  color: var(--rarity-epic);
+  border-color: var(--rarity-epic);
+}
+
+.rarity-legendary {
+  color: var(--rarity-legendary);
+  border-color: var(--rarity-legendary);
 }
 
 /* Game animations */
@@ -52,23 +78,23 @@
 
 /* Outcome colors */
 .outcome-critical-failure {
-  color: var(--daemon-danger);
+  color: var(--status-error);
 }
 
 .outcome-failure {
-  color: var(--daemon-warning);
+  color: var(--status-warning);
 }
 
 .outcome-neutral {
-  color: var(--daemon-info);
+  color: var(--status-info);
 }
 
 .outcome-success {
-  color: var(--daemon-success);
+  color: var(--status-success);
 }
 
 .outcome-critical-success {
-  color: var(--daemon-primary);
+  color: var(--gold-500);
 }
 
 /* Responsive utilities for game layout */
@@ -94,18 +120,18 @@
 /* Game-specific hover effects */
 .member-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(var(--daemon-primary-rgb), 0.2);
+  box-shadow: 0 4px 12px rgba(var(--blood-500-rgb), 0.2);
 }
 
 .heist-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(var(--daemon-primary-rgb), 0.2);
+  box-shadow: 0 4px 12px rgba(var(--blood-500-rgb), 0.2);
 }
 
 /* Progress bar animations */
 .progress-fill {
   transition: width 0.5s ease-out;
-  background: linear-gradient(90deg, var(--daemon-primary), var(--daemon-primary-hover));
+  background: linear-gradient(90deg, var(--blood-500), var(--gold-500));
 }
 
 /* Modal backdrop */
