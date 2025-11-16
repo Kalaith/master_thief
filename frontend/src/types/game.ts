@@ -185,6 +185,24 @@ export interface AutomatedHeist {
   unlockConditions?: string[];
 }
 
+// Mission result details for completion modal
+export interface MissionResult {
+  heist: AutomatedHeist;
+  team: TeamMember[];
+  success: boolean;
+  rewards: {
+    payout: number;
+    totalXP: number;
+    experiencePerMember: number;
+    reputation: number;
+    equipmentDrops: Equipment[];
+  };
+  teamPower: number;
+  requiredPower: number;
+  successChance: number;
+  levelUps: { characterId: number; oldLevel: number; newLevel: number; }[];
+}
+
 // Enhanced game progression
 export interface PlayerProgress {
   level: number;

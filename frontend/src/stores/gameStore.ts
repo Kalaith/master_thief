@@ -1,19 +1,22 @@
 import { create } from 'zustand';
-import type { 
-  GameState, 
-  GamePhase, 
-  TeamMember, 
-  HeistTarget, 
-  EncounterResult, 
+import type {
+  GameState,
+  GamePhase,
+  TeamMember,
+  HeistTarget,
+  EncounterResult,
   AutomatedHeist,
   Equipment,
-  PlayerProgress
+  PlayerProgress,
+  MissionResult
 } from '../types/game';
 import { characters } from '../data/characters';
+import { automatedHeists } from '../data/automatedHeists';
 
 interface GameStore extends GameState {
   currentPhase: GamePhase;
-  
+  currentMissionResult: MissionResult | null;
+
   // Actions
   setCurrentPhase: (phase: GamePhase) => void;
   setBudget: (budget: number) => void;
@@ -28,14 +31,21 @@ interface GameStore extends GameState {
   newGame: () => void;
   saveGame: () => void;
   loadGame: () => void;
-  
+
   // Enhanced Phase 1 actions
   startAutomatedHeist: (heist: AutomatedHeist, team: TeamMember[]) => void;
+  updateActiveHeistTime: (heistId: string, timeRemaining: number) => void;
   completeAutomatedHeist: (heistId: string) => void;
   equipItem: (characterId: number, item: Equipment) => void;
+  unequipItem: (characterId: number, slot: Equipment['type']) => void;
+  purchaseEquipment: (item: Equipment) => boolean;
   levelUpCharacter: (characterId: number) => void;
   updatePlayerProgress: (progress: Partial<PlayerProgress>) => void;
   addExperience: (characterId: number, experience: number) => void;
+
+  // Mission results modal
+  setMissionResult: (result: MissionResult | null) => void;
+  clearMissionResult: () => void;
 }
 
 const initialState: GameState = {
@@ -50,7 +60,7 @@ const initialState: GameState = {
   
   // Heist system
   selectedHeist: null,
-  automatedHeists: [],
+  automatedHeists: automatedHeists,
   activeAutomatedHeists: [],
   
   // Encounter system
@@ -81,6 +91,7 @@ const initialState: GameState = {
 export const useGameStore = create<GameStore>((set, get) => ({
   ...initialState,
   currentPhase: 'recruitment-phase',
+  currentMissionResult: null,
 
   setCurrentPhase: (phase: GamePhase) => set({ currentPhase: phase }),
 
@@ -179,7 +190,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         totalEarnings: state.totalEarnings,
         equipmentInventory: state.equipmentInventory,
         craftingMaterials: state.craftingMaterials,
-        achievements: state.achievements
+        achievements: state.achievements,
+        activeAutomatedHeists: state.activeAutomatedHeists // Save active missions
       };
       
       localStorage.setItem('masterThief_gameState', JSON.stringify(gameStateToSave));
@@ -200,8 +212,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ...parsedState,
           currentPhase: savedCurrentPhase || 'recruitment-phase',
           availableCharacters: characters, // Always load fresh characters
-          automatedHeists: [], // Don't persist active heists
-          activeAutomatedHeists: [],
+          automatedHeists: automatedHeists, // Always load fresh heists
           selectedHeist: null,
           currentEncounter: 0,
           encounterResults: []
@@ -215,6 +226,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         currentPhase: 'recruitment-phase',
       });
     }
+    
+    // Start global mission timer after loading
+    // Removed - using MissionsPage timer instead
   },
 
   // Enhanced Phase 1 actions
@@ -229,6 +243,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({
       activeAutomatedHeists: [...state.activeAutomatedHeists, newActiveHeist]
     });
+    
+    // Auto-save after starting mission
+    setTimeout(() => get().saveGame(), 0);
+  },
+
+  updateActiveHeistTime: (heistId: string, timeRemaining: number) => {
+    const state = get();
+    const updatedHeists = state.activeAutomatedHeists.map(heist => 
+      heist.heist.id === heistId 
+        ? { ...heist, timeRemaining: Math.max(0, timeRemaining) }
+        : heist
+    );
+    
+    set({ activeAutomatedHeists: updatedHeists });
+    
+    // Auto-save after time update
+    setTimeout(() => get().saveGame(), 0);
   },
 
   completeAutomatedHeist: (heistId: string) => {
@@ -236,25 +267,122 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const activeHeistIndex = state.activeAutomatedHeists.findIndex(
       ah => ah.heist.id === heistId
     );
-    
+
     if (activeHeistIndex >= 0) {
       const completedHeist = state.activeAutomatedHeists[activeHeistIndex];
-      
-      // Calculate rewards (simplified for now)
-      const basePayout = completedHeist.heist.rewards.basePayout;
-      const experience = Math.floor(basePayout * completedHeist.heist.rewards.experienceMultiplier);
-      
-      set({
-        activeAutomatedHeists: state.activeAutomatedHeists.filter((_, index) => index !== activeHeistIndex),
-        budget: state.budget + basePayout,
-        heistsCompleted: state.heistsCompleted + 1,
-        totalEarnings: state.totalEarnings + basePayout,
-        playerProgress: {
-          ...state.playerProgress,
-          totalExperience: state.playerProgress.totalExperience + experience
+      const { heist, team } = completedHeist;
+
+      // Calculate team power and success chance
+      const teamPower = team.reduce((total, member) => {
+        const avgSkill = Object.values(member.skills).reduce((a, b) => a + b, 0) / Object.keys(member.skills).length;
+        return total + avgSkill + (member.progression.level * 2);
+      }, 0);
+
+      const expectedPower = heist.riskLevel * 10; // Risk 1-10 * 10 = 10-100 expected power
+      const successChance = Math.min(95, Math.max(5, (teamPower / expectedPower) * 100));
+      const roll = Math.random() * 100;
+      const missionSuccess = roll <= successChance;
+
+      // Calculate rewards
+      let payout = 0;
+      let experiencePerMember = 0;
+      let newEquipment: Equipment[] = [];
+      let reputation = 0;
+
+      if (missionSuccess) {
+        // Success rewards
+        payout = heist.rewards.basePayout;
+        experiencePerMember = Math.floor(payout * heist.rewards.experienceMultiplier / team.length);
+        reputation = Math.floor(heist.riskLevel * 10);
+
+        // Equipment loot drop (30% chance for successful missions)
+        if (Math.random() < 0.3 && heist.rewards.possibleLoot.length > 0) {
+          const lootItem = heist.rewards.possibleLoot[Math.floor(Math.random() * heist.rewards.possibleLoot.length)];
+          newEquipment = [lootItem];
+        }
+      } else {
+        // Failure - partial rewards
+        payout = Math.floor(heist.rewards.basePayout * 0.2); // 20% of payout
+        experiencePerMember = Math.floor(payout * heist.rewards.experienceMultiplier / team.length / 2); // Half XP
+        reputation = 0;
+      }
+
+      // Track level ups
+      const levelUps: { characterId: number; oldLevel: number; newLevel: number; }[] = [];
+
+      // Update character experience
+      const updatedCharacters = [...state.availableCharacters];
+      team.forEach(member => {
+        const charIndex = updatedCharacters.findIndex(c => c.id === member.id);
+        if (charIndex >= 0) {
+          const char = { ...updatedCharacters[charIndex] };
+          const oldLevel = char.progression.level;
+
+          char.progression = {
+            ...char.progression,
+            experience: char.progression.experience + experiencePerMember,
+            heistsCompleted: char.progression.heistsCompleted + 1
+          };
+
+          // Auto-level up if enough XP
+          while (char.progression.experience >= char.progression.experienceToNext) {
+            char.progression = {
+              ...char.progression,
+              level: char.progression.level + 1,
+              experience: char.progression.experience - char.progression.experienceToNext,
+              experienceToNext: Math.floor(char.progression.experienceToNext * 1.5),
+              attributePoints: char.progression.attributePoints + 1,
+              skillPoints: char.progression.skillPoints + 2
+            };
+          }
+
+          // Track if character leveled up
+          if (char.progression.level > oldLevel) {
+            levelUps.push({
+              characterId: char.id,
+              oldLevel,
+              newLevel: char.progression.level
+            });
+          }
+
+          updatedCharacters[charIndex] = char;
         }
       });
-      
+
+      // Create mission result for modal
+      const missionResult: MissionResult = {
+        heist,
+        team: updatedCharacters.filter(c => team.some(t => t.id === c.id)), // Updated team with new levels
+        success: missionSuccess,
+        rewards: {
+          payout,
+          totalXP: experiencePerMember * team.length,
+          experiencePerMember,
+          reputation,
+          equipmentDrops: newEquipment
+        },
+        teamPower,
+        requiredPower: expectedPower,
+        successChance,
+        levelUps
+      };
+
+      // Update game state
+      set({
+        activeAutomatedHeists: state.activeAutomatedHeists.filter((_, index) => index !== activeHeistIndex),
+        availableCharacters: updatedCharacters,
+        budget: state.budget + payout,
+        heistsCompleted: state.heistsCompleted + 1,
+        totalEarnings: state.totalEarnings + payout,
+        equipmentInventory: [...state.equipmentInventory, ...newEquipment],
+        playerProgress: {
+          ...state.playerProgress,
+          totalExperience: state.playerProgress.totalExperience + (experiencePerMember * team.length),
+          reputation: state.playerProgress.reputation + reputation
+        },
+        currentMissionResult: missionResult
+      });
+
       // Auto-save after heist completion
       setTimeout(() => get().saveGame(), 0);
     }
@@ -263,25 +391,92 @@ export const useGameStore = create<GameStore>((set, get) => ({
   equipItem: (characterId: number, item: Equipment) => {
     const state = get();
     const characterIndex = state.availableCharacters.findIndex(c => c.id === characterId);
-    
+
     if (characterIndex >= 0) {
       const updatedCharacters = [...state.availableCharacters];
       const character = { ...updatedCharacters[characterIndex] };
-      
-      // Equip item to appropriate slot
+
+      // Get currently equipped item in this slot
+      const currentlyEquipped = character.equipment[item.type];
+
+      // Equip new item
       character.equipment = {
         ...character.equipment,
         [item.type]: item
       };
-      
+
       updatedCharacters[characterIndex] = character;
-      
+
+      // Update inventory: remove new item, add old item if exists
+      let updatedInventory = state.equipmentInventory.filter(i => i.id !== item.id);
+      if (currentlyEquipped) {
+        updatedInventory = [...updatedInventory, currentlyEquipped];
+      }
+
       set({
         availableCharacters: updatedCharacters,
-        // Remove item from inventory
-        equipmentInventory: state.equipmentInventory.filter(i => i.id !== item.id)
+        equipmentInventory: updatedInventory
       });
+
+      // Auto-save after equipment change
+      setTimeout(() => get().saveGame(), 0);
     }
+  },
+
+  unequipItem: (characterId: number, slot: Equipment['type']) => {
+    const state = get();
+    const characterIndex = state.availableCharacters.findIndex(c => c.id === characterId);
+
+    if (characterIndex >= 0) {
+      const updatedCharacters = [...state.availableCharacters];
+      const character = { ...updatedCharacters[characterIndex] };
+
+      // Get currently equipped item
+      const equippedItem = character.equipment[slot];
+
+      if (equippedItem) {
+        // Remove from equipment slot
+        const newEquipment = { ...character.equipment };
+        delete newEquipment[slot];
+        character.equipment = newEquipment;
+
+        updatedCharacters[characterIndex] = character;
+
+        set({
+          availableCharacters: updatedCharacters,
+          // Add item back to inventory
+          equipmentInventory: [...state.equipmentInventory, equippedItem]
+        });
+
+        // Auto-save after equipment change
+        setTimeout(() => get().saveGame(), 0);
+      }
+    }
+  },
+
+  purchaseEquipment: (item: Equipment): boolean => {
+    const state = get();
+
+    // Check if already owned
+    if (state.equipmentInventory.some(e => e.id === item.id)) {
+      return false;
+    }
+
+    // Check budget
+    if (state.budget < item.cost) {
+      return false;
+    }
+
+    // Purchase successful
+    set({
+      budget: state.budget - item.cost,
+      equipmentInventory: [...state.equipmentInventory, item]
+    });
+
+    // Auto-save after purchase
+    setTimeout(() => get().saveGame(), 0);
+
+    return true;
   },
 
   levelUpCharacter: (characterId: number) => {
@@ -324,21 +519,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
   addExperience: (characterId: number, experience: number) => {
     const state = get();
     const characterIndex = state.availableCharacters.findIndex(c => c.id === characterId);
-    
+
     if (characterIndex >= 0) {
       const updatedCharacters = [...state.availableCharacters];
       const character = { ...updatedCharacters[characterIndex] };
-      
+
       character.progression = {
         ...character.progression,
         experience: character.progression.experience + experience
       };
-      
+
       updatedCharacters[characterIndex] = character;
-      
+
       set({
         availableCharacters: updatedCharacters
       });
     }
   },
+
+  // Mission results modal actions
+  setMissionResult: (result: MissionResult | null) => set({ currentMissionResult: result }),
+
+  clearMissionResult: () => set({ currentMissionResult: null }),
 }));

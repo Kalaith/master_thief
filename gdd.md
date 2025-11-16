@@ -435,7 +435,7 @@ Final Success Rate = Capped at 95% maximum
 
 #### **Art Direction**
 - **Theme:** Dark, sophisticated criminal underworld
-- **Color Palette:** Daemon Directorate system (deep blacks, blood reds, gold accents)
+- **Color Palette:** noir Directorate system (deep blacks, blood reds, gold accents)
 - **Typography:** Clean, professional fonts suggesting corporate espionage
 - **Iconography:** Minimalist symbols representing different specialist types
 

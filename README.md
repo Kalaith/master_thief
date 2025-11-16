@@ -164,17 +164,17 @@ interface GameStore {
 
 ## 🎨 Design System
 
-The game uses the **Daemon Directorate** design system with a dark theme:
+The game uses the **noir Directorate** design system with a dark theme:
 
 ### Color Palette
 ```css
---daemon-dark: #0a0a0a          /* Primary background */
---daemon-panel: #141414         /* UI panels */
---daemon-surface: #1a1a1a       /* Interactive surfaces */
---daemon-primary: #b11226       /* Primary actions (infernal red) */
---daemon-gold: #d4af37          /* Success/rewards */
---daemon-text: #cccccc          /* Standard text */
---daemon-text-bright: #f5f5f5   /* Headers/emphasis */
+--noir-dark: #0a0a0a          /* Primary background */
+--noir-panel: #141414         /* UI panels */
+--noir-surface: #1a1a1a       /* Interactive surfaces */
+--noir-primary: #b11226       /* Primary actions (infernal red) */
+--noir-gold: #d4af37          /* Success/rewards */
+--noir-text: #cccccc          /* Standard text */
+--noir-text-bright: #f5f5f5   /* Headers/emphasis */
 ```
 
 ### Typography

@@ -1,14 +1,14 @@
 # 🎭 Master Thief: Mafia Noir Style Update Summary
 
 ## Overview
-The Master Thief project has been successfully updated to follow the **Mafia Noir Heist** theme as specified in the style guide, replacing the previous "Daemon Directorate" theme with a sophisticated, shadowy aesthetic inspired by classic crime films.
+The Master Thief project has been successfully updated to follow the **Mafia Noir Heist** theme as specified in the style guide, replacing the previous "noir Directorate" theme with a sophisticated, shadowy aesthetic inspired by classic crime films.
 
 ---
 
 ## 🎨 Major Theme Changes
 
 ### Color Palette Transformation
-**Before:** Daemon Directorate (corporate infernal theme)
+**Before:** noir Directorate (corporate infernal theme)
 - Primary: Infernal red (#b11226)
 - Backgrounds: Dark charcoal (#141414) and near-black (#0a0a0a)
 - Accents: Gold (#d4af37), Silver, Bronze hierarchy
@@ -25,7 +25,7 @@ The Master Thief project has been successfully updated to follow the **Mafia Noi
 ## 🔧 Technical Updates
 
 ### 1. Tailwind Configuration (`tailwind.config.js`)
-- ✅ Replaced Daemon color system with Mafia Noir palette
+- ✅ Replaced noir color system with Mafia Noir palette
 - ✅ Added rarity-based color classes for team member tiers
 - ✅ Updated box shadows to use noir/gold/emerald/royal themes
 - ✅ Changed font hierarchy to use elegant serif fonts for headers

@@ -34,7 +34,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({ activeTab, onTabChange }) => {
                   : 'bg-noir-700 text-noir-200 hover:bg-noir-600'
               }`}
             >
-              🎯 Game
+              🎯 Game ({activeAutomatedHeists.length})
             </button>
             <button
               onClick={() => onTabChange('missions')}
@@ -44,7 +44,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({ activeTab, onTabChange }) => {
                   : 'bg-noir-700 text-noir-200 hover:bg-noir-600'
               }`}
             >
-              📋 Missions ({activeAutomatedHeists.length})
+              🎯 Missions
             </button>
             <button
               onClick={() => onTabChange('recruitment')}

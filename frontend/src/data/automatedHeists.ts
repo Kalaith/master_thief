@@ -20,7 +20,7 @@ export const automatedHeists: AutomatedHeist[] = [
     },
     riskLevel: 2,
     description: 'Quick in-and-out job at a local convenience store. Perfect for beginners to learn the ropes.',
-    unlockConditions: ['Starting heist - always available']
+    unlockConditions: []
   },
 
   {
@@ -41,7 +41,7 @@ export const automatedHeists: AutomatedHeist[] = [
     },
     riskLevel: 1,
     description: 'Low-risk collection from city parking meters. Boring but reliable income.',
-    unlockConditions: ['Complete 3 corner store jobs']
+    unlockConditions: []
   },
 
   // ===== AMATEUR TIER =====
@@ -62,7 +62,7 @@ export const automatedHeists: AutomatedHeist[] = [
     },
     riskLevel: 3,
     description: 'Target wealthy apartments when residents are away. Requires careful timing and stealth.',
-    unlockConditions: ['Reach team level 3', 'Complete 5 beginner heists']
+    unlockConditions: []
   },
 
   {
@@ -275,7 +275,7 @@ export const automatedHeists: AutomatedHeist[] = [
     },
     riskLevel: 0,
     description: 'Safe training environment to improve lockpicking skills. No real risk.',
-    unlockConditions: ['Tutorial - always available']
+    unlockConditions: []
   },
 
   {
@@ -295,7 +295,7 @@ export const automatedHeists: AutomatedHeist[] = [
     },
     riskLevel: 0,
     description: 'Practice stealth techniques in a controlled environment.',
-    unlockConditions: ['Tutorial - always available']
+    unlockConditions: []
   },
 
   {
@@ -315,7 +315,7 @@ export const automatedHeists: AutomatedHeist[] = [
     },
     riskLevel: 0,
     description: 'Practice hacking skills on simulated systems.',
-    unlockConditions: ['Tutorial - always available']
+    unlockConditions: []
   }
 ];
 

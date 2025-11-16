@@ -92,15 +92,15 @@ const DiceModal: React.FC<DiceModalProps> = ({ member, encounter, onResult, onCl
   const getOutcomeColor = (outcome: OutcomeType): string => {
     switch (outcome) {
       case 'critical_failure':
-        return 'text-daemon-danger';
+        return 'text-noir-danger';
       case 'failure':
-        return 'text-daemon-warning';
+        return 'text-noir-warning';
       case 'neutral':
-        return 'text-daemon-info';
+        return 'text-noir-info';
       case 'success':
-        return 'text-daemon-success';
+        return 'text-noir-success';
       case 'critical_success':
-        return 'text-daemon-primary';
+        return 'text-noir-primary';
     }
   };
 
@@ -111,11 +111,11 @@ const DiceModal: React.FC<DiceModalProps> = ({ member, encounter, onResult, onCl
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-daemon-panel border border-daemon-secondary rounded-lg p-8 max-w-md w-full mx-4">
+      <div className="bg-noir-panel border border-noir-secondary rounded-lg p-8 max-w-md w-full mx-4">
         {/* Dice Container */}
         <div className="text-center mb-6">
           <div
-            className={`inline-flex items-center justify-center w-20 h-20 bg-daemon-surface border-2 border-daemon-secondary rounded-lg text-2xl font-bold transition-transform duration-300 ${
+            className={`inline-flex items-center justify-center w-20 h-20 bg-noir-surface border-2 border-noir-secondary rounded-lg text-2xl font-bold transition-transform duration-300 ${
               isRolling ? 'animate-bounce' : ''
             }`}
           >
@@ -126,14 +126,14 @@ const DiceModal: React.FC<DiceModalProps> = ({ member, encounter, onResult, onCl
         {/* Roll Information */}
         <div className="text-center mb-6">
           {!showResult ? (
-            <p className="text-daemon-text-muted">Rolling...</p>
+            <p className="text-noir-text-muted">Rolling...</p>
           ) : (
             result && (
               <div className="space-y-2">
-                <p className="text-daemon-text">
+                <p className="text-noir-text">
                   <strong>{member.name}</strong> rolled {result.roll} + {result.skillBonus} = {result.total}
                 </p>
-                <p className="text-daemon-text-muted text-sm">Target: {encounter.difficulty}</p>
+                <p className="text-noir-text-muted text-sm">Target: {encounter.difficulty}</p>
               </div>
             )
           )}
@@ -145,7 +145,7 @@ const DiceModal: React.FC<DiceModalProps> = ({ member, encounter, onResult, onCl
             <div className={`text-center text-xl font-bold ${getOutcomeColor(result.outcome)}`}>
               {getOutcomeTitle(result.outcome)}
             </div>
-            <div className="text-center text-daemon-text">
+            <div className="text-center text-noir-text">
               {getRandomOutcomeDescription(result.outcome)}
             </div>
           </div>
@@ -156,7 +156,7 @@ const DiceModal: React.FC<DiceModalProps> = ({ member, encounter, onResult, onCl
           <div className="text-center">
             <button
               onClick={handleContinue}
-              className="py-3 px-6 bg-daemon-primary hover:bg-daemon-primaryHover text-white rounded-lg font-semibold transition-colors"
+              className="py-3 px-6 bg-noir-primary hover:bg-noir-primaryHover text-white rounded-lg font-semibold transition-colors"
             >
               Continue
             </button>
@@ -166,7 +166,7 @@ const DiceModal: React.FC<DiceModalProps> = ({ member, encounter, onResult, onCl
         {/* Close button (X) in corner */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-daemon-text-muted hover:text-daemon-text transition-colors"
+          className="absolute top-4 right-4 text-noir-text-muted hover:text-noir-text transition-colors"
         >
           ✕
         </button>

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { GamePage, MissionsPage, RecruitmentPage, TeamPage, EquipmentPage } from './pages';
 import GameHeader from './GameHeader';
+import MissionResultsModal from './ui/MissionResultsModal';
+import { useGameStore } from '../../stores/gameStore';
 
 const HeistGame: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'game' | 'missions' | 'recruitment' | 'team' | 'equipment'>('game');
+  const { currentMissionResult, clearMissionResult } = useGameStore();
 
   const renderCurrentPage = () => {
     switch (activeTab) {
@@ -29,6 +32,12 @@ const HeistGame: React.FC = () => {
       <main className="container mx-auto p-6">
         {renderCurrentPage()}
       </main>
+
+      {/* Mission Results Modal */}
+      <MissionResultsModal
+        result={currentMissionResult}
+        onClose={clearMissionResult}
+      />
     </div>
   );
 };
