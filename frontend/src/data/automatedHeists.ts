@@ -2,6 +2,87 @@ import type { AutomatedHeist, TeamMember, GameState } from '../types/game';
 
 // Automated Heist Database for Phase 1
 export const automatedHeists: AutomatedHeist[] = [
+  // ===== QUICK JOBS (5-10 minutes) =====
+  {
+    id: 'pickpocket-practice',
+    name: 'Pickpocket Practice',
+    duration: 0.083, // 5 minutes
+    requirements: {
+      minTeamSize: 1,
+      maxTeamSize: 1,
+      requiredSkills: { stealth: 2, social: 1 }
+    },
+    rewards: {
+      basePayout: 100,
+      experienceMultiplier: 0.4,
+      possibleLoot: [],
+      masteryGain: 1
+    },
+    riskLevel: 1,
+    description: 'Quick pickpocket job in a crowded area. Fast cash for nimble fingers.',
+    unlockConditions: []
+  },
+
+  {
+    id: 'car-break-in',
+    name: 'Car Break-In',
+    duration: 0.133, // 8 minutes
+    requirements: {
+      minTeamSize: 1,
+      maxTeamSize: 2,
+      requiredSkills: { lockpicking: 2, stealth: 2 }
+    },
+    rewards: {
+      basePayout: 150,
+      experienceMultiplier: 0.5,
+      possibleLoot: [],
+      masteryGain: 1
+    },
+    riskLevel: 1,
+    description: 'Break into parked cars for valuables. Quick and relatively safe.',
+    unlockConditions: []
+  },
+
+  {
+    id: 'quick-shoplifting',
+    name: 'Quick Shoplifting Run',
+    duration: 0.083, // 5 minutes
+    requirements: {
+      minTeamSize: 1,
+      maxTeamSize: 1,
+      requiredSkills: { stealth: 3, social: 2 }
+    },
+    rewards: {
+      basePayout: 80,
+      experienceMultiplier: 0.3,
+      possibleLoot: [],
+      masteryGain: 1
+    },
+    riskLevel: 1,
+    description: 'Grab some high-value items from a store. In and out, no one notices.',
+    unlockConditions: []
+  },
+
+  {
+    id: 'bike-theft',
+    name: 'Bike Theft',
+    duration: 0.167, // 10 minutes
+    requirements: {
+      minTeamSize: 1,
+      maxTeamSize: 2,
+      requiredSkills: { lockpicking: 2, athletics: 2 }
+    },
+    rewards: {
+      basePayout: 120,
+      experienceMultiplier: 0.4,
+      possibleLoot: [],
+      masteryGain: 1
+    },
+    riskLevel: 1,
+    description: 'Steal a bike from a bike rack. Easy money if you can cut a lock quickly.',
+    unlockConditions: []
+  },
+
   // ===== BEGINNER TIER =====
   {
     id: 'corner-store-snatch',

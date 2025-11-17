@@ -6,7 +6,7 @@ import { basicEquipment } from '../../../data/equipment';
 import type { Equipment, EquipmentSlot, EquipmentRarity } from '../../../types/game';
 
 const EquipmentShop: React.FC = () => {
-  const { budget, equipmentInventory, selectedTeam, purchaseEquipment } = useGameStore();
+  const { budget, equipmentInventory, selectedTeam, purchaseEquipment, tutorial, nextTutorialStep } = useGameStore();
   const [selectedType, setSelectedType] = useState<EquipmentSlot | 'all'>('all');
   const [selectedRarity, setSelectedRarity] = useState<EquipmentRarity | 'all'>('all');
   const [sortBy, setSortBy] = useState<'price-asc' | 'price-desc' | 'rarity' | 'name'>('price-asc');
@@ -94,6 +94,11 @@ const EquipmentShop: React.FC = () => {
     const success = purchaseEquipment(item);
     if (success) {
       toast.success(`Purchased ${item.name} for $${item.cost}!`);
+
+      // Advance tutorial if on buy-equipment step
+      if (tutorial.active && tutorial.currentStep === 'buy-equipment') {
+        setTimeout(() => nextTutorialStep(), 500);
+      }
     }
   };
 

@@ -3,13 +3,15 @@ import toast from 'react-hot-toast';
 import { useGameStore } from '../../../stores/gameStore';
 import TeamAssignment from '../TeamAssignment';
 import type { AutomatedHeist } from '../../../types/game';
+import { Map, DollarSign, Clock, AlertTriangle, Users, ChevronDown, ChevronUp, Play, Timer, Heart, Zap, Target } from 'lucide-react';
+import { formatDuration } from '../../../utils/timeFormatting';
 
 interface MissionsPageProps {
   onBackToGame: () => void;
 }
 
 const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
-  const { activeAutomatedHeists, automatedHeists, selectedTeam } = useGameStore();
+  const { activeAutomatedHeists, automatedHeists, selectedTeam, tutorial, nextTutorialStep } = useGameStore();
   const [selectedHeist, setSelectedHeist] = useState<string | null>(null);
   const [missionForTeamAssignment, setMissionForTeamAssignment] = useState<AutomatedHeist | null>(null);
 
@@ -34,6 +36,11 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
   const handleStartHeist = (heist: AutomatedHeist) => {
     if (canStartHeist(heist)) {
       setMissionForTeamAssignment(heist);
+
+      // Advance tutorial if on select-mission step
+      if (tutorial.active && tutorial.currentStep === 'select-mission') {
+        setTimeout(() => nextTutorialStep(), 500);
+      }
     } else {
       // Provide feedback about why the mission can't be started
       if (selectedTeam.length < heist.requirements.minTeamSize) {
@@ -51,6 +58,11 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
       // Mission already started in useTeamAssignment hook
       setMissionForTeamAssignment(null);
       toast.success(`Mission "${missionForTeamAssignment.name}" started! Check the Active Missions section to monitor progress.`);
+
+      // Advance tutorial if on start-mission step
+      if (tutorial.active && tutorial.currentStep === 'start-mission') {
+        setTimeout(() => nextTutorialStep(), 500);
+      }
     }
   };
 
@@ -72,50 +84,62 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
       {/* Show main missions page only when not assigning team */}
       {!missionForTeamAssignment && (
         <>
-          <div className="text-center space-y-4">
-            <h2 className="text-4xl font-serif font-bold text-gold-300">🎯 Operations Center</h2>
-            <p className="text-noir-200 max-w-2xl mx-auto">
-              View available missions and monitor your ongoing operations.
+          <div className="text-center space-y-4 bg-heist-panel border border-heist-border p-8 rounded-xl shadow-hud-panel">
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <Map className="w-10 h-10 text-cyan-400" />
+              <h2 className="text-4xl font-bold text-cyan-400 uppercase tracking-wide">Target Selection</h2>
+            </div>
+            <p className="text-gray-300 max-w-2xl mx-auto font-mono">
+              Select available targets and monitor your ongoing operations.
             </p>
           </div>
 
       {/* Available Heists Section */}
       <div className="space-y-4">
-        <h3 className="text-2xl font-serif font-bold text-gold-300">Available Missions</h3>
+        <h3 className="flex items-center gap-2 text-2xl font-bold text-cyan-400 uppercase tracking-wide">
+          <Map className="w-6 h-6" />
+          Available Targets
+        </h3>
 
         {displayHeists.length === 0 ? (
-          <div className="text-center py-8">
-            <div className="text-4xl mb-2">🔒</div>
-            <p className="text-noir-400">No missions available yet. Complete more heists to unlock new operations.</p>
+          <div className="bg-heist-panel border border-heist-border rounded-xl p-12 text-center">
+            <AlertTriangle className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+            <p className="text-gray-400 font-mono">No targets available yet. Complete more heists to unlock new operations.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {displayHeists.map((heist) => (
-              <div key={heist.id} className="bg-noir-800 border-2 border-gold-500/20 rounded-xl p-4 hover:border-gold-500/40 transition-colors">
+              <div key={heist.id} className="bg-heist-panel border border-heist-border rounded-xl p-4 hover:border-cyan-400/50 hover:shadow-cyan-glow transition-all">
                 <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <h4 className="text-lg font-serif font-bold text-gold-300 mb-1">{heist.name}</h4>
-                    <p className="text-noir-200 text-sm mb-2">{heist.description}</p>
+                  <div className="flex-1">
+                    <h4 className="text-lg font-bold text-cyan-400 mb-1 uppercase tracking-wide">{heist.name}</h4>
+                    <p className="text-gray-400 text-sm mb-2 leading-relaxed">{heist.description}</p>
                   </div>
-                  <div className="text-right">
-                    <div className="text-blood-500 font-bold">${heist.rewards.basePayout}</div>
-                    <div className="text-noir-400 text-xs">{heist.duration}h</div>
+                  <div className="text-right ml-4">
+                    <div className="flex items-center gap-1 text-amber-300 font-bold font-mono mb-1">
+                      <DollarSign className="w-4 h-4" />
+                      {heist.rewards.basePayout}
+                    </div>
+                    <div className="flex items-center gap-1 text-gray-500 text-xs font-mono">
+                      <Clock className="w-3 h-3" />
+                      {formatDuration(heist.duration)}
+                    </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 mb-3">
-                  <div className="bg-noir-700 rounded p-2">
-                    <div className="text-noir-400 text-xs">Risk Level</div>
-                    <div className={`font-bold text-sm ${
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  <div className="bg-heist-dark/60 border border-heist-border rounded p-2">
+                    <div className="text-gray-400 text-xs font-mono uppercase">Risk Level</div>
+                    <div className={`font-bold font-mono ${
                       heist.riskLevel <= 3 ? 'text-emerald-400' :
-                      heist.riskLevel <= 6 ? 'text-yellow-400' : 'text-blood-500'
+                      heist.riskLevel <= 6 ? 'text-amber-400' : 'text-red-400'
                     }`}>
                       {heist.riskLevel}/10
                     </div>
                   </div>
-                  <div className="bg-noir-700 rounded p-2">
-                    <div className="text-noir-400 text-xs">Team Size</div>
-                    <div className="text-noir-200 font-bold text-sm">
+                  <div className="bg-heist-dark/60 border border-heist-border rounded p-2">
+                    <div className="text-gray-400 text-xs font-mono uppercase">Team Size</div>
+                    <div className="text-purple-400 font-bold font-mono">
                       {heist.requirements.minTeamSize}-{heist.requirements.maxTeamSize}
                     </div>
                   </div>
@@ -124,32 +148,49 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
                 <div className="flex gap-2">
                   <button
                     onClick={() => setSelectedHeist(selectedHeist === heist.id ? null : heist.id)}
-                    className="flex-1 py-2 px-3 bg-noir-700 hover:bg-noir-600 text-noir-200 rounded-lg text-sm transition-colors"
+                    className="flex-1 flex items-center justify-center gap-1 py-2 px-3 bg-heist-dark/60 hover:bg-heist-dark border border-heist-border hover:border-cyan-400/50 text-gray-300 rounded text-sm transition-all font-mono"
                   >
-                    {selectedHeist === heist.id ? 'Hide Details' : 'View Details'}
+                    {selectedHeist === heist.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    {selectedHeist === heist.id ? 'HIDE' : 'DETAILS'}
                   </button>
                   <button
                     onClick={() => handleStartHeist(heist)}
                     disabled={!canStartHeist(heist)}
-                    className={`flex-1 py-2 px-3 rounded-lg text-sm font-bold transition-colors ${
+                    className={`flex-1 flex items-center justify-center gap-1 py-2 px-3 rounded text-sm font-bold font-mono uppercase transition-all ${
                       canStartHeist(heist)
-                        ? 'bg-gradient-to-r from-blood-500 to-gold-500 hover:from-blood-600 hover:to-gold-400 text-noir-900'
-                        : 'bg-noir-600 text-noir-500 cursor-not-allowed'
+                        ? 'bg-cyan-400/20 hover:bg-cyan-400/30 border border-cyan-400 text-cyan-400 hover:shadow-cyan-glow'
+                        : 'bg-heist-dark border border-heist-border text-gray-600 cursor-not-allowed'
                     }`}
                   >
-                    Start Mission
+                    <Play className="w-4 h-4" />
+                    Deploy
                   </button>
                 </div>
 
                 {selectedHeist === heist.id && (
-                  <div className="mt-3 pt-3 border-t border-noir-600">
-                    <div className="text-sm text-noir-300 space-y-1">
-                      <div><strong>Duration:</strong> {heist.duration} hours</div>
-                      <div><strong>Risk:</strong> {heist.riskLevel}/10</div>
-                      <div><strong>Reward:</strong> ${heist.rewards.basePayout}</div>
-                      <div><strong>Experience:</strong> {Math.floor(heist.rewards.basePayout * heist.rewards.experienceMultiplier)} XP</div>
+                  <div className="mt-3 pt-3 border-t border-heist-border">
+                    <div className="text-sm text-gray-300 space-y-2 font-mono">
+                      <div className="flex justify-between">
+                        <span className="text-gray-500">Duration:</span>
+                        <span className="text-cyan-400">{formatDuration(heist.duration)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-500">Risk:</span>
+                        <span className="text-cyan-400">{heist.riskLevel}/10</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-500">Reward:</span>
+                        <span className="text-amber-300">${heist.rewards.basePayout}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-500">Experience:</span>
+                        <span className="text-purple-400">{Math.floor(heist.rewards.basePayout * heist.rewards.experienceMultiplier)} XP</span>
+                      </div>
                       {heist.requirements.requiredSkills && (
-                        <div><strong>Required Skills:</strong> {Object.entries(heist.requirements.requiredSkills).map(([skill, level]) => `${skill} ${level}+`).join(', ')}</div>
+                        <div className="pt-2 border-t border-heist-border">
+                          <div className="text-gray-500 mb-1">Required Skills:</div>
+                          <div className="text-cyan-400 text-xs">{Object.entries(heist.requirements.requiredSkills).map(([skill, level]) => `${skill} ${level}+`).join(', ')}</div>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -162,60 +203,76 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
 
       {/* Active Missions Section */}
       <div className="space-y-4">
-        <h3 className="text-2xl font-serif font-bold text-gold-300">Active Missions</h3>
+        <h3 className="flex items-center gap-2 text-2xl font-bold text-cyan-400 uppercase tracking-wide">
+          <Timer className="w-6 h-6" />
+          Active Operations
+        </h3>
 
         {activeAutomatedHeists.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">🏛️</div>
-            <h3 className="text-xl font-serif text-noir-300 mb-2">No Active Missions</h3>
-            <p className="text-noir-400">Select a mission above to send your team on an operation.</p>
+          <div className="bg-heist-panel border border-heist-border rounded-xl p-12 text-center">
+            <Target className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+            <h3 className="text-xl font-bold text-gray-400 mb-2 uppercase tracking-wide">No Active Operations</h3>
+            <p className="text-gray-500 font-mono text-sm">Select a target above to deploy your crew.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {activeAutomatedHeists.map((activeHeist, index) => (
-              <div key={index} className="bg-noir-800 border-2 border-gold-500/30 rounded-xl p-6">
+              <div key={index} className="bg-heist-panel border border-cyan-400/30 rounded-xl p-6 shadow-hud-panel">
                 <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-serif font-bold text-gold-300 mb-2">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-cyan-400 mb-2 uppercase tracking-wide">
                       {activeHeist.heist.name}
                     </h3>
-                    <p className="text-noir-200 text-sm">{activeHeist.heist.description}</p>
+                    <p className="text-gray-400 text-sm leading-relaxed">{activeHeist.heist.description}</p>
                   </div>
-                  <div className="text-right">
-                    <div className="text-blood-500 font-bold text-lg">
+                  <div className="ml-4 bg-amber-400/10 border border-amber-400/30 rounded px-3 py-2">
+                    <div className="flex items-center gap-1 text-amber-300 font-bold font-mono text-lg whitespace-nowrap">
+                      <Clock className="w-4 h-4" />
                       {Math.max(0, Math.floor(activeHeist.timeRemaining / 60))}h {activeHeist.timeRemaining % 60}m
                     </div>
-                    <div className="text-noir-400 text-xs">Time Remaining</div>
+                    <div className="text-gray-500 text-xs font-mono uppercase text-center">Remaining</div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div className="bg-noir-700 rounded p-3">
-                    <div className="text-noir-400 text-xs">Risk Level</div>
-                    <div className={`font-bold ${
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="bg-heist-dark/60 border border-heist-border rounded p-3">
+                    <div className="flex items-center gap-1 text-gray-400 text-xs font-mono uppercase mb-1">
+                      <AlertTriangle className="w-3 h-3" />
+                      Risk
+                    </div>
+                    <div className={`font-bold font-mono ${
                       activeHeist.heist.riskLevel <= 3 ? 'text-emerald-400' :
-                      activeHeist.heist.riskLevel <= 6 ? 'text-yellow-400' : 'text-blood-500'
+                      activeHeist.heist.riskLevel <= 6 ? 'text-amber-400' : 'text-red-400'
                     }`}>
                       {activeHeist.heist.riskLevel}/10
                     </div>
                   </div>
-                  <div className="bg-noir-700 rounded p-3">
-                    <div className="text-noir-400 text-xs">Team Size</div>
-                    <div className="text-noir-200 font-bold">{activeHeist.team.length} members</div>
+                  <div className="bg-heist-dark/60 border border-heist-border rounded p-3">
+                    <div className="flex items-center gap-1 text-gray-400 text-xs font-mono uppercase mb-1">
+                      <Users className="w-3 h-3" />
+                      Operators
+                    </div>
+                    <div className="text-purple-400 font-bold font-mono">{activeHeist.team.length}</div>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <div className="text-noir-400 text-xs mb-2">Team Members:</div>
+                  <div className="text-gray-400 text-xs font-mono uppercase mb-2">Deployed Team:</div>
                   {activeHeist.team.map((member) => (
-                    <div key={member.id} className="flex justify-between items-center bg-noir-700 rounded p-2">
+                    <div key={member.id} className="flex justify-between items-center bg-heist-dark/60 border border-heist-border rounded p-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-noir-200 text-sm">{member.name}</span>
-                        <span className="text-noir-400 text-xs">({member.specialty})</span>
+                        <span className="text-white text-sm font-bold">{member.name}</span>
+                        <span className="text-gray-500 text-xs font-mono">({member.specialty})</span>
                       </div>
-                      <div className="text-right text-xs">
-                        <div className="text-noir-400">HP: {member.derivedStats.health}</div>
-                        <div className="text-noir-400">Fatigue: {member.fatigue}%</div>
+                      <div className="flex items-center gap-3 text-xs font-mono">
+                        <div className="flex items-center gap-1 text-green-400">
+                          <Heart className="w-3 h-3" />
+                          {member.derivedStats.health}
+                        </div>
+                        <div className="flex items-center gap-1 text-amber-400">
+                          <Zap className="w-3 h-3" />
+                          {member.fatigue}%
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -224,15 +281,6 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
             ))}
           </div>
         )}
-      </div>
-
-      <div className="text-center pt-6">
-        <button
-          onClick={onBackToGame}
-          className="py-3 px-8 bg-gradient-to-r from-blood-500 to-gold-500 hover:from-blood-600 hover:to-gold-400 text-noir-900 rounded-xl font-serif font-bold transition-all duration-200"
-        >
-          Back to Game
-        </button>
       </div>
         </>
       )}

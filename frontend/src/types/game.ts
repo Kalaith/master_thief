@@ -295,11 +295,45 @@ export interface GameData {
   outcome_descriptions: OutcomeDescriptions;
 }
 
-export type GamePhase = 
+export type GamePhase =
   | 'recruitment-phase'
-  | 'heist-selection-phase' 
+  | 'heist-selection-phase'
   | 'planning-phase'
   | 'execution-phase'
   | 'results-phase';
 
 export type OutcomeType = keyof OutcomeDescriptions;
+
+// Tutorial System
+export type TutorialStep =
+  | 'welcome'
+  | 'recruitment-intro'
+  | 'recruit-first-character'
+  | 'recruit-second-character'
+  | 'missions-intro'
+  | 'select-mission'
+  | 'assign-team'
+  | 'start-mission'
+  | 'wait-for-mission'
+  | 'collect-rewards'
+  | 'equipment-intro'
+  | 'buy-equipment'
+  | 'equip-character'
+  | 'tutorial-complete';
+
+export interface TutorialStepData {
+  id: TutorialStep;
+  title: string;
+  description: string;
+  targetElement?: string; // CSS selector for highlighting
+  position?: 'top' | 'bottom' | 'left' | 'right' | 'center';
+  action?: string; // Description of what user should do
+  autoAdvance?: boolean; // Auto-advance after action is detected
+}
+
+export interface TutorialState {
+  active: boolean;
+  currentStep: TutorialStep | null;
+  completedSteps: TutorialStep[];
+  skipped: boolean;
+}

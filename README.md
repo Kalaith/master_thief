@@ -23,19 +23,39 @@ npm run dev
 ## Game Features
 
 - **20 Unique Characters** across 5 rarity tiers (Common to Legendary)
-- **Automated Mission System** with real-time progression
+- **Quick Jobs System** - 5-10 minute missions for instant action
+- **Automated Mission System** with real-time progression (1-24 hour missions)
 - **Character Progression** with experience and leveling
 - **Equipment System** with weapons, armor, tools, and gadgets
 - **Strategic Team Building** matching crew skills to mission requirements
 - **Auto-Save System** using browser localStorage
+- **Crew Management** - prevent removal of characters on active missions
 
 ## How to Play
 
-1. **Recruit** specialists from the Recruitment page (start with $1,500)
-2. **Equip** your crew with weapons, armor, and gadgets
-3. **Dispatch** teams on missions from the Missions page
-4. **Collect** rewards when missions complete
-5. **Level Up** your characters and expand your criminal empire
+1. **Recruit** specialists from the Recruitment page (start with $3,500 - enough for 2 crew members!)
+2. **Dispatch** your crew on quick 5-10 minute jobs to get started
+3. **Equip** your crew with weapons, armor, and gadgets as you earn money
+4. **Send teams** on longer, more profitable missions from the Missions page
+5. **Collect** rewards when missions complete
+6. **Level Up** your characters and expand your criminal empire
+7. **Build synergy** - characters on missions can't be removed until they return
+
+### New Player Quick Start
+Perfect for your first session:
+- Hire **Lucky Pete** ($1,200) and **Switchblade Sally** ($1,400) = $2,600 total
+- Send Sally on a **Pickpocket Practice** job (5 mins, $100)
+- Send Pete on a **Car Break-In** job (8 mins, $150)
+- Collect rewards and reinvest in better crew or equipment
+- Gradually unlock longer, more profitable heists
+
+### Available Mission Types
+- **Quick Jobs** (5-10 mins): Pickpocketing, Car Break-Ins, Shoplifting, Bike Theft
+- **Beginner Tier** (1-2 hrs): Corner Store, Parking Meters
+- **Amateur Tier** (3-4 hrs): Apartment Burglary, Electronics Store
+- **Professional Tier** (5-8 hrs): Jewelry Store, Art Gallery, Corporate Espionage
+- **Expert Tier** (10-12 hrs): Bank Vault, Casino Heist
+- **Legendary Tier** (24 hrs): Federal Reserve
 
 ## Documentation
 
@@ -128,15 +148,19 @@ See [LAUNCH_GUIDE.md](LAUNCH_GUIDE.md) for detailed deployment instructions.
 
 ## Current Version
 
-**Version:** 1.0.0
-**Release Date:** 2025-11-16
-**Status:** Fully playable core game
+**Version:** 1.1.0
+**Release Date:** 2025-11-17
+**Status:** Fully playable core game with enhanced early-game experience
 
 ### Implemented Features
-- Complete character system (20 specialists)
-- Automated mission system
-- Character progression and leveling
-- Equipment system with 5 slots
+- Complete character system (20 specialists across 5 rarity tiers)
+- **Quick Jobs** - 5-10 minute missions for instant engagement
+- Automated mission system with 15+ heist types (5 mins to 24 hours)
+- Character progression and leveling system
+- Equipment system with 5 slots (weapon, armor, accessory, tool, gadget)
+- Mission lock system - prevent crew removal during active missions
+- Improved starting economy - $3,500 starting budget (afford 2 characters)
+- Reduced common character costs for better accessibility
 - Auto-save with localStorage
 - Responsive UI for desktop and mobile
 

@@ -57,13 +57,13 @@ export const characters: TeamMember[] = [
   createCharacter(
     1,
     "Brick",
-    "The Gentle Giant", 
+    "The Gentle Giant",
     "Former construction foreman turned reluctant criminal. Bonsai-loving gentle giant who names his tools.",
     "common",
     "muscle",
     { stealth: 3, athletics: 6, combat: 7, lockpicking: 4, hacking: 2, social: 4 },
     "Tends miniature gardens and speaks softly, but his protective instincts kick in when teammates are threatened",
-    2000,
+    1600,
     ["Protective", "Gentle", "Methodical", "Nature-loving"],
     ["Left construction after workplace accident", "Started bonsai collection as therapy", "First heist was to help sick coworker"]
   ),
@@ -71,13 +71,13 @@ export const characters: TeamMember[] = [
   createCharacter(
     2,
     "Switchblade Sally",
-    "The Carnival Queen", 
+    "The Carnival Queen",
     "Former carnival performer with nimble fingers. Pickpocket and card trick artist from traveling circus.",
     "common",
     "infiltrator",
     { stealth: 5, athletics: 4, combat: 3, lockpicking: 6, hacking: 1, social: 5 },
     "Always practicing sleight of hand and speaks in carnival slang, can distract guards with performances",
-    1800,
+    1400,
     ["Playful", "Nimble", "Theatrical", "Nostalgic"],
     ["Ran away to join the circus", "Learned pickpocketing from carnival con artists", "Lost circus family in financial scandal"]
   ),
@@ -91,7 +91,7 @@ export const characters: TeamMember[] = [
     "face",
     { stealth: 2, athletics: 3, combat: 2, lockpicking: 3, hacking: 1, social: 7 },
     "Carries lucky charms and remains optimistic despite constant failures, sometimes luck actually works",
-    1500,
+    1200,
     ["Optimistic", "Charming", "Superstitious", "Resilient"],
     ["Lost family fortune in bad investments", "Banned from most casinos", "Still believes in lucky streaks"]
   ),
@@ -105,7 +105,7 @@ export const characters: TeamMember[] = [
     "tech",
     { stealth: 3, athletics: 2, combat: 2, lockpicking: 4, hacking: 6, social: 3 },
     "Names all his devices and believes they have personalities, can coax malfunctioning electronics to work",
-    2200,
+    1800,
     ["Quirky", "Technical", "Empathetic to machines", "Nostalgic"],
     ["Grew up in arcade halls", "First hack was fixing broken games", "Treats technology as living beings"]
   ),

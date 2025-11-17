@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import {
   rollD20,
   resolveEncounter,
@@ -61,20 +61,18 @@ describe('Heist Execution', () => {
       loyalty: 90,
       injuries: [],
       personalityTraits: ['Methodical', 'Cautious'],
+      backstoryEvents: ['Former government operative'],
     };
 
     mockEncounter = {
-      id: 'test-encounter',
-      type: 'security_bypass',
       name: 'Test Encounter',
       description: 'A test security system',
       primary_skill: 'stealth',
       primary_attribute: 'dexterity',
       difficulty: 15,
-      consequences: {
-        success: 'Successfully bypassed',
-        failure: 'Alert triggered',
-      },
+      complexity: 'moderate',
+      failure_consequence: 'Alert triggered',
+      success_bonus: 'Successfully bypassed',
     };
   });
 
@@ -422,8 +420,8 @@ describe('Heist Execution', () => {
       const team: TeamMember[] = [mockMember];
       const encounters: Encounter[] = [
         mockEncounter,
-        { ...mockEncounter, id: 'encounter-2', primary_skill: 'lockpicking' },
-        { ...mockEncounter, id: 'encounter-3', primary_skill: 'hacking' },
+        { ...mockEncounter, primary_skill: 'lockpicking' },
+        { ...mockEncounter, primary_skill: 'hacking' },
       ];
 
       const result = simulateAutomatedHeist(team, encounters);
@@ -451,7 +449,7 @@ describe('Heist Execution', () => {
       const team = [stealthSpecialist, hackingSpecialist];
       const encounters: Encounter[] = [
         { ...mockEncounter, primary_skill: 'stealth' },
-        { ...mockEncounter, id: 'hack', primary_skill: 'hacking' },
+        { ...mockEncounter, primary_skill: 'hacking' },
       ];
 
       const result = simulateAutomatedHeist(team, encounters);
@@ -479,7 +477,7 @@ describe('Heist Execution', () => {
 
       const encounters: Encounter[] = [
         mockEncounter,
-        { ...mockEncounter, id: 'e2', difficulty: 10 },
+        { ...mockEncounter, difficulty: 10 },
       ];
 
       const strongResult = simulateAutomatedHeist(strongTeam, encounters);
@@ -494,8 +492,8 @@ describe('Heist Execution', () => {
       const team: TeamMember[] = [mockMember];
       const encounters: Encounter[] = [
         mockEncounter,
-        { ...mockEncounter, id: 'e2' },
-        { ...mockEncounter, id: 'e3' },
+        { ...mockEncounter },
+        { ...mockEncounter },
       ];
 
       const result = simulateAutomatedHeist(team, encounters);
@@ -514,8 +512,8 @@ describe('Heist Execution', () => {
 
       const hardEncounters: Encounter[] = [
         { ...mockEncounter, difficulty: 25 },
-        { ...mockEncounter, id: 'e2', difficulty: 25 },
-        { ...mockEncounter, id: 'e3', difficulty: 25 },
+        { ...mockEncounter, difficulty: 25 },
+        { ...mockEncounter, difficulty: 25 },
       ];
 
       const result = simulateAutomatedHeist(team, hardEncounters);

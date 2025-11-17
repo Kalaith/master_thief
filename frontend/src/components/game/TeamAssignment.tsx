@@ -4,6 +4,7 @@ import { MissionService } from '../../services/missionService';
 import { useGameStore } from '../../stores/gameStore';
 import type { AutomatedHeist } from '../../types/game';
 import toast from 'react-hot-toast';
+import { formatDuration } from '../../utils/timeFormatting';
 
 interface TeamAssignmentProps {
   mission: AutomatedHeist;
@@ -13,7 +14,7 @@ interface TeamAssignmentProps {
 
 const TeamAssignment: React.FC<TeamAssignmentProps> = ({ mission, onConfirm, onCancel }) => {
   const { assignedTeam, availableCharacters, toggleTeamMember, isTeamValid, assignTeamForMission } = useTeamAssignment();
-  const { activeAutomatedHeists } = useGameStore();
+  const { activeAutomatedHeists, tutorial, nextTutorialStep } = useGameStore();
 
   const canStartMission = MissionService.canStartNewMission(activeAutomatedHeists.length).canStart;
 
@@ -27,22 +28,22 @@ const TeamAssignment: React.FC<TeamAssignmentProps> = ({ mission, onConfirm, onC
 
   return (
     <div className="space-y-6">
-      <div className="text-center space-y-4">
-        <h2 className="text-4xl font-serif font-bold text-gold-300">👥 Team Assignment</h2>
-        <p className="text-noir-200 max-w-2xl mx-auto">
-          Select team members for the mission: {mission.name}
+      <div className="text-center space-y-4 bg-heist-panel border border-heist-border p-8 rounded-xl shadow-hud-panel">
+        <h2 className="text-4xl font-bold text-cyan-400 uppercase tracking-wide">Team Assignment</h2>
+        <p className="text-gray-300 max-w-2xl mx-auto font-mono">
+          Select team members for the mission: <span className="text-cyan-400">{mission.name}</span>
         </p>
       </div>
 
       {/* Active Mission Warning */}
       {!canStartMission && (
-        <div className="bg-blood-500/20 border-2 border-blood-500/50 rounded-xl p-4">
+        <div className="bg-red-600/20 border-2 border-red-500/50 rounded-xl p-4">
           <div className="flex items-center space-x-3">
-            <div className="text-blood-400 text-2xl">⚠️</div>
+            <div className="text-red-400 text-2xl">⚠️</div>
             <div>
-              <h3 className="text-blood-300 font-bold">Active Mission in Progress</h3>
-              <p className="text-blood-200 text-sm">
-                You cannot start a new mission while you have {activeAutomatedHeists.length} active mission{activeAutomatedHeists.length > 1 ? 's' : ''}. 
+              <h3 className="text-red-300 font-bold uppercase tracking-wide">Active Mission in Progress</h3>
+              <p className="text-red-200 text-sm font-mono">
+                You cannot start a new mission while you have {activeAutomatedHeists.length} active mission{activeAutomatedHeists.length > 1 ? 's' : ''}.
                 Please wait for the current mission{activeAutomatedHeists.length > 1 ? 's' : ''} to complete.
               </p>
             </div>
@@ -50,53 +51,53 @@ const TeamAssignment: React.FC<TeamAssignmentProps> = ({ mission, onConfirm, onC
         </div>
       )}
 
-      <div className="bg-noir-800 border-2 border-gold-500/30 rounded-xl p-6">
-        <h3 className="text-2xl font-serif font-bold text-gold-300 mb-4">
+      <div className="bg-heist-panel border border-heist-border rounded-xl p-6 shadow-hud-panel">
+        <h3 className="text-2xl font-bold text-cyan-400 mb-4 uppercase tracking-wide">
           Mission Details
         </h3>
-        <p className="text-noir-200 mb-4">{mission.description}</p>
+        <p className="text-gray-300 mb-4 font-mono">{mission.description}</p>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
           <div>
-            <span className="text-noir-400">Duration:</span>
-            <div className="text-noir-200 font-semibold">{mission.duration} hours</div>
+            <span className="text-gray-400 font-mono uppercase">Duration:</span>
+            <div className="text-cyan-400 font-semibold font-mono">{formatDuration(mission.duration)}</div>
           </div>
           <div>
-            <span className="text-noir-400">Risk Level:</span>
-            <div className={`font-semibold ${MissionService.getMissionRiskColor(mission.riskLevel)}`}>
+            <span className="text-gray-400 font-mono uppercase">Risk Level:</span>
+            <div className={`font-semibold font-mono ${MissionService.getMissionRiskColor(mission.riskLevel)}`}>
               {mission.riskLevel}/10
             </div>
           </div>
           <div>
-            <span className="text-noir-400">Team Size:</span>
-            <div className="text-noir-200 font-semibold">
+            <span className="text-gray-400 font-mono uppercase">Team Size:</span>
+            <div className="text-cyan-400 font-semibold font-mono">
               {assignedTeam.length} / {mission.requirements.minTeamSize}-{mission.requirements.maxTeamSize}
             </div>
           </div>
           <div>
-            <span className="text-noir-400">Reward:</span>
-            <div className="text-blood-500 font-semibold">${mission.rewards.basePayout}</div>
+            <span className="text-gray-400 font-mono uppercase">Reward:</span>
+            <div className="text-amber-300 font-semibold font-mono">${mission.rewards.basePayout.toLocaleString()}</div>
           </div>
         </div>
 
         {mission.requirements.requiredSkills && (
           <div className="mt-4">
-            <span className="text-noir-400 text-sm">Required Skills:</span>
-            <div className="text-noir-200 text-sm">{MissionService.getMissionRequirementsText(mission)}</div>
+            <span className="text-gray-400 text-sm font-mono uppercase">Required Skills:</span>
+            <div className="text-cyan-400 text-sm font-mono">{MissionService.getMissionRequirementsText(mission)}</div>
           </div>
         )}
       </div>
 
-      <div className="bg-noir-800 border-2 border-gold-500/20 rounded-xl p-6">
-        <h3 className="text-xl font-serif font-bold text-gold-300 mb-4">Available Team Members</h3>
+      <div className="bg-heist-panel border border-heist-border rounded-xl p-6 shadow-hud-panel">
+        <h3 className="text-xl font-bold text-cyan-400 mb-4 uppercase tracking-wide">Available Team Members</h3>
         
         {/* Selected Team Summary */}
         {assignedTeam.length > 0 && (
-          <div className="mb-4 p-3 bg-gold-500/10 border border-gold-500/30 rounded-lg">
-            <h4 className="text-gold-300 font-semibold text-sm mb-2">Selected Team ({assignedTeam.length})</h4>
+          <div className="mb-4 p-3 bg-cyan-400/10 border border-cyan-400/30 rounded-lg">
+            <h4 className="text-cyan-400 font-semibold text-sm mb-2 font-mono uppercase tracking-wide">Selected Team ({assignedTeam.length})</h4>
             <div className="flex flex-wrap gap-2">
               {assignedTeam.map((member) => (
-                <div key={member.id} className="px-2 py-1 bg-gold-500/20 text-gold-200 text-xs rounded border border-gold-500/40">
+                <div key={member.id} className="px-2 py-1 bg-cyan-400/20 text-cyan-300 text-xs rounded border border-cyan-400/40 font-mono">
                   {member.name}
                 </div>
               ))}
@@ -113,42 +114,42 @@ const TeamAssignment: React.FC<TeamAssignmentProps> = ({ mission, onConfirm, onC
                 onClick={() => canStartMission && toggleTeamMember(member)}
                 className={`relative p-4 rounded-lg border-2 transition-all duration-200 ${
                   !canStartMission
-                    ? 'border-noir-600 bg-noir-800 opacity-50 cursor-not-allowed'
+                    ? 'border-heist-border bg-heist-dark opacity-50 cursor-not-allowed'
                     : isSelected
-                    ? 'border-gold-400 bg-gradient-to-br from-gold-500/20 to-gold-600/10 shadow-lg shadow-gold-500/20 cursor-pointer'
-                    : 'border-noir-600 bg-noir-700 hover:border-gold-500/50 hover:bg-noir-600 cursor-pointer'
+                    ? 'border-cyan-400 bg-gradient-to-br from-cyan-400/20 to-cyan-600/10 shadow-lg shadow-cyan-500/20 cursor-pointer hover:border-cyan-300'
+                    : 'border-heist-border bg-heist-dark hover:border-cyan-400/50 hover:bg-heist-panel cursor-pointer'
                 }`}
               >
                 {/* Selection indicator */}
                 {isSelected && (
-                  <div className="absolute top-2 right-2 w-6 h-6 bg-gold-500 rounded-full flex items-center justify-center shadow-md">
-                    <span className="text-noir-900 text-sm font-bold">✓</span>
+                  <div className="absolute top-2 right-2 w-6 h-6 bg-cyan-400 rounded-full flex items-center justify-center shadow-md">
+                    <span className="text-black text-sm font-bold">✓</span>
                   </div>
                 )}
 
                 <div className="flex justify-between items-start">
                   <div className={`flex-1 ${isSelected ? 'opacity-90' : ''}`}>
-                    <h5 className={`font-bold ${isSelected ? 'text-gold-200' : 'text-noir-200'}`}>
+                    <h5 className={`font-bold uppercase tracking-wide ${isSelected ? 'text-cyan-300' : 'text-gray-200'}`}>
                       {member.name}
                     </h5>
-                    <p className="text-noir-400 text-sm">{member.characterClass} • {member.specialty}</p>
+                    <p className="text-gray-400 text-sm font-mono">{member.characterClass} • {member.specialty}</p>
                     <div className="mt-2 space-y-1">
                       {Object.entries(member.skills).slice(0, 3).map(([skill, level]) => (
-                        <div key={skill} className="text-xs text-noir-300">
-                          {skill}: {level}
+                        <div key={skill} className="text-xs text-gray-300 font-mono capitalize">
+                          {skill}: <span className="text-cyan-400">{level}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                   <div className="text-right ml-4">
-                    <div className={`text-xs font-semibold ${isSelected ? 'text-gold-300' : 'text-noir-400'}`}>
+                    <div className={`text-xs font-semibold font-mono ${isSelected ? 'text-cyan-400' : 'text-gray-400'}`}>
                       Level {member.progression.level}
                     </div>
-                    <div className={`text-xs ${isSelected ? 'text-gold-300' : 'text-noir-400'}`}>
+                    <div className={`text-xs font-mono ${isSelected ? 'text-cyan-400' : 'text-gray-400'}`}>
                       HP: {member.derivedStats.health}
                     </div>
                     {isSelected && (
-                      <div className="mt-1 px-2 py-1 bg-gold-500/20 rounded text-xs font-bold text-gold-300 border border-gold-500/30">
+                      <div className="mt-1 px-2 py-1 bg-cyan-400/20 rounded text-xs font-bold text-cyan-400 border border-cyan-400/30 uppercase tracking-wide">
                         SELECTED
                       </div>
                     )}
@@ -163,7 +164,7 @@ const TeamAssignment: React.FC<TeamAssignmentProps> = ({ mission, onConfirm, onC
       <div className="flex justify-between pt-6">
         <button
           onClick={onCancel}
-          className="py-3 px-6 border-2 border-gold-500 text-gold-300 hover:bg-gold-500 hover:text-noir-900 rounded-xl font-serif font-bold transition-all duration-200"
+          className="py-3 px-6 border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black rounded-xl font-bold uppercase tracking-wide transition-all duration-200"
         >
           ← Back to Missions
         </button>
@@ -171,13 +172,13 @@ const TeamAssignment: React.FC<TeamAssignmentProps> = ({ mission, onConfirm, onC
         <button
           onClick={handleConfirm}
           disabled={!isTeamValid(mission) || !canStartMission}
-          className={`py-3 px-6 rounded-xl font-bold transition-colors ${
+          className={`py-3 px-6 rounded-xl font-bold uppercase tracking-wide transition-all duration-200 shadow-lg ${
             isTeamValid(mission) && canStartMission
-              ? 'bg-gradient-to-r from-blood-500 to-gold-500 hover:from-blood-600 hover:to-gold-400 text-noir-900'
-              : 'bg-noir-600 text-noir-500 cursor-not-allowed'
+              ? 'bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-400 text-white shadow-purple-glow'
+              : 'bg-heist-dark/60 text-gray-600 cursor-not-allowed border border-heist-border'
           }`}
         >
-          Start Mission
+          Start Mission →
         </button>
       </div>
     </div>

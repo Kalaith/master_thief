@@ -2,27 +2,36 @@ import React, { useState } from 'react';
 import { useGameStore } from '../../../stores/gameStore';
 import EquipmentShop from '../ui/EquipmentShop';
 import toast from 'react-hot-toast';
+import { Shield, Package, ShoppingCart, DollarSign, TrendingUp, Star, Sparkles } from 'lucide-react';
 
 interface EquipmentPageProps {
   onBackToGame: () => void;
 }
 
 const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
-  const { equipmentInventory, selectedTeam, equipItem } = useGameStore();
+  const { equipmentInventory, selectedTeam, equipItem, tutorial, nextTutorialStep } = useGameStore();
   const [activeTab, setActiveTab] = useState<'inventory' | 'shop'>('inventory');
 
   const handleEquip = (memberId: number, item: any) => {
     equipItem(memberId, item);
     toast.success(`Equipped ${item.name} to ${selectedTeam.find(m => m.id === memberId)?.name}`);
+
+    // Advance tutorial if on equip-character step
+    if (tutorial.active && tutorial.currentStep === 'equip-character') {
+      setTimeout(() => nextTutorialStep(), 500);
+    }
   };
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="text-center space-y-4">
-        <h2 className="text-4xl font-serif font-bold text-gold-300">⚔️ Equipment Management</h2>
-        <p className="text-noir-200 max-w-2xl mx-auto">
-          Purchase gear from the Black Market or manage your existing inventory
+      <div className="text-center space-y-4 bg-heist-panel border border-heist-border p-8 rounded-xl shadow-hud-panel">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <Shield className="w-10 h-10 text-cyan-400" />
+          <h2 className="text-4xl font-bold text-cyan-400 uppercase tracking-wide">Equipment Armory</h2>
+        </div>
+        <p className="text-gray-300 max-w-2xl mx-auto font-mono">
+          Manage your tactical gear inventory and procure advanced equipment from black market suppliers.
         </p>
       </div>
 
@@ -30,23 +39,25 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
       <div className="flex justify-center gap-4">
         <button
           onClick={() => setActiveTab('inventory')}
-          className={`px-6 py-3 rounded-xl font-serif font-bold transition-all duration-200 ${
+          className={`flex items-center gap-2 px-6 py-3 rounded-xl font-mono font-bold uppercase transition-all duration-200 ${
             activeTab === 'inventory'
-              ? 'bg-gradient-to-r from-blood-500 to-gold-500 text-noir-900'
-              : 'bg-noir-800 text-noir-300 hover:text-gold-300 border-2 border-gold-500/30'
+              ? 'bg-cyan-400/20 border-2 border-cyan-400 text-cyan-400 shadow-cyan-glow'
+              : 'bg-heist-panel text-gray-400 hover:text-cyan-400 border-2 border-heist-border hover:border-cyan-400/50'
           }`}
         >
-          🎒 Inventory ({equipmentInventory.length})
+          <Package className="w-5 h-5" />
+          Inventory ({equipmentInventory.length})
         </button>
         <button
           onClick={() => setActiveTab('shop')}
-          className={`px-6 py-3 rounded-xl font-serif font-bold transition-all duration-200 ${
+          className={`flex items-center gap-2 px-6 py-3 rounded-xl font-mono font-bold uppercase transition-all duration-200 ${
             activeTab === 'shop'
-              ? 'bg-gradient-to-r from-blood-500 to-gold-500 text-noir-900'
-              : 'bg-noir-800 text-noir-300 hover:text-gold-300 border-2 border-gold-500/30'
+              ? 'bg-cyan-400/20 border-2 border-cyan-400 text-cyan-400 shadow-cyan-glow'
+              : 'bg-heist-panel text-gray-400 hover:text-cyan-400 border-2 border-heist-border hover:border-cyan-400/50'
           }`}
         >
-          🏪 Black Market
+          <ShoppingCart className="w-5 h-5" />
+          Black Market
         </button>
       </div>
 
@@ -56,47 +67,58 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
       ) : (
         <div className="space-y-6">
           {equipmentInventory.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-6xl mb-4">🛡️</div>
-              <h3 className="text-xl font-serif text-noir-300 mb-2">Empty Vault</h3>
-              <p className="text-noir-400 mb-4">Your inventory is empty. Purchase equipment from the Black Market or earn it through heists.</p>
+            <div className="bg-heist-panel border border-heist-border rounded-xl p-12 text-center shadow-hud-panel">
+              <Shield className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-gray-400 mb-2 uppercase tracking-wide">Armory Empty</h3>
+              <p className="text-gray-500 font-mono text-sm mb-6">No equipment in inventory. Acquire gear through black market procurement or mission rewards.</p>
               <button
                 onClick={() => setActiveTab('shop')}
-                className="px-6 py-3 bg-gradient-to-r from-blood-500 to-gold-500 hover:from-blood-600 hover:to-gold-400 text-noir-900 rounded-xl font-serif font-bold transition-all duration-200"
+                className="flex items-center justify-center gap-2 py-3 px-6 mx-auto bg-cyan-400/20 hover:bg-cyan-400/30 border border-cyan-400 text-cyan-400 rounded font-mono font-bold uppercase transition-all hover:shadow-cyan-glow"
               >
-                Visit Black Market
+                <ShoppingCart className="w-4 h-4" />
+                Access Black Market
               </button>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {equipmentInventory.map((item) => (
-                <div key={item.id} className="bg-noir-800 border-2 border-gold-500/30 rounded-xl p-6">
+                <div key={item.id} className={`bg-heist-panel rounded-xl p-6 border-2 shadow-hud-panel hover:shadow-${
+                  item.rarity === 'legendary' ? 'amber-glow border-amber-400/50' :
+                  item.rarity === 'masterwork' ? 'purple-glow border-purple-400/50' :
+                  item.rarity === 'advanced' ? 'cyan-glow border-cyan-400/50' :
+                  item.rarity === 'improved' ? 'emerald-400/30 border-emerald-400/50' :
+                  'border-heist-border'
+                } transition-all`}>
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-lg font-serif font-bold text-gold-300 mb-1">{item.name}</h3>
-                      <p className="text-noir-400 text-sm capitalize">{item.type} • {item.rarity}</p>
+                      <h3 className="text-lg font-bold text-cyan-400 mb-1 uppercase tracking-wide">{item.name}</h3>
+                      <p className="text-gray-400 text-sm capitalize font-mono">{item.type} • {item.rarity}</p>
                     </div>
-                    <div className={`px-2 py-1 rounded text-xs font-bold ${
-                      item.rarity === 'legendary' ? 'bg-gold-500 text-noir-900' :
-                      item.rarity === 'masterwork' ? 'bg-purple-600 text-white' :
-                      item.rarity === 'advanced' ? 'bg-blue-600 text-white' :
-                      item.rarity === 'improved' ? 'bg-emerald-600 text-white' :
-                      'bg-noir-600 text-white'
+                    <div className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-bold font-mono ${
+                      item.rarity === 'legendary' ? 'bg-amber-400/20 border border-amber-400/50 text-amber-300' :
+                      item.rarity === 'masterwork' ? 'bg-purple-400/20 border border-purple-400/50 text-purple-300' :
+                      item.rarity === 'advanced' ? 'bg-cyan-400/20 border border-cyan-400/50 text-cyan-300' :
+                      item.rarity === 'improved' ? 'bg-emerald-400/20 border border-emerald-400/50 text-emerald-300' :
+                      'bg-heist-dark border border-heist-border text-gray-400'
                     }`}>
+                      <Star className="w-3 h-3" />
                       {item.rarity.toUpperCase()}
                     </div>
                   </div>
 
-                  <div className="text-noir-200 text-sm mb-4">{item.description}</div>
+                  <div className="text-gray-300 text-sm mb-4 font-mono">{item.description}</div>
 
                   {/* Bonuses */}
                   <div className="space-y-2 mb-4">
                     {Object.keys(item.attributeBonuses).length > 0 && (
                       <div>
-                        <div className="text-noir-400 text-xs mb-1">Attributes:</div>
+                        <div className="flex items-center gap-1 text-gray-400 text-xs mb-1 font-mono uppercase">
+                          <TrendingUp className="w-3 h-3" />
+                          Attributes:
+                        </div>
                         <div className="flex flex-wrap gap-1">
                           {Object.entries(item.attributeBonuses).map(([attr, bonus]) => (
-                            <span key={attr} className="px-2 py-0.5 bg-blood-500/20 text-blood-300 text-xs rounded">
+                            <span key={attr} className="px-2 py-0.5 bg-cyan-400/10 border border-cyan-400/30 text-cyan-400 text-xs rounded font-mono font-bold">
                               {attr.slice(0, 3).toUpperCase()} +{bonus}
                             </span>
                           ))}
@@ -106,10 +128,13 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
 
                     {Object.keys(item.skillBonuses).length > 0 && (
                       <div>
-                        <div className="text-noir-400 text-xs mb-1">Skills:</div>
+                        <div className="flex items-center gap-1 text-gray-400 text-xs mb-1 font-mono uppercase">
+                          <Sparkles className="w-3 h-3" />
+                          Skills:
+                        </div>
                         <div className="flex flex-wrap gap-1">
                           {Object.entries(item.skillBonuses).map(([skill, bonus]) => (
-                            <span key={skill} className="px-2 py-0.5 bg-gold-500/20 text-gold-300 text-xs rounded capitalize">
+                            <span key={skill} className="px-2 py-0.5 bg-purple-400/10 border border-purple-400/30 text-purple-400 text-xs rounded capitalize font-mono font-bold">
                               {skill} +{bonus}
                             </span>
                           ))}
@@ -120,27 +145,33 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
 
                   {/* Special Effects */}
                   {item.specialEffects && item.specialEffects.length > 0 && (
-                    <div className="mb-4 p-2 bg-noir-700 rounded">
-                      <div className="text-noir-400 text-xs mb-1">Special:</div>
-                      <ul className="text-xs text-gold-200 space-y-0.5">
+                    <div className="mb-4 p-3 bg-heist-dark/60 border border-heist-border rounded">
+                      <div className="flex items-center gap-1 text-amber-300 text-xs mb-2 font-mono uppercase">
+                        <Sparkles className="w-3 h-3" />
+                        Special Effects:
+                      </div>
+                      <ul className="text-xs text-gray-300 space-y-1 font-mono">
                         {item.specialEffects.slice(0, 2).map((effect, idx) => (
-                          <li key={idx}>• {effect}</li>
+                          <li key={idx} className="flex items-start gap-1">
+                            <span className="text-amber-400">•</span>
+                            <span>{effect}</span>
+                          </li>
                         ))}
                       </ul>
                     </div>
                   )}
 
                   <div className="space-y-2">
-                    <div className="text-noir-400 text-xs">Equip to Team Member:</div>
+                    <div className="text-gray-400 text-xs font-mono uppercase">Assign to Operative:</div>
                     {selectedTeam.length === 0 ? (
-                      <p className="text-noir-500 text-xs italic">No team members recruited</p>
+                      <p className="text-gray-500 text-xs italic font-mono">No operatives recruited</p>
                     ) : (
                       <div className="grid grid-cols-2 gap-2">
                         {selectedTeam.map((member) => (
                           <button
                             key={member.id}
                             onClick={() => handleEquip(member.id, item)}
-                            className="py-1 px-2 bg-noir-700 hover:bg-gold-500/20 hover:border-gold-500/50 border border-noir-600 text-noir-200 text-xs rounded transition-colors"
+                            className="py-1 px-2 bg-heist-dark/60 hover:bg-cyan-400/20 hover:border-cyan-400/50 border border-heist-border text-gray-300 hover:text-cyan-400 text-xs rounded transition-all font-mono"
                           >
                             {member.name}
                           </button>
@@ -155,15 +186,6 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
         </div>
       )}
 
-      {/* Back Button */}
-      <div className="text-center pt-6">
-        <button
-          onClick={onBackToGame}
-          className="py-3 px-8 bg-gradient-to-r from-blood-500 to-gold-500 hover:from-blood-600 hover:to-gold-400 text-noir-900 rounded-xl font-serif font-bold transition-all duration-200"
-        >
-          Back to Game
-        </button>
-      </div>
     </div>
   );
 };

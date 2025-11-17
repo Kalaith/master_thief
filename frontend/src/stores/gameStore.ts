@@ -8,7 +8,9 @@ import type {
   AutomatedHeist,
   Equipment,
   PlayerProgress,
-  MissionResult
+  MissionResult,
+  TutorialState,
+  TutorialStep
 } from '../types/game';
 import { characters } from '../data/characters';
 import { automatedHeists } from '../data/automatedHeists';
@@ -22,6 +24,7 @@ interface GameStore extends GameState {
   setBudget: (budget: number) => void;
   addTeamMember: (member: TeamMember) => void;
   removeTeamMember: (memberId: number) => void;
+  isCharacterOnMission: (memberId: number) => boolean;
   selectHeist: (heist: HeistTarget) => void;
   setCurrentEncounter: (encounter: number) => void;
   addEncounterResult: (result: EncounterResult) => void;
@@ -46,11 +49,19 @@ interface GameStore extends GameState {
   // Mission results modal
   setMissionResult: (result: MissionResult | null) => void;
   clearMissionResult: () => void;
+
+  // Tutorial system
+  tutorial: TutorialState;
+  startTutorial: () => void;
+  skipTutorial: () => void;
+  nextTutorialStep: () => void;
+  setTutorialStep: (step: TutorialStep) => void;
+  completeTutorialStep: (step: TutorialStep) => void;
 }
 
 const initialState: GameState = {
   // Core resources
-  budget: 1500, // Enough for one common thief
+  budget: 3500, // Enough for two common thieves
   reputation: 0,
   notoriety: 0,
   
@@ -93,6 +104,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
   currentPhase: 'recruitment-phase',
   currentMissionResult: null,
 
+  // Tutorial state
+  tutorial: {
+    active: false,
+    currentStep: null,
+    completedSteps: [],
+    skipped: false,
+  },
+
   setCurrentPhase: (phase: GamePhase) => set({ currentPhase: phase }),
 
   setBudget: (budget: number) => set({ budget }),
@@ -114,16 +133,31 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   removeTeamMember: (memberId: number) => {
     const state = get();
+
+    // Check if character is on a mission
+    if (get().isCharacterOnMission(memberId)) {
+      console.warn('Cannot remove character - currently on a mission');
+      return;
+    }
+
     const memberIndex = state.selectedTeam.findIndex(m => m.id === memberId);
     if (memberIndex >= 0) {
       const member = state.selectedTeam[memberIndex];
+      const refund = Math.floor(member.cost / 2); // Only refund half the signup bonus
       set({
         selectedTeam: state.selectedTeam.filter(m => m.id !== memberId),
-        budget: state.budget + member.cost,
+        budget: state.budget + refund,
       });
       // Auto-save after team changes
       setTimeout(() => get().saveGame(), 0);
     }
+  },
+
+  isCharacterOnMission: (memberId: number) => {
+    const state = get();
+    return state.activeAutomatedHeists.some(activeHeist =>
+      activeHeist.team.some(member => member.id === memberId)
+    );
   },
 
   selectHeist: (heist: HeistTarget) => set({ selectedHeist: heist }),
@@ -541,4 +575,98 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setMissionResult: (result: MissionResult | null) => set({ currentMissionResult: result }),
 
   clearMissionResult: () => set({ currentMissionResult: null }),
+
+  // Tutorial system actions
+  startTutorial: () => {
+    set({
+      tutorial: {
+        active: true,
+        currentStep: 'welcome',
+        completedSteps: [],
+        skipped: false,
+      }
+    });
+  },
+
+  skipTutorial: () => {
+    set({
+      tutorial: {
+        active: false,
+        currentStep: null,
+        completedSteps: [],
+        skipped: true,
+      }
+    });
+  },
+
+  nextTutorialStep: () => {
+    const state = get();
+    const tutorialStepOrder: TutorialStep[] = [
+      'welcome',
+      'recruitment-intro',
+      'recruit-first-character',
+      'recruit-second-character',
+      'missions-intro',
+      'select-mission',
+      'assign-team',
+      'start-mission',
+      'wait-for-mission',
+      'collect-rewards',
+      'equipment-intro',
+      'buy-equipment',
+      'equip-character',
+      'tutorial-complete',
+    ];
+
+    const currentIndex = state.tutorial.currentStep
+      ? tutorialStepOrder.indexOf(state.tutorial.currentStep)
+      : -1;
+
+    const nextStep = currentIndex < tutorialStepOrder.length - 1
+      ? tutorialStepOrder[currentIndex + 1]
+      : null;
+
+    if (nextStep) {
+      set({
+        tutorial: {
+          ...state.tutorial,
+          currentStep: nextStep,
+          completedSteps: state.tutorial.currentStep
+            ? [...state.tutorial.completedSteps, state.tutorial.currentStep]
+            : state.tutorial.completedSteps,
+        }
+      });
+    } else {
+      // Tutorial complete
+      set({
+        tutorial: {
+          ...state.tutorial,
+          active: false,
+          currentStep: null,
+        }
+      });
+    }
+  },
+
+  setTutorialStep: (step: TutorialStep) => {
+    const state = get();
+    set({
+      tutorial: {
+        ...state.tutorial,
+        currentStep: step,
+      }
+    });
+  },
+
+  completeTutorialStep: (step: TutorialStep) => {
+    const state = get();
+    if (!state.tutorial.completedSteps.includes(step)) {
+      set({
+        tutorial: {
+          ...state.tutorial,
+          completedSteps: [...state.tutorial.completedSteps, step],
+        }
+      });
+    }
+  },
 }));

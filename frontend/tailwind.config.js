@@ -11,46 +11,17 @@ export default {
       white: '#ffffff',
       black: '#000000',
 
-      // Mafia Noir Heist Color System
-      noir: {
-        50:  '#f5f5f5',
-        100: '#e5e5e5',
-        200: '#c2c2c2',
-        300: '#a3a3a3',
-        400: '#737373',
-        500: '#4a4a4a',
-        600: '#2f2f2f',
-        700: '#1f1f1f',
-        800: '#141414',
-        900: '#0a0a0a',
-      },
-      blood: {
-        500: '#8b0000',
-        600: '#600000',
-        700: '#3b0000',
-      },
-      gold: {
-        300: '#ffd166',
-        400: '#e6b422',
-        500: '#b8860b',
-      },
-      emerald: {
-        400: '#50c878',
-        500: '#046307',
-      },
-      royal: {
-        400: '#9370db',
-        500: '#663399',
-      },
-      rarity: {
-        common: '#737373',
-        uncommon: '#046307',
-        rare: '#9370db',
-        epic: '#8b0000',
-        legendary: '#e6b422',
+      // High-Tech Heist Noir Color System (Payday-inspired)
+      // Core background colors
+      heist: {
+        darkest: '#0B0F17',   // Main background
+        darker: '#0D121C',    // Background gradient end
+        dark: '#111827',      // Elevated surfaces
+        panel: '#161B22',     // HUD panels
+        border: '#1F2937',    // Panel borders
       },
 
-      // Fallback colors for compatibility (minimal set)
+      // Tailwind standard colors needed for components
       gray: {
         200: '#e5e7eb',
         300: '#d1d5db',
@@ -62,47 +33,94 @@ export default {
         900: '#111827',
       },
       red: {
+        400: '#f87171',
         500: '#ef4444',
         600: '#dc2626',
+        700: '#b91c1c',
       },
       green: {
+        400: '#4ade80',
         500: '#22c55e',
         600: '#16a34a',
       },
+      blue: {
+        400: '#60a5fa',
+        500: '#3b82f6',
+        600: '#2563eb',
+        700: '#1d4ed8',
+      },
       yellow: {
+        400: '#facc15',
         500: '#eab308',
       },
+      purple: {
+        400: '#c084fc',
+        500: '#a855f7',
+        600: '#9333ea',
+        700: '#7e22ce',
+        800: '#6b21a8',
+      },
+      cyan: {
+        400: '#22d3ee',
+        500: '#06b6d4',
+        600: '#0891b2',
+      },
+      amber: {
+        300: '#fcd34d',
+        400: '#fbbf24',
+        500: '#f59e0b',
+      },
+      emerald: {
+        400: '#34d399',
+        500: '#10b981',
+        600: '#059669',
+      },
+      slate: {
+        400: '#94a3b8',
+        600: '#475569',
+        700: '#334155',
+      },
 
-      // Mafia Noir semantic mappings
-      primary: '#8b0000',
-      'primary-hover': '#b8860b',
-      'primary-active': '#b8860b',
-      background: '#0a0a0a',
-      surface: '#141414',
-      text: '#c2c2c2',
-      'text-secondary': '#999999',
-      border: '#b8860b',
-      'card-border': '#b8860b',
-      error: '#8b0000',
-      success: '#046307',
-      warning: '#e6b422',
-      info: '#663399',
+      // Rarity system with subtle high-tech aesthetic
+      rarity: {
+        common: '#94a3b8',      // Slate
+        uncommon: '#34d399',    // Emerald
+        rare: '#60a5fa',        // Blue
+        epic: '#c084fc',        // Purple
+        legendary: '#fbbf24',   // Amber
+      },
+
+      // Semantic color mappings for high-tech heist theme
+      primary: '#22d3ee',          // Cyan-400 (neon accent)
+      'primary-hover': '#06b6d4',  // Cyan-500
+      'primary-active': '#0891b2', // Cyan-600
+      background: '#0B0F17',       // Darkest heist
+      surface: '#161B22',          // Panel
+      text: '#e5e7eb',             // Gray-200
+      'text-secondary': '#9ca3af', // Gray-400
+      border: '#1F2937',           // Heist border
+      'card-border': '#1F2937',    // Heist border
+      error: '#ef4444',            // Red-500
+      success: '#22c55e',          // Green-500
+      warning: '#fbbf24',          // Amber-400
+      info: '#c084fc',             // Purple-400
     },
     extend: {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'], // Primary UI text
-        serif: ['Cinzel Decorative', 'serif'], // Elegant headers for mafia theme
-        header: ['Cinzel Decorative', 'serif'], // Corporate titles
-        mono: ['JetBrains Mono', 'Consolas', 'monospace'], // Data displays
+        mono: ['JetBrains Mono', 'Consolas', 'monospace'], // HUD data displays
+        display: ['Rajdhani', 'system-ui', 'sans-serif'], // High-tech headers
         base: 'var(--font-family-base)', // Legacy support
       },
       boxShadow: {
-        noir: '0 0 10px rgba(139, 0, 0, 0.4)',
-        'noir-lg': '0 0 20px rgba(139, 0, 0, 0.6)',
-        gold: '0 0 10px rgba(230, 180, 34, 0.4)',
-        'gold-lg': '0 0 20px rgba(230, 180, 34, 0.6)',
-        emerald: '0 0 10px rgba(4, 99, 7, 0.4)',
-        royal: '0 0 10px rgba(147, 112, 219, 0.4)',
+        // High-tech heist glow effects
+        'cyan-glow': '0 0 10px rgba(34, 211, 238, 0.3)',
+        'cyan-glow-lg': '0 0 20px rgba(34, 211, 238, 0.5)',
+        'purple-glow': '0 0 10px rgba(192, 132, 252, 0.3)',
+        'purple-glow-lg': '0 0 20px rgba(192, 132, 252, 0.5)',
+        'amber-glow': '0 0 10px rgba(251, 191, 36, 0.3)',
+        'amber-glow-lg': '0 0 20px rgba(251, 191, 36, 0.5)',
+        'hud-panel': '0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3)',
         // Legacy support
         xs: 'var(--shadow-xs)',
         sm: 'var(--shadow-sm)',
@@ -112,23 +130,34 @@ export default {
         focus: 'var(--focus-ring)',
       },
       keyframes: {
-        pulseNoir: {
-          '0%, 100%': { boxShadow: '0 0 8px rgba(139, 0, 0, 0.4)' },
-          '50%': { boxShadow: '0 0 16px rgba(139, 0, 0, 0.8)' },
+        pulseCyan: {
+          '0%, 100%': { boxShadow: '0 0 8px rgba(34, 211, 238, 0.3)' },
+          '50%': { boxShadow: '0 0 20px rgba(34, 211, 238, 0.6)' },
         },
-        pulseGold: {
-          '0%, 100%': { boxShadow: '0 0 8px rgba(230, 180, 34, 0.4)' },
-          '50%': { boxShadow: '0 0 16px rgba(230, 180, 34, 0.8)' },
+        pulseAmber: {
+          '0%, 100%': { boxShadow: '0 0 8px rgba(251, 191, 36, 0.3)' },
+          '50%': { boxShadow: '0 0 20px rgba(251, 191, 36, 0.6)' },
         },
         fadeInUp: {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        slideInRight: {
+          '0%': { opacity: '0', transform: 'translateX(20px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        hudBoot: {
+          '0%': { opacity: '0', transform: 'scaleY(0)' },
+          '50%': { opacity: '0.5', transform: 'scaleY(1.02)' },
+          '100%': { opacity: '1', transform: 'scaleY(1)' },
+        },
       },
       animation: {
-        pulseNoir: 'pulseNoir 2s infinite',
-        pulseGold: 'pulseGold 2s infinite',
-        fadeInUp: 'fadeInUp 0.3s ease-out',
+        'pulse-cyan': 'pulseCyan 2s ease-in-out infinite',
+        'pulse-amber': 'pulseAmber 2s ease-in-out infinite',
+        'fade-in-up': 'fadeInUp 0.3s ease-out',
+        'slide-in-right': 'slideInRight 0.3s ease-out',
+        'hud-boot': 'hudBoot 0.5s ease-out',
         'pulse-game': 'pulse 0.3s ease-in-out', // Legacy support
       },
       // Legacy support

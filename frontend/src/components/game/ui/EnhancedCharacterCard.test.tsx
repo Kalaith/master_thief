@@ -52,6 +52,8 @@ describe('EnhancedCharacterCard', () => {
     fatigue: 20,
     loyalty: 85,
     injuries: [],
+    personalityTraits: ['Stealthy', 'Cautious', 'Professional'],
+    backstoryEvents: ['Former intelligence operative', 'Specialized in infiltration'],
   };
 
   it('should render character name', () => {
@@ -63,7 +65,7 @@ describe('EnhancedCharacterCard', () => {
   it('should display character level', () => {
     render(<EnhancedCharacterCard character={mockCharacter} />);
 
-    expect(screen.getByText(/level 5/i)).toBeInTheDocument();
+    expect(screen.getByText(/Lv\.5/)).toBeInTheDocument();
   });
 
   it('should display rarity badge', () => {
@@ -73,7 +75,7 @@ describe('EnhancedCharacterCard', () => {
   });
 
   it('should display character cost', () => {
-    render(<EnhancedCharacterCard character={mockCharacter} />);
+    render(<EnhancedCharacterCard character={mockCharacter} onRecruit={() => {}} />);
 
     expect(screen.getByText(/\$4,500/)).toBeInTheDocument();
   });
@@ -88,64 +90,66 @@ describe('EnhancedCharacterCard', () => {
     const handleClick = vi.fn();
     const user = userEvent.setup();
 
-    render(<EnhancedCharacterCard character={mockCharacter} onClick={handleClick} />);
+    render(<EnhancedCharacterCard character={mockCharacter} onRecruit={handleClick} />);
 
     const button = screen.getByRole('button');
     await user.click(button);
 
+    expect(handleClick).toHaveBeenCalledWith(mockCharacter);
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
   it('should disable button when character is recruited', () => {
-    render(<EnhancedCharacterCard character={mockCharacter} isRecruited={true} />);
+    render(<EnhancedCharacterCard character={mockCharacter} isRecruited={true} onRemove={() => {}} />);
 
     const button = screen.getByRole('button');
-    expect(button).toBeDisabled();
+    expect(button).toHaveTextContent('Remove');
   });
 
   it('should show recruited text when character is recruited', () => {
-    render(<EnhancedCharacterCard character={mockCharacter} isRecruited={true} />);
+    render(<EnhancedCharacterCard character={mockCharacter} isRecruited={true} onRemove={() => {}} />);
 
-    expect(screen.getByText(/recruited/i)).toBeInTheDocument();
+    expect(screen.getByText(/Remove/)).toBeInTheDocument();
   });
 
   it('should display skill values', () => {
-    render(<EnhancedCharacterCard character={mockCharacter} showDetails={true} />);
+    render(<EnhancedCharacterCard character={mockCharacter} />);
 
-    // Check for skills - these might be in abbreviated form
-    expect(screen.getByText(/stealth/i)).toBeInTheDocument();
-    expect(screen.getByText(/8/)).toBeInTheDocument(); // Stealth value
+    // Check for skills
+    expect(screen.getByText(/stealth:/i)).toBeInTheDocument();
+    expect(screen.getByText('8')).toBeInTheDocument(); // Stealth value
   });
 
   it('should display character class', () => {
     render(<EnhancedCharacterCard character={mockCharacter} />);
 
-    expect(screen.getByText(/infiltrator/i)).toBeInTheDocument();
+    // Class is shown as an emoji icon 🥷 for infiltrator
+    expect(screen.getByText('🥷')).toBeInTheDocument();
   });
 
   it('should render different rarity styles', () => {
-    const legendaryChar = { ...mockCharacter, rarity: 'legendary' as const };
-    const { rerender } = render(<EnhancedCharacterCard character={mockCharacter} />);
+    const legendaryChar = { ...mockCharacter, personalityTraits: ['Legendary', 'Powerful'], backstoryEvents: ['Epic story'], rarity: 'legendary' as const };
+    const { container, rerender } = render(<EnhancedCharacterCard character={mockCharacter} />);
 
-    const commonCard = screen.getByRole('article') || screen.getByTestId('character-card');
-    expect(commonCard).toHaveClass(/rare/);
+    // Check for rare rarity colors in classes
+    expect(container.firstChild).toHaveClass('border-blue-400');
 
     rerender(<EnhancedCharacterCard character={legendaryChar} />);
 
-    const legendaryCard = screen.getByRole('article') || screen.getByTestId('character-card');
-    expect(legendaryCard).toHaveClass(/legendary/);
+    // Check for legendary rarity colors
+    expect(container.firstChild).toHaveClass('border-amber-400');
   });
 
   it('should display experience progress when showDetails is true', () => {
-    render(<EnhancedCharacterCard character={mockCharacter} showDetails={true} />);
+    render(<EnhancedCharacterCard character={mockCharacter} showDetailedStats={true} />);
 
-    // Should show experience or progress bar
-    expect(screen.getByText(/1,200/)).toBeInTheDocument(); // Current XP
-    expect(screen.getByText(/2,500/)).toBeInTheDocument(); // XP to next level
+    // Should show experience (without commas)
+    expect(screen.getByText(/1200/)).toBeInTheDocument(); // Current XP
+    expect(screen.getByText(/2500/)).toBeInTheDocument(); // XP to next level
   });
 
   it('should show special ability when showDetails is true', () => {
-    render(<EnhancedCharacterCard character={mockCharacter} showDetails={true} />);
+    render(<EnhancedCharacterCard character={mockCharacter} showDetailedStats={true} />);
 
     expect(screen.getByText(/Master of Shadows/i)).toBeInTheDocument();
   });

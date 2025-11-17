@@ -9,11 +9,15 @@ describe('GameHeader', () => {
 
     render(<GameHeader activeTab="game" onTabChange={mockOnTabChange} />);
 
-    expect(screen.getByText('Game')).toBeInTheDocument();
-    expect(screen.getByText('Missions')).toBeInTheDocument();
-    expect(screen.getByText('Recruitment')).toBeInTheDocument();
-    expect(screen.getByText('Team')).toBeInTheDocument();
-    expect(screen.getByText('Equipment')).toBeInTheDocument();
+    // Get all buttons and check their labels
+    const buttons = screen.getAllByRole('button');
+    const buttonTexts = buttons.map(btn => btn.textContent);
+
+    expect(buttonTexts).toContain(expect.stringContaining('Operations'));
+    expect(buttonTexts).toContain(expect.stringContaining('Targets'));
+    expect(buttonTexts).toContain(expect.stringContaining('Recruit'));
+    expect(buttonTexts).toContain(expect.stringContaining('Crew'));
+    expect(buttonTexts).toContain(expect.stringContaining('Gear'));
   });
 
   it('should highlight active tab', () => {
@@ -21,8 +25,8 @@ describe('GameHeader', () => {
 
     render(<GameHeader activeTab="missions" onTabChange={mockOnTabChange} />);
 
-    const missionsTab = screen.getByText('Missions');
-    expect(missionsTab.closest('button')).toHaveClass(/active|selected/i);
+    const missionsTab = screen.getByText(/Targets/);
+    expect(missionsTab.closest('button')).toHaveClass(/bg-cyan-400/);
   });
 
   it('should call onTabChange when tab is clicked', async () => {
@@ -31,7 +35,7 @@ describe('GameHeader', () => {
 
     render(<GameHeader activeTab="game" onTabChange={mockOnTabChange} />);
 
-    const teamTab = screen.getByText('Team');
+    const teamTab = screen.getByText(/Crew/);
     await user.click(teamTab);
 
     expect(mockOnTabChange).toHaveBeenCalledWith('team');

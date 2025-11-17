@@ -292,6 +292,8 @@ describe('Character Calculations', () => {
         fatigue: 0,
         loyalty: 100,
         injuries: [],
+        personalityTraits: [],
+        backstoryEvents: [],
       };
 
       const leveledUp = levelUpCharacter(mockCharacter);
@@ -329,6 +331,8 @@ describe('Character Calculations', () => {
         fatigue: 0,
         loyalty: 100,
         injuries: [],
+        personalityTraits: [],
+        backstoryEvents: [],
       };
 
       const leveledUp = levelUpCharacter(mockCharacter);
@@ -400,6 +404,8 @@ describe('Character Calculations', () => {
         fatigue: 0,
         loyalty: 100,
         injuries: [],
+        personalityTraits: [],
+        backstoryEvents: [],
       };
 
       const strongCharacter: TeamMember = {
@@ -434,6 +440,8 @@ describe('Character Calculations', () => {
         fatigue: 0,
         loyalty: 100,
         injuries: [],
+        personalityTraits: [],
+        backstoryEvents: [],
       };
 
       const basePower = calculatePowerLevel(mockCharacter);
@@ -500,6 +508,8 @@ describe('Character Calculations', () => {
         fatigue: 0,
         loyalty: 100,
         injuries: [],
+        personalityTraits: [],
+        backstoryEvents: [],
       };
 
       const enhanced = applyEquipmentBonuses(mockCharacter);
@@ -547,6 +557,8 @@ describe('Character Calculations', () => {
         fatigue: 0,
         loyalty: 100,
         injuries: [],
+        personalityTraits: [],
+        backstoryEvents: [],
       };
 
       const enhanced = applyEquipmentBonuses(mockCharacter);
@@ -584,6 +596,8 @@ describe('Character Calculations', () => {
         fatigue: 0,
         loyalty: 100,
         injuries: [],
+        personalityTraits: [],
+        backstoryEvents: [],
       };
 
       const enhanced = applyEquipmentBonuses(mockCharacter);
