@@ -317,6 +317,7 @@ export type TutorialStep =
   | 'wait-for-mission'
   | 'collect-rewards'
   | 'equipment-intro'
+  | 'equipment-shop-tab'
   | 'buy-equipment'
   | 'equip-character'
   | 'tutorial-complete';

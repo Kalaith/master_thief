@@ -12,6 +12,15 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
   const { equipmentInventory, selectedTeam, equipItem, tutorial, nextTutorialStep } = useGameStore();
   const [activeTab, setActiveTab] = useState<'inventory' | 'shop'>('inventory');
 
+  const handleTabChange = (tab: 'inventory' | 'shop') => {
+    setActiveTab(tab);
+
+    // Advance tutorial if on equipment-shop-tab step and switching to shop
+    if (tutorial.active && tutorial.currentStep === 'equipment-shop-tab' && tab === 'shop') {
+      setTimeout(() => nextTutorialStep(), 500);
+    }
+  };
+
   const handleEquip = (memberId: number, item: any) => {
     equipItem(memberId, item);
     toast.success(`Equipped ${item.name} to ${selectedTeam.find(m => m.id === memberId)?.name}`);
@@ -38,7 +47,7 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
       {/* Tabs */}
       <div className="flex justify-center gap-4">
         <button
-          onClick={() => setActiveTab('inventory')}
+          onClick={() => handleTabChange('inventory')}
           className={`flex items-center gap-2 px-6 py-3 rounded-xl font-mono font-bold uppercase transition-all duration-200 ${
             activeTab === 'inventory'
               ? 'bg-cyan-400/20 border-2 border-cyan-400 text-cyan-400 shadow-cyan-glow'
@@ -49,7 +58,7 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
           Inventory ({equipmentInventory.length})
         </button>
         <button
-          onClick={() => setActiveTab('shop')}
+          onClick={() => handleTabChange('shop')}
           className={`flex items-center gap-2 px-6 py-3 rounded-xl font-mono font-bold uppercase transition-all duration-200 ${
             activeTab === 'shop'
               ? 'bg-cyan-400/20 border-2 border-cyan-400 text-cyan-400 shadow-cyan-glow'
@@ -72,7 +81,7 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
               <h3 className="text-xl font-bold text-gray-400 mb-2 uppercase tracking-wide">Armory Empty</h3>
               <p className="text-gray-500 font-mono text-sm mb-6">No equipment in inventory. Acquire gear through black market procurement or mission rewards.</p>
               <button
-                onClick={() => setActiveTab('shop')}
+                onClick={() => handleTabChange('shop')}
                 className="flex items-center justify-center gap-2 py-3 px-6 mx-auto bg-cyan-400/20 hover:bg-cyan-400/30 border border-cyan-400 text-cyan-400 rounded font-mono font-bold uppercase transition-all hover:shadow-cyan-glow"
               >
                 <ShoppingCart className="w-4 h-4" />

@@ -74,6 +74,7 @@ describe('Tutorial System', () => {
         'wait-for-mission',
         'collect-rewards',
         'equipment-intro',
+        'equipment-shop-tab',
         'buy-equipment',
         'equip-character',
         'tutorial-complete',
@@ -95,8 +96,8 @@ describe('Tutorial System', () => {
 
       startTutorial();
 
-      // Advance through all 14 steps
-      for (let i = 0; i < 14; i++) {
+      // Advance through all 15 steps
+      for (let i = 0; i < 15; i++) {
         nextTutorialStep();
       }
 

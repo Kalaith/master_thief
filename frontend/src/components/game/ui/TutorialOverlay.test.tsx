@@ -40,7 +40,7 @@ describe('TutorialOverlay', () => {
 
     render(<TutorialOverlay />);
 
-    expect(screen.getByText('0/13')).toBeInTheDocument();
+    expect(screen.getByText('0/14')).toBeInTheDocument();
   });
 
   it('should advance to next step when Next button clicked', async () => {
@@ -63,7 +63,7 @@ describe('TutorialOverlay', () => {
 
     render(<TutorialOverlay />);
 
-    expect(screen.getByText(/Skip Tutorial/i)).toBeInTheDocument();
+    expect(screen.getByText(/Skip/i)).toBeInTheDocument();
   });
 
   it('should show action callout when step has action', () => {
@@ -82,14 +82,14 @@ describe('TutorialOverlay', () => {
 
     const { rerender } = render(<TutorialOverlay />);
 
-    expect(screen.getByText('0/13')).toBeInTheDocument();
+    expect(screen.getByText('0/14')).toBeInTheDocument();
 
     const nextButton = screen.getByRole('button', { name: /Next/i });
     await user.click(nextButton);
 
     rerender(<TutorialOverlay />);
 
-    expect(screen.getByText('1/13')).toBeInTheDocument();
+    expect(screen.getByText('1/14')).toBeInTheDocument();
   });
 
   it('should show Finish button on final step', async () => {
@@ -128,7 +128,7 @@ describe('TutorialOverlay', () => {
 
     render(<TutorialOverlay />);
 
-    const skipButtons = screen.getAllByText(/Skip Tutorial/i);
+    const skipButtons = screen.getAllByText(/Skip/i);
     await user.click(skipButtons[0]);
 
     const tutorial = useGameStore.getState().tutorial;
@@ -148,7 +148,7 @@ describe('TutorialOverlay', () => {
 
     render(<TutorialOverlay />);
 
-    const skipButtons = screen.getAllByText(/Skip Tutorial/i);
+    const skipButtons = screen.getAllByText(/Skip/i);
     await user.click(skipButtons[0]);
 
     const tutorial = useGameStore.getState().tutorial;

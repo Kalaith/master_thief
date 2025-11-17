@@ -98,6 +98,15 @@ export const tutorialSteps: Record<string, TutorialStepData> = {
     autoAdvance: true,
   },
 
+  'equipment-shop-tab': {
+    id: 'equipment-shop-tab',
+    title: 'Access the Black Market',
+    description: 'The Equipment Armory has two sections: Inventory (your owned gear) and Black Market (where you purchase new equipment). Click on the "Black Market" tab to see what\'s available for purchase.',
+    position: 'top',
+    action: 'Click on the "Black Market" tab',
+    autoAdvance: true,
+  },
+
   'buy-equipment': {
     id: 'buy-equipment',
     title: 'Purchase Equipment',

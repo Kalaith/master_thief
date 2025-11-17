@@ -613,6 +613,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       'wait-for-mission',
       'collect-rewards',
       'equipment-intro',
+      'equipment-shop-tab',
       'buy-equipment',
       'equip-character',
       'tutorial-complete',
