@@ -26,14 +26,14 @@ const RecruitmentPage: React.FC<RecruitmentPageProps> = ({ onBackToGame }) => {
 
   return (
     <div className="space-y-6">
-      <div className="text-center space-y-4 bg-heist-panel border border-heist-border p-8 rounded-xl shadow-hud-panel">
-        <div className="flex items-center justify-center gap-3 mb-2">
-          <UserPlus className="w-10 h-10 text-cyan-400" />
-          <h2 className="text-4xl font-bold text-cyan-400 uppercase tracking-wide">Recruitment Center</h2>
+      <div className="bg-heist-panel border border-heist-border p-4 rounded-xl shadow-hud-panel">
+        <div className="flex items-center gap-3">
+          <UserPlus className="w-6 h-6 text-cyan-400" />
+          <div>
+            <h2 className="text-2xl font-bold text-cyan-400 uppercase tracking-wide">Recruitment Center</h2>
+            <p className="text-gray-400 text-sm font-mono">Hire skilled operatives with unique talents</p>
+          </div>
         </div>
-        <p className="text-gray-300 max-w-2xl mx-auto font-mono">
-          Hire skilled operatives for your crew. Each member brings unique talents to the operation.
-        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

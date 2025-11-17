@@ -11,14 +11,14 @@ const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
 
   return (
     <div className="space-y-6">
-      <div className="text-center space-y-4 bg-heist-panel border border-heist-border p-8 rounded-xl shadow-hud-panel">
-        <div className="flex items-center justify-center gap-3 mb-2">
-          <Users className="w-10 h-10 text-cyan-400" />
-          <h2 className="text-4xl font-bold text-cyan-400 uppercase tracking-wide">Active Crew</h2>
+      <div className="bg-heist-panel border border-heist-border p-4 rounded-xl shadow-hud-panel">
+        <div className="flex items-center gap-3">
+          <Users className="w-6 h-6 text-cyan-400" />
+          <div>
+            <h2 className="text-2xl font-bold text-cyan-400 uppercase tracking-wide">Active Crew</h2>
+            <p className="text-gray-400 text-sm font-mono">Manage operatives and monitor status (max 4 members)</p>
+          </div>
         </div>
-        <p className="text-gray-300 max-w-2xl mx-auto font-mono">
-          Manage your operatives and monitor their status. Maximum crew size: 4 members.
-        </p>
       </div>
 
       {selectedTeam.length === 0 ? (

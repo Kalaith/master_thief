@@ -84,14 +84,14 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
       {/* Show main missions page only when not assigning team */}
       {!missionForTeamAssignment && (
         <>
-          <div className="text-center space-y-4 bg-heist-panel border border-heist-border p-8 rounded-xl shadow-hud-panel">
-            <div className="flex items-center justify-center gap-3 mb-2">
-              <Map className="w-10 h-10 text-cyan-400" />
-              <h2 className="text-4xl font-bold text-cyan-400 uppercase tracking-wide">Target Selection</h2>
+          <div className="bg-heist-panel border border-heist-border p-4 rounded-xl shadow-hud-panel">
+            <div className="flex items-center gap-3">
+              <Map className="w-6 h-6 text-cyan-400" />
+              <div>
+                <h2 className="text-2xl font-bold text-cyan-400 uppercase tracking-wide">Target Selection</h2>
+                <p className="text-gray-400 text-sm font-mono">Available targets and ongoing operations</p>
+              </div>
             </div>
-            <p className="text-gray-300 max-w-2xl mx-auto font-mono">
-              Select available targets and monitor your ongoing operations.
-            </p>
           </div>
 
       {/* Available Heists Section */}

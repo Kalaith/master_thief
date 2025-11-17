@@ -34,14 +34,14 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="text-center space-y-4 bg-heist-panel border border-heist-border p-8 rounded-xl shadow-hud-panel">
-        <div className="flex items-center justify-center gap-3 mb-2">
-          <Shield className="w-10 h-10 text-cyan-400" />
-          <h2 className="text-4xl font-bold text-cyan-400 uppercase tracking-wide">Equipment Armory</h2>
+      <div className="bg-heist-panel border border-heist-border p-4 rounded-xl shadow-hud-panel">
+        <div className="flex items-center gap-3">
+          <Shield className="w-6 h-6 text-cyan-400" />
+          <div>
+            <h2 className="text-2xl font-bold text-cyan-400 uppercase tracking-wide">Equipment Armory</h2>
+            <p className="text-gray-400 text-sm font-mono">Tactical gear inventory and black market procurement</p>
+          </div>
         </div>
-        <p className="text-gray-300 max-w-2xl mx-auto font-mono">
-          Manage your tactical gear inventory and procure advanced equipment from black market suppliers.
-        </p>
       </div>
 
       {/* Tabs */}

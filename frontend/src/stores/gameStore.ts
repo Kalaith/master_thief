@@ -203,11 +203,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Clear all local storage
     localStorage.removeItem('masterThief_gameState');
     localStorage.removeItem('masterThief_currentPhase');
-    
+
     // Reset to initial state
     set({
       ...initialState,
       currentPhase: 'recruitment-phase',
+      tutorial: {
+        active: false,
+        currentStep: null,
+        completedSteps: [],
+        skipped: false,
+      }
     });
   },
 
@@ -225,9 +231,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         equipmentInventory: state.equipmentInventory,
         craftingMaterials: state.craftingMaterials,
         achievements: state.achievements,
-        activeAutomatedHeists: state.activeAutomatedHeists // Save active missions
+        activeAutomatedHeists: state.activeAutomatedHeists, // Save active missions
+        tutorial: state.tutorial // Save tutorial progress
       };
-      
+
       localStorage.setItem('masterThief_gameState', JSON.stringify(gameStateToSave));
       localStorage.setItem('masterThief_currentPhase', state.currentPhase);
     } catch (error) {
@@ -239,7 +246,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     try {
       const savedGameState = localStorage.getItem('masterThief_gameState');
       const savedCurrentPhase = localStorage.getItem('masterThief_currentPhase');
-      
+
       if (savedGameState) {
         const parsedState = JSON.parse(savedGameState);
         set({
@@ -249,7 +256,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
           automatedHeists: automatedHeists, // Always load fresh heists
           selectedHeist: null,
           currentEncounter: 0,
-          encounterResults: []
+          encounterResults: [],
+          // Ensure tutorial state exists (for old saves without it)
+          tutorial: parsedState.tutorial || {
+            active: false,
+            currentStep: null,
+            completedSteps: [],
+            skipped: false,
+          }
         });
       }
     } catch (error) {
@@ -258,9 +272,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set({
         ...initialState,
         currentPhase: 'recruitment-phase',
+        tutorial: {
+          active: false,
+          currentStep: null,
+          completedSteps: [],
+          skipped: false,
+        }
       });
     }
-    
+
     // Start global mission timer after loading
     // Removed - using MissionsPage timer instead
   },
@@ -586,6 +606,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         skipped: false,
       }
     });
+    setTimeout(() => get().saveGame(), 0);
   },
 
   skipTutorial: () => {
@@ -597,6 +618,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         skipped: true,
       }
     });
+    setTimeout(() => get().saveGame(), 0);
   },
 
   nextTutorialStep: () => {
@@ -647,6 +669,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       });
     }
+    setTimeout(() => get().saveGame(), 0);
   },
 
   setTutorialStep: (step: TutorialStep) => {
@@ -657,6 +680,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         currentStep: step,
       }
     });
+    setTimeout(() => get().saveGame(), 0);
   },
 
   completeTutorialStep: (step: TutorialStep) => {
@@ -668,6 +692,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           completedSteps: [...state.tutorial.completedSteps, step],
         }
       });
+      setTimeout(() => get().saveGame(), 0);
     }
   },
 }));
