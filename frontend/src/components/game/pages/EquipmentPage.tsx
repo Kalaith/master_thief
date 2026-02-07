@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useGameStore } from '../../../stores/gameStore';
 import EquipmentShop from '../ui/EquipmentShop';
+import PageHeader from '../ui/PageHeader';
 import toast from 'react-hot-toast';
-import { Shield, Package, ShoppingCart, DollarSign, TrendingUp, Star, Sparkles } from 'lucide-react';
+import type { Equipment } from '../../../types/game';
+import { Shield, Package, ShoppingCart, TrendingUp, Star, Sparkles } from 'lucide-react';
 
 interface EquipmentPageProps {
   onBackToGame: () => void;
@@ -21,7 +23,7 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
     }
   };
 
-  const handleEquip = (memberId: number, item: any) => {
+  const handleEquip = (memberId: number, item: Equipment) => {
     equipItem(memberId, item);
     toast.success(`Equipped ${item.name} to ${selectedTeam.find(m => m.id === memberId)?.name}`);
 
@@ -33,16 +35,11 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="bg-heist-panel border border-heist-border p-4 rounded-xl shadow-hud-panel">
-        <div className="flex items-center gap-3">
-          <Shield className="w-6 h-6 text-cyan-400" />
-          <div>
-            <h2 className="text-2xl font-bold text-cyan-400 uppercase tracking-wide">Equipment Armory</h2>
-            <p className="text-gray-400 text-sm font-mono">Tactical gear inventory and black market procurement</p>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        icon={Shield}
+        title="Equipment Armory"
+        description="Tactical gear inventory and black market procurement"
+      />
 
       {/* Tabs */}
       <div className="flex justify-center gap-4">

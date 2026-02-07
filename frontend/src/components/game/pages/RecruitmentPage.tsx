@@ -1,5 +1,6 @@
 import React from 'react';
 import { useGameStore } from '../../../stores/gameStore';
+import PageHeader from '../ui/PageHeader';
 import { UserPlus, DollarSign, Heart, TrendingUp } from 'lucide-react';
 
 interface RecruitmentPageProps {
@@ -26,15 +27,11 @@ const RecruitmentPage: React.FC<RecruitmentPageProps> = ({ onBackToGame }) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-heist-panel border border-heist-border p-4 rounded-xl shadow-hud-panel">
-        <div className="flex items-center gap-3">
-          <UserPlus className="w-6 h-6 text-cyan-400" />
-          <div>
-            <h2 className="text-2xl font-bold text-cyan-400 uppercase tracking-wide">Recruitment Center</h2>
-            <p className="text-gray-400 text-sm font-mono">Hire skilled operatives with unique talents</p>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        icon={UserPlus}
+        title="Recruitment Center"
+        description="Hire skilled operatives with unique talents"
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {availableCharacters.map((character) => (

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useGameStore } from '../../../stores/gameStore';
 import TeamAssignment from '../TeamAssignment';
+import PageHeader from '../ui/PageHeader';
 import type { AutomatedHeist } from '../../../types/game';
 import { Map, DollarSign, Clock, AlertTriangle, Users, ChevronDown, ChevronUp, Play, Timer, Heart, Zap, Target } from 'lucide-react';
 import { formatDuration } from '../../../utils/timeFormatting';
@@ -84,15 +85,11 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
       {/* Show main missions page only when not assigning team */}
       {!missionForTeamAssignment && (
         <>
-          <div className="bg-heist-panel border border-heist-border p-4 rounded-xl shadow-hud-panel">
-            <div className="flex items-center gap-3">
-              <Map className="w-6 h-6 text-cyan-400" />
-              <div>
-                <h2 className="text-2xl font-bold text-cyan-400 uppercase tracking-wide">Target Selection</h2>
-                <p className="text-gray-400 text-sm font-mono">Available targets and ongoing operations</p>
-              </div>
-            </div>
-          </div>
+          <PageHeader
+            icon={Map}
+            title="Target Selection"
+            description="Available targets and ongoing operations"
+          />
 
       {/* Available Heists Section */}
       <div className="space-y-4">

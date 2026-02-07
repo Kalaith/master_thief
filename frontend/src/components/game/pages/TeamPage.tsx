@@ -1,5 +1,6 @@
 import React from 'react';
 import { useGameStore } from '../../../stores/gameStore';
+import PageHeader from '../ui/PageHeader';
 import { Users, Heart, Zap, Star, TrendingUp, X, Shield } from 'lucide-react';
 
 interface TeamPageProps {
@@ -11,15 +12,11 @@ const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-heist-panel border border-heist-border p-4 rounded-xl shadow-hud-panel">
-        <div className="flex items-center gap-3">
-          <Users className="w-6 h-6 text-cyan-400" />
-          <div>
-            <h2 className="text-2xl font-bold text-cyan-400 uppercase tracking-wide">Active Crew</h2>
-            <p className="text-gray-400 text-sm font-mono">Manage operatives and monitor status (max 4 members)</p>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        icon={Users}
+        title="Active Crew"
+        description="Manage operatives and monitor status (max 4 members)"
+      />
 
       {selectedTeam.length === 0 ? (
         <div className="bg-heist-panel border border-heist-border rounded-xl p-12 text-center">

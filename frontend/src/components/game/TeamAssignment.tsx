@@ -14,7 +14,7 @@ interface TeamAssignmentProps {
 
 const TeamAssignment: React.FC<TeamAssignmentProps> = ({ mission, onConfirm, onCancel }) => {
   const { assignedTeam, availableCharacters, toggleTeamMember, isTeamValid, assignTeamForMission } = useTeamAssignment();
-  const { activeAutomatedHeists, tutorial, nextTutorialStep } = useGameStore();
+  const { activeAutomatedHeists } = useGameStore();
 
   const canStartMission = MissionService.canStartNewMission(activeAutomatedHeists.length).canStart;
 
