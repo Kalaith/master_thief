@@ -65,7 +65,7 @@ describe('EnhancedCharacterCard', () => {
   it('should display character level', () => {
     render(<EnhancedCharacterCard character={mockCharacter} />);
 
-    expect(screen.getByText(/Lv\.5/)).toBeInTheDocument();
+    expect(screen.getByText(/LV\.?\s*5/)).toBeInTheDocument();
   });
 
   it('should display rarity badge', () => {

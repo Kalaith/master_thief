@@ -10,14 +10,11 @@ describe('GameHeader', () => {
     render(<GameHeader activeTab="game" onTabChange={mockOnTabChange} />);
 
     // Get all buttons and check their labels
-    const buttons = screen.getAllByRole('button');
-    const buttonTexts = buttons.map(btn => btn.textContent);
-
-    expect(buttonTexts).toContain(expect.stringContaining('Operations'));
-    expect(buttonTexts).toContain(expect.stringContaining('Targets'));
-    expect(buttonTexts).toContain(expect.stringContaining('Recruit'));
-    expect(buttonTexts).toContain(expect.stringContaining('Crew'));
-    expect(buttonTexts).toContain(expect.stringContaining('Gear'));
+    expect(screen.getByRole('button', { name: /operations/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /targets/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /recruit/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /crew/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /gear/i })).toBeInTheDocument();
   });
 
   it('should highlight active tab', () => {
