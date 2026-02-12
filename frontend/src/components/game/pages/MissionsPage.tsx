@@ -15,6 +15,7 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
   const { activeAutomatedHeists, automatedHeists, selectedTeam, tutorial, nextTutorialStep } = useGameStore();
   const [selectedHeist, setSelectedHeist] = useState<string | null>(null);
   const [missionForTeamAssignment, setMissionForTeamAssignment] = useState<AutomatedHeist | null>(null);
+  void onBackToGame;
 
   // No longer need component-level timer - it's now global in the store
 

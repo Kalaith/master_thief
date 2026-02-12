@@ -93,7 +93,6 @@ describe('TutorialOverlay', () => {
   });
 
   it('should show Finish button on final step', async () => {
-    const user = userEvent.setup();
     const { startTutorial, setTutorialStep } = useGameStore.getState();
     startTutorial();
     setTutorialStep('tutorial-complete');

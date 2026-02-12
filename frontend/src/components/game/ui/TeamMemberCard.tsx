@@ -1,5 +1,5 @@
 import React from 'react';
-import type { TeamMember, Rarity } from '../../../types/game';
+import type { TeamMember } from '../../../types/game';
 import { useGameStore } from '../../../stores/gameStore';
 import { DollarSign, Sparkles } from 'lucide-react';
 

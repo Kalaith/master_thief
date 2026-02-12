@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useGameStore } from './gameStore';
-import type { Equipment } from '../types/game';
+import type { Equipment, HeistTarget, MissionResult } from '../types/game';
 
 describe('GameStore', () => {
   beforeEach(() => {
@@ -383,11 +383,19 @@ describe('GameStore', () => {
     });
 
     it('should reset for next heist', () => {
-      const { addTeamMember, selectHeist, resetForNextHeist, availableCharacters, automatedHeists, setBudget } = useGameStore.getState();
+      const { addTeamMember, selectHeist, resetForNextHeist, availableCharacters, setBudget } = useGameStore.getState();
 
       setBudget(10000);
       addTeamMember(availableCharacters[0]);
-      selectHeist(automatedHeists[0] as any);
+      const testHeist: HeistTarget = {
+        id: 1,
+        name: 'Test Heist',
+        difficulty: 'Easy',
+        potential_payout: 1200,
+        description: 'Test heist target',
+        encounters: [],
+      };
+      selectHeist(testHeist);
 
       resetForNextHeist();
 
@@ -431,10 +439,10 @@ describe('GameStore', () => {
 
   describe('Mission Results', () => {
     it('should set mission result', () => {
-      const { setMissionResult } = useGameStore.getState();
+      const { setMissionResult, automatedHeists } = useGameStore.getState();
 
-      const mockResult: any = {
-        heist: { id: 'test-heist', name: 'Test Heist' },
+      const mockResult: MissionResult = {
+        heist: automatedHeists[0],
         team: [],
         success: true,
         rewards: {
@@ -457,9 +465,25 @@ describe('GameStore', () => {
     });
 
     it('should clear mission result', () => {
-      const { setMissionResult, clearMissionResult } = useGameStore.getState();
+      const { setMissionResult, clearMissionResult, automatedHeists } = useGameStore.getState();
 
-      setMissionResult({} as any);
+      const mockResult: MissionResult = {
+        heist: automatedHeists[0],
+        team: [],
+        success: false,
+        rewards: {
+          payout: 0,
+          totalXP: 100,
+          experiencePerMember: 50,
+          reputation: 0,
+          equipmentDrops: [],
+        },
+        teamPower: 50,
+        requiredPower: 75,
+        successChance: 35,
+        levelUps: [],
+      };
+      setMissionResult(mockResult);
       expect(useGameStore.getState().currentMissionResult).toBeTruthy();
 
       clearMissionResult();

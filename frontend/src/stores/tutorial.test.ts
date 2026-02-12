@@ -21,7 +21,7 @@ describe('Tutorial System', () => {
 
   describe('startTutorial', () => {
     it('should activate tutorial and set to welcome step', () => {
-      const { startTutorial, tutorial } = useGameStore.getState();
+      const { startTutorial } = useGameStore.getState();
 
       startTutorial();
 

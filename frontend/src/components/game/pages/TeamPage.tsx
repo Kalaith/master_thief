@@ -9,6 +9,7 @@ interface TeamPageProps {
 
 const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
   const { selectedTeam, removeTeamMember, isCharacterOnMission } = useGameStore();
+  void onBackToGame;
 
   return (
     <div className="space-y-6">

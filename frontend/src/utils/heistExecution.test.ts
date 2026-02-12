@@ -7,6 +7,7 @@ import {
   simulateAutomatedHeist,
 } from './heistExecution';
 import type { TeamMember, Encounter } from '../types/game';
+type EncounterResolution = ReturnType<typeof resolveEncounter>;
 
 describe('Heist Execution', () => {
   let mockMember: TeamMember;
@@ -204,7 +205,7 @@ describe('Heist Execution', () => {
 
     it('should grant more XP for success than failure', () => {
       // Run multiple times to get different outcomes
-      const results: any[] = [];
+      const results: EncounterResolution[] = [];
 
       for (let i = 0; i < 50; i++) {
         results.push(resolveEncounter(mockMember, mockEncounter));
@@ -222,7 +223,7 @@ describe('Heist Execution', () => {
     });
 
     it('should inflict more stress on failure than success', () => {
-      const results: any[] = [];
+      const results: EncounterResolution[] = [];
 
       for (let i = 0; i < 50; i++) {
         results.push(resolveEncounter(mockMember, mockEncounter));

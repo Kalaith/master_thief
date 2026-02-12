@@ -39,7 +39,7 @@ const EquipmentShop: React.FC = () => {
       case 'price-desc':
         items.sort((a, b) => b.cost - a.cost);
         break;
-      case 'rarity':
+      case 'rarity': {
         const rarityOrder: { [key in EquipmentRarity]: number } = {
           basic: 1,
           improved: 2,
@@ -49,6 +49,7 @@ const EquipmentShop: React.FC = () => {
         };
         items.sort((a, b) => rarityOrder[b.rarity] - rarityOrder[a.rarity]);
         break;
+      }
       case 'name':
         items.sort((a, b) => a.name.localeCompare(b.name));
         break;

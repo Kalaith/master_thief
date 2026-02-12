@@ -9,6 +9,7 @@ interface RecruitmentPageProps {
 
 const RecruitmentPage: React.FC<RecruitmentPageProps> = ({ onBackToGame }) => {
   const { availableCharacters, budget, selectedTeam, addTeamMember, tutorial, nextTutorialStep } = useGameStore();
+  void onBackToGame;
 
   const handleRecruit = (character: typeof availableCharacters[0]) => {
     addTeamMember(character);

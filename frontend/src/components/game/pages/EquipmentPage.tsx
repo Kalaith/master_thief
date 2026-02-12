@@ -13,6 +13,7 @@ interface EquipmentPageProps {
 const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
   const { equipmentInventory, selectedTeam, equipItem, tutorial, nextTutorialStep } = useGameStore();
   const [activeTab, setActiveTab] = useState<'inventory' | 'shop'>('inventory');
+  void onBackToGame;
 
   const handleTabChange = (tab: 'inventory' | 'shop') => {
     setActiveTab(tab);
