@@ -14,11 +14,11 @@ export default {
       // High-Tech Heist Noir Color System (Payday-inspired)
       // Core background colors
       heist: {
-        darkest: '#0B0F17',   // Main background
-        darker: '#0D121C',    // Background gradient end
-        dark: '#111827',      // Elevated surfaces
-        panel: '#161B22',     // HUD panels
-        border: '#1F2937',    // Panel borders
+        darkest: '#0B0F17', // Main background
+        darker: '#0D121C', // Background gradient end
+        dark: '#111827', // Elevated surfaces
+        panel: '#161B22', // HUD panels
+        border: '#1F2937', // Panel borders
       },
 
       // Tailwind standard colors needed for components
@@ -83,27 +83,27 @@ export default {
 
       // Rarity system with subtle high-tech aesthetic
       rarity: {
-        common: '#94a3b8',      // Slate
-        uncommon: '#34d399',    // Emerald
-        rare: '#60a5fa',        // Blue
-        epic: '#c084fc',        // Purple
-        legendary: '#fbbf24',   // Amber
+        common: '#94a3b8', // Slate
+        uncommon: '#34d399', // Emerald
+        rare: '#60a5fa', // Blue
+        epic: '#c084fc', // Purple
+        legendary: '#fbbf24', // Amber
       },
 
       // Semantic color mappings for high-tech heist theme
-      primary: '#22d3ee',          // Cyan-400 (neon accent)
-      'primary-hover': '#06b6d4',  // Cyan-500
+      primary: '#22d3ee', // Cyan-400 (neon accent)
+      'primary-hover': '#06b6d4', // Cyan-500
       'primary-active': '#0891b2', // Cyan-600
-      background: '#0B0F17',       // Darkest heist
-      surface: '#161B22',          // Panel
-      text: '#e5e7eb',             // Gray-200
+      background: '#0B0F17', // Darkest heist
+      surface: '#161B22', // Panel
+      text: '#e5e7eb', // Gray-200
       'text-secondary': '#9ca3af', // Gray-400
-      border: '#1F2937',           // Heist border
-      'card-border': '#1F2937',    // Heist border
-      error: '#ef4444',            // Red-500
-      success: '#22c55e',          // Green-500
-      warning: '#fbbf24',          // Amber-400
-      info: '#c084fc',             // Purple-400
+      border: '#1F2937', // Heist border
+      'card-border': '#1F2937', // Heist border
+      error: '#ef4444', // Red-500
+      success: '#22c55e', // Green-500
+      warning: '#fbbf24', // Amber-400
+      info: '#c084fc', // Purple-400
     },
     extend: {
       fontFamily: {
@@ -120,7 +120,8 @@ export default {
         'purple-glow-lg': '0 0 20px rgba(192, 132, 252, 0.5)',
         'amber-glow': '0 0 10px rgba(251, 191, 36, 0.3)',
         'amber-glow-lg': '0 0 20px rgba(251, 191, 36, 0.5)',
-        'hud-panel': '0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3)',
+        'hud-panel':
+          '0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3)',
         // Legacy support
         xs: 'var(--shadow-xs)',
         sm: 'var(--shadow-sm)',

@@ -11,7 +11,8 @@ describe('Tutorial Integration', () => {
 
   describe('Recruitment Phase', () => {
     it('should have correct tutorial step logic for recruitment', () => {
-      const { startTutorial, setTutorialStep, selectedTeam } = useGameStore.getState();
+      const { startTutorial, setTutorialStep, selectedTeam } =
+        useGameStore.getState();
 
       startTutorial();
       setTutorialStep('recruit-first-character');
@@ -26,7 +27,8 @@ describe('Tutorial Integration', () => {
     });
 
     it('should track team size for tutorial progression', () => {
-      const { addTeamMember, availableCharacters, selectedTeam } = useGameStore.getState();
+      const { addTeamMember, availableCharacters, selectedTeam } =
+        useGameStore.getState();
 
       expect(selectedTeam.length).toBe(0);
 
@@ -40,7 +42,8 @@ describe('Tutorial Integration', () => {
 
   describe('Tutorial Auto-Start', () => {
     it('should start tutorial for new players', () => {
-      const { tutorial, selectedTeam, heistsCompleted } = useGameStore.getState();
+      const { tutorial, selectedTeam, heistsCompleted } =
+        useGameStore.getState();
 
       // Verify new player conditions
       expect(selectedTeam).toHaveLength(0);

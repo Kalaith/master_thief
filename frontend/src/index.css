@@ -20,14 +20,14 @@
   --blood-500: #8b0000; /* Blood red - primary actions & epic tier */
   --blood-600: #600000; /* Dark blood red - borders and accents */
   --blood-700: #3b0000; /* Darker blood red */
-  
+
   --gold-300: #ffd166; /* Light gold */
   --gold-400: #e6b422; /* Medium gold - legendary tier */
   --gold-500: #b8860b; /* Dark gold - wealth accent */
-  
+
   --emerald-400: #50c878; /* Light emerald */
   --emerald-500: #046307; /* Dark emerald - uncommon tier & success */
-  
+
   --royal-400: #9370db; /* Light royal purple */
   --royal-500: #663399; /* Dark royal purple - rare tier */
 
@@ -124,8 +124,7 @@
   --font-family-base:
     'Cinzel Decorative', 'Times New Roman', serif; /* Elegant serif for headers */
   --font-family-body:
-    'Inter', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, sans-serif; /* Clean sans-serif for body */
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; /* Clean sans-serif for body */
   --font-family-mono:
     'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     monospace;
@@ -235,7 +234,9 @@
     line-height: 1.2;
     color: var(--text-bright);
     letter-spacing: -0.01em;
-    font-family: var(--font-family-base); /* Cinzel Decorative for elegant headers */
+    font-family: var(
+      --font-family-base
+    ); /* Cinzel Decorative for elegant headers */
   }
 
   h1 {

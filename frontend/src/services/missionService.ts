@@ -1,21 +1,24 @@
 import type { AutomatedHeist, TeamMember } from '../types/game';
 
 export class MissionService {
-  static validateTeamForMission(team: TeamMember[], mission: AutomatedHeist): {
+  static validateTeamForMission(
+    team: TeamMember[],
+    mission: AutomatedHeist
+  ): {
     isValid: boolean;
     message?: string;
   } {
     if (team.length < mission.requirements.minTeamSize) {
       return {
         isValid: false,
-        message: `You need at least ${mission.requirements.minTeamSize} team members to start this mission.`
+        message: `You need at least ${mission.requirements.minTeamSize} team members to start this mission.`,
       };
     }
 
     if (team.length > mission.requirements.maxTeamSize) {
       return {
         isValid: false,
-        message: `You can only have ${mission.requirements.maxTeamSize} team members for this mission.`
+        message: `You can only have ${mission.requirements.maxTeamSize} team members for this mission.`,
       };
     }
 
@@ -29,7 +32,7 @@ export class MissionService {
     if (activeMissionCount > 0) {
       return {
         canStart: false,
-        message: `You cannot start a new mission while you have ${activeMissionCount} active mission${activeMissionCount > 1 ? 's' : ''}. Please wait for the current mission${activeMissionCount > 1 ? 's' : ''} to complete.`
+        message: `You cannot start a new mission while you have ${activeMissionCount} active mission${activeMissionCount > 1 ? 's' : ''}. Please wait for the current mission${activeMissionCount > 1 ? 's' : ''} to complete.`,
       };
     }
 

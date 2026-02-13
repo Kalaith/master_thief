@@ -138,14 +138,21 @@ describe('Tutorial System', () => {
       completeTutorialStep('welcome');
 
       const tutorial = useGameStore.getState().tutorial;
-      const welcomeCount = tutorial.completedSteps.filter(s => s === 'welcome').length;
+      const welcomeCount = tutorial.completedSteps.filter(
+        s => s === 'welcome'
+      ).length;
       expect(welcomeCount).toBe(1);
     });
   });
 
   describe('Tutorial Integration', () => {
     it('should track recruitment progress', () => {
-      const { startTutorial, setTutorialStep, addTeamMember, availableCharacters } = useGameStore.getState();
+      const {
+        startTutorial,
+        setTutorialStep,
+        addTeamMember,
+        availableCharacters,
+      } = useGameStore.getState();
 
       startTutorial();
       setTutorialStep('recruit-first-character');
@@ -160,7 +167,8 @@ describe('Tutorial System', () => {
     });
 
     it('should allow tutorial to be skipped at any point', () => {
-      const { startTutorial, nextTutorialStep, skipTutorial } = useGameStore.getState();
+      const { startTutorial, nextTutorialStep, skipTutorial } =
+        useGameStore.getState();
 
       startTutorial();
       nextTutorialStep(); // Go to step 2

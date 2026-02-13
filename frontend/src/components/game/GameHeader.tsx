@@ -1,17 +1,39 @@
 import React from 'react';
 import { useGameStore } from '../../stores/gameStore';
-import { Target, Map, UserPlus, Users, Shield, DollarSign, Trophy, RotateCcw } from 'lucide-react';
+import {
+  Target,
+  Map,
+  UserPlus,
+  Users,
+  Shield,
+  DollarSign,
+  Trophy,
+  RotateCcw,
+} from 'lucide-react';
 
 interface GameHeaderProps {
   activeTab: 'game' | 'missions' | 'recruitment' | 'team' | 'equipment';
-  onTabChange: (tab: 'game' | 'missions' | 'recruitment' | 'team' | 'equipment') => void;
+  onTabChange: (
+    tab: 'game' | 'missions' | 'recruitment' | 'team' | 'equipment'
+  ) => void;
 }
 
 const GameHeader: React.FC<GameHeaderProps> = ({ activeTab, onTabChange }) => {
-  const { budget, heistsCompleted, activeAutomatedHeists, selectedTeam, equipmentInventory, newGame } = useGameStore();
+  const {
+    budget,
+    heistsCompleted,
+    activeAutomatedHeists,
+    selectedTeam,
+    equipmentInventory,
+    newGame,
+  } = useGameStore();
 
   const handleNewGame = () => {
-    if (window.confirm('Are you sure you want to start a new game? All progress will be lost!')) {
+    if (
+      window.confirm(
+        'Are you sure you want to start a new game? All progress will be lost!'
+      )
+    ) {
       newGame();
     }
   };
@@ -38,8 +60,12 @@ const GameHeader: React.FC<GameHeaderProps> = ({ activeTab, onTabChange }) => {
             <div className="flex items-center gap-2 bg-heist-panel/80 px-4 py-2 rounded border border-heist-border backdrop-blur-sm">
               <DollarSign className="w-4 h-4 text-amber-300" />
               <div className="flex flex-col">
-                <span className="text-gray-400 text-xs font-mono uppercase">Budget</span>
-                <span className="text-amber-300 font-bold font-mono text-lg">${budget.toLocaleString()}</span>
+                <span className="text-gray-400 text-xs font-mono uppercase">
+                  Budget
+                </span>
+                <span className="text-amber-300 font-bold font-mono text-lg">
+                  ${budget.toLocaleString()}
+                </span>
               </div>
             </div>
 
@@ -47,8 +73,12 @@ const GameHeader: React.FC<GameHeaderProps> = ({ activeTab, onTabChange }) => {
             <div className="flex items-center gap-2 bg-heist-panel/80 px-4 py-2 rounded border border-heist-border backdrop-blur-sm">
               <Trophy className="w-4 h-4 text-cyan-400" />
               <div className="flex flex-col">
-                <span className="text-gray-400 text-xs font-mono uppercase">Completed</span>
-                <span className="text-cyan-400 font-bold font-mono text-lg">{heistsCompleted}</span>
+                <span className="text-gray-400 text-xs font-mono uppercase">
+                  Completed
+                </span>
+                <span className="text-cyan-400 font-bold font-mono text-lg">
+                  {heistsCompleted}
+                </span>
               </div>
             </div>
 

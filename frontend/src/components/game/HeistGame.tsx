@@ -10,8 +10,17 @@ import TutorialOverlay from './ui/TutorialOverlay';
 import { useGameStore } from '../../stores/gameStore';
 
 const HeistGame: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'game' | 'missions' | 'recruitment' | 'team' | 'equipment'>('recruitment');
-  const { currentMissionResult, clearMissionResult, tutorial, startTutorial, selectedTeam, heistsCompleted } = useGameStore();
+  const [activeTab, setActiveTab] = useState<
+    'game' | 'missions' | 'recruitment' | 'team' | 'equipment'
+  >('recruitment');
+  const {
+    currentMissionResult,
+    clearMissionResult,
+    tutorial,
+    startTutorial,
+    selectedTeam,
+    heistsCompleted,
+  } = useGameStore();
 
   // Auto-start tutorial for new players
   useEffect(() => {
@@ -19,10 +28,21 @@ const HeistGame: React.FC = () => {
     // 1. Tutorial hasn't been skipped
     // 2. No team members recruited yet
     // 3. No heists completed
-    if (!tutorial.skipped && !tutorial.active && selectedTeam.length === 0 && heistsCompleted === 0) {
+    if (
+      !tutorial.skipped &&
+      !tutorial.active &&
+      selectedTeam.length === 0 &&
+      heistsCompleted === 0
+    ) {
       startTutorial();
     }
-  }, [tutorial.skipped, tutorial.active, selectedTeam.length, heistsCompleted, startTutorial]);
+  }, [
+    tutorial.skipped,
+    tutorial.active,
+    selectedTeam.length,
+    heistsCompleted,
+    startTutorial,
+  ]);
 
   // Auto-navigate based on tutorial step
   useEffect(() => {
@@ -70,18 +90,18 @@ const HeistGame: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-heist-darkest to-heist-darker text-gray-200 relative">
       {/* Cinematic noir vignette overlay */}
-      <div className="fixed inset-0 pointer-events-none bg-gradient-radial from-transparent via-transparent to-black/60"
-           style={{
-             background: 'radial-gradient(circle at center, transparent 0%, transparent 60%, rgba(0,0,0,0.6) 100%)'
-           }}
+      <div
+        className="fixed inset-0 pointer-events-none bg-gradient-radial from-transparent via-transparent to-black/60"
+        style={{
+          background:
+            'radial-gradient(circle at center, transparent 0%, transparent 60%, rgba(0,0,0,0.6) 100%)',
+        }}
       />
 
       <div className="relative z-10">
         <GameHeader activeTab={activeTab} onTabChange={setActiveTab} />
 
-        <main className="container mx-auto p-6">
-          {renderCurrentPage()}
-        </main>
+        <main className="container mx-auto p-6">{renderCurrentPage()}</main>
 
         {/* Mission Results Modal */}
         <MissionResultsModal

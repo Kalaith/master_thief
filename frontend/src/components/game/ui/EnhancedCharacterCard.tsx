@@ -1,7 +1,15 @@
 import React from 'react';
 import type { TeamMember } from '../../../types/game';
 import { getAttributeModifier } from '../../../utils/characterCalculations';
-import { Heart, Zap, Star, TrendingUp, Shield, Wrench, AlertCircle } from 'lucide-react';
+import {
+  Heart,
+  Zap,
+  Star,
+  TrendingUp,
+  Shield,
+  Wrench,
+  AlertCircle,
+} from 'lucide-react';
 
 interface EnhancedCharacterCardProps {
   character: TeamMember;
@@ -16,39 +24,39 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
   onRecruit,
   onRemove,
   isRecruited = false,
-  showDetailedStats = false
+  showDetailedStats = false,
 }) => {
   const rarityConfig = {
     common: {
       border: 'border-slate-400',
       glow: 'shadow-slate-400/20',
       text: 'text-slate-400',
-      bg: 'bg-slate-400/10'
+      bg: 'bg-slate-400/10',
     },
     uncommon: {
       border: 'border-emerald-400',
       glow: 'shadow-emerald-400/30',
       text: 'text-emerald-400',
-      bg: 'bg-emerald-400/10'
+      bg: 'bg-emerald-400/10',
     },
     rare: {
       border: 'border-blue-400',
       glow: 'shadow-blue-400/30',
       text: 'text-blue-400',
-      bg: 'bg-blue-400/10'
+      bg: 'bg-blue-400/10',
     },
     epic: {
       border: 'border-purple-400',
       glow: 'shadow-purple-glow',
       text: 'text-purple-400',
-      bg: 'bg-purple-400/10'
+      bg: 'bg-purple-400/10',
     },
     legendary: {
       border: 'border-amber-400',
       glow: 'shadow-amber-glow',
       text: 'text-amber-400',
-      bg: 'bg-amber-400/10'
-    }
+      bg: 'bg-amber-400/10',
+    },
   };
 
   const classIcons = {
@@ -58,7 +66,7 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
     face: '🎭',
     acrobat: '🤸',
     mastermind: '🧠',
-    wildcard: '🃏'
+    wildcard: '🃏',
   };
 
   const getHealthBar = () => {
@@ -78,8 +86,12 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
 
   const getFatigueBar = () => {
     const fatiguePercent = character.fatigue;
-    const fatigueColor = fatiguePercent > 70 ? 'bg-gradient-to-r from-red-500 to-red-400' :
-                        fatiguePercent > 40 ? 'bg-gradient-to-r from-yellow-500 to-amber-400' : 'bg-gradient-to-r from-green-500 to-emerald-400';
+    const fatigueColor =
+      fatiguePercent > 70
+        ? 'bg-gradient-to-r from-red-500 to-red-400'
+        : fatiguePercent > 40
+          ? 'bg-gradient-to-r from-yellow-500 to-amber-400'
+          : 'bg-gradient-to-r from-green-500 to-emerald-400';
 
     return (
       <div className="w-full bg-heist-dark rounded-full h-2 border border-heist-border overflow-hidden">
@@ -94,19 +106,29 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
   const rarity = rarityConfig[character.rarity];
 
   return (
-    <div className={`relative bg-heist-panel rounded-xl border ${rarity.border} ${rarity.glow} p-4 shadow-hud-panel transition-all duration-300 hover:-translate-y-1 hover:shadow-lg`}>
+    <div
+      className={`relative bg-heist-panel rounded-xl border ${rarity.border} ${rarity.glow} p-4 shadow-hud-panel transition-all duration-300 hover:-translate-y-1 hover:shadow-lg`}
+    >
       {/* Rarity indicator bar */}
-      <div className={`absolute top-0 left-0 right-0 h-1 ${rarity.bg} rounded-t-xl`} />
+      <div
+        className={`absolute top-0 left-0 right-0 h-1 ${rarity.bg} rounded-t-xl`}
+      />
 
       {/* Character Header */}
       <div className="flex items-center justify-between mb-3 mt-1">
         <div className="flex items-center space-x-3">
-          <div className={`w-10 h-10 rounded ${rarity.bg} border ${rarity.border} flex items-center justify-center text-2xl`}>
+          <div
+            className={`w-10 h-10 rounded ${rarity.bg} border ${rarity.border} flex items-center justify-center text-2xl`}
+          >
             {classIcons[character.characterClass]}
           </div>
           <div>
-            <h3 className="text-white font-bold text-base uppercase tracking-wide">{character.name}</h3>
-            <p className="text-gray-400 text-xs font-mono">{character.specialty}</p>
+            <h3 className="text-white font-bold text-base uppercase tracking-wide">
+              {character.name}
+            </h3>
+            <p className="text-gray-400 text-xs font-mono">
+              {character.specialty}
+            </p>
           </div>
         </div>
         <div className="text-right">
@@ -114,7 +136,9 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
             <Star className="w-3 h-3" />
             <span>LV.{character.progression.level}</span>
           </div>
-          <div className={`${rarity.text} text-xs font-mono uppercase`}>{character.rarity}</div>
+          <div className={`${rarity.text} text-xs font-mono uppercase`}>
+            {character.rarity}
+          </div>
         </div>
       </div>
 
@@ -130,7 +154,9 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
         <div className="w-full bg-heist-dark rounded-full h-2 border border-heist-border">
           <div
             className="bg-gradient-to-r from-cyan-400 to-blue-400 h-full rounded-full transition-all duration-300"
-            style={{ width: `${(character.progression.experience / character.progression.experienceToNext) * 100}%` }}
+            style={{
+              width: `${(character.progression.experience / character.progression.experienceToNext) * 100}%`,
+            }}
           ></div>
         </div>
       </div>
@@ -142,10 +168,19 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
           const modifierStr = modifier >= 0 ? `+${modifier}` : `${modifier}`;
 
           return (
-            <div key={attr} className="bg-heist-dark/60 border border-heist-border rounded p-2 text-center hover:border-cyan-400/30 transition-colors">
-              <div className="text-xs text-gray-400 uppercase font-mono">{attr.slice(0, 3)}</div>
-              <div className="text-cyan-400 font-bold font-mono text-lg">{value}</div>
-              <div className="text-xs text-gray-500 font-mono">({modifierStr})</div>
+            <div
+              key={attr}
+              className="bg-heist-dark/60 border border-heist-border rounded p-2 text-center hover:border-cyan-400/30 transition-colors"
+            >
+              <div className="text-xs text-gray-400 uppercase font-mono">
+                {attr.slice(0, 3)}
+              </div>
+              <div className="text-cyan-400 font-bold font-mono text-lg">
+                {value}
+              </div>
+              <div className="text-xs text-gray-500 font-mono">
+                ({modifierStr})
+              </div>
             </div>
           );
         })}
@@ -154,7 +189,10 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
       {/* Skills */}
       <div className="grid grid-cols-2 gap-1 mb-3 text-xs">
         {Object.entries(character.skills).map(([skill, value]) => (
-          <div key={skill} className="flex justify-between text-gray-300 font-mono">
+          <div
+            key={skill}
+            className="flex justify-between text-gray-300 font-mono"
+          >
             <span className="capitalize text-gray-400">{skill}:</span>
             <span className="font-bold text-cyan-400">{value}</span>
           </div>
@@ -169,7 +207,9 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
               <Heart className="w-3 h-3" />
               HEALTH
             </span>
-            <span className="text-green-400">{character.derivedStats.health}</span>
+            <span className="text-green-400">
+              {character.derivedStats.health}
+            </span>
           </div>
           {getHealthBar()}
         </div>
@@ -179,7 +219,15 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
               <Zap className="w-3 h-3" />
               FATIGUE
             </span>
-            <span className={character.fatigue > 70 ? 'text-red-400' : character.fatigue > 40 ? 'text-yellow-400' : 'text-green-400'}>
+            <span
+              className={
+                character.fatigue > 70
+                  ? 'text-red-400'
+                  : character.fatigue > 40
+                    ? 'text-yellow-400'
+                    : 'text-green-400'
+              }
+            >
               {character.fatigue}%
             </span>
           </div>
@@ -190,12 +238,20 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
       {/* Loyalty and Status */}
       <div className="grid grid-cols-2 gap-2 mb-3">
         <div className="bg-heist-dark/60 border border-heist-border rounded px-2 py-1">
-          <div className="text-xs text-gray-400 font-mono uppercase mb-1">Loyalty</div>
-          <div className="text-purple-400 font-bold font-mono">{character.loyalty}%</div>
+          <div className="text-xs text-gray-400 font-mono uppercase mb-1">
+            Loyalty
+          </div>
+          <div className="text-purple-400 font-bold font-mono">
+            {character.loyalty}%
+          </div>
         </div>
         <div className="bg-heist-dark/60 border border-heist-border rounded px-2 py-1">
-          <div className="text-xs text-gray-400 font-mono uppercase mb-1">Mastery</div>
-          <div className="text-cyan-400 font-bold font-mono">{character.progression.masteryLevel}/10</div>
+          <div className="text-xs text-gray-400 font-mono uppercase mb-1">
+            Mastery
+          </div>
+          <div className="text-cyan-400 font-bold font-mono">
+            {character.progression.masteryLevel}/10
+          </div>
         </div>
       </div>
 
@@ -207,14 +263,19 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
         </div>
         <div className="grid grid-cols-5 gap-1">
           {['weapon', 'armor', 'accessory', 'tool', 'gadget'].map(slot => {
-            const item = character.equipment[slot as keyof typeof character.equipment];
+            const item =
+              character.equipment[slot as keyof typeof character.equipment];
             return (
               <div
                 key={slot}
                 className={`aspect-square rounded border ${item ? 'border-cyan-400 bg-cyan-400/20' : 'border-heist-border bg-heist-dark/60'} flex items-center justify-center text-xs transition-colors`}
                 title={item ? item.name : `Empty ${slot} slot`}
               >
-                {item ? <Shield className="w-3 h-3 text-cyan-400" /> : <div className="w-1 h-1 bg-gray-600 rounded-full" />}
+                {item ? (
+                  <Shield className="w-3 h-3 text-cyan-400" />
+                ) : (
+                  <div className="w-1 h-1 bg-gray-600 rounded-full" />
+                )}
               </div>
             );
           })}
@@ -227,16 +288,23 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
           <Wrench className="w-3 h-3" />
           Special Ability
         </div>
-        <p className="text-gray-300 text-xs leading-relaxed">"{character.special_ability}"</p>
+        <p className="text-gray-300 text-xs leading-relaxed">
+          "{character.special_ability}"
+        </p>
       </div>
 
       {/* Personality Traits */}
       {character.personalityTraits.length > 0 && (
         <div className="mb-3">
-          <div className="text-xs text-gray-400 font-mono uppercase mb-2">Traits</div>
+          <div className="text-xs text-gray-400 font-mono uppercase mb-2">
+            Traits
+          </div>
           <div className="flex flex-wrap gap-1">
             {character.personalityTraits.slice(0, 3).map(trait => (
-              <span key={trait} className="bg-purple-400/20 border border-purple-400/50 text-purple-400 px-2 py-1 rounded text-xs font-mono">
+              <span
+                key={trait}
+                className="bg-purple-400/20 border border-purple-400/50 text-purple-400 px-2 py-1 rounded text-xs font-mono"
+              >
                 {trait}
               </span>
             ))}
@@ -252,7 +320,10 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
             Injuries
           </div>
           {character.injuries.slice(0, 2).map((injury, index) => (
-            <div key={index} className="text-xs text-red-300 bg-red-400/20 border border-red-400/50 rounded px-2 py-1 mb-1 font-mono">
+            <div
+              key={index}
+              className="text-xs text-red-300 bg-red-400/20 border border-red-400/50 rounded px-2 py-1 mb-1 font-mono"
+            >
               {injury}
             </div>
           ))}
@@ -286,27 +357,39 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
           <div className="text-xs text-gray-400 font-mono space-y-1">
             <div className="flex justify-between">
               <span>Initiative:</span>
-              <span className="text-cyan-400">+{character.derivedStats.initiative}</span>
+              <span className="text-cyan-400">
+                +{character.derivedStats.initiative}
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Carry Capacity:</span>
-              <span className="text-cyan-400">{character.derivedStats.carryingCapacity} lbs</span>
+              <span className="text-cyan-400">
+                {character.derivedStats.carryingCapacity} lbs
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Crit Chance:</span>
-              <span className="text-cyan-400">{(character.derivedStats.criticalChance * 100).toFixed(1)}%</span>
+              <span className="text-cyan-400">
+                {(character.derivedStats.criticalChance * 100).toFixed(1)}%
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Crit Multiplier:</span>
-              <span className="text-cyan-400">{character.derivedStats.criticalMultiplier.toFixed(1)}x</span>
+              <span className="text-cyan-400">
+                {character.derivedStats.criticalMultiplier.toFixed(1)}x
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Heists Completed:</span>
-              <span className="text-cyan-400">{character.progression.heistsCompleted}</span>
+              <span className="text-cyan-400">
+                {character.progression.heistsCompleted}
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Success Rate:</span>
-              <span className="text-cyan-400">{character.progression.successRate.toFixed(1)}%</span>
+              <span className="text-cyan-400">
+                {character.progression.successRate.toFixed(1)}%
+              </span>
             </div>
           </div>
         </div>

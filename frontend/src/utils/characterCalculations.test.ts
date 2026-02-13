@@ -10,20 +10,24 @@ import {
   calculatePowerLevel,
   applyEquipmentBonuses,
 } from './characterCalculations';
-import type { Attributes, TeamMember, CharacterProgression } from '../types/game';
+import type {
+  Attributes,
+  TeamMember,
+  CharacterProgression,
+} from '../types/game';
 
 describe('Character Calculations', () => {
   describe('getAttributeModifier', () => {
     it('should calculate D&D-style attribute modifiers correctly', () => {
-      expect(getAttributeModifier(10)).toBe(0);  // 10-11 = 0
-      expect(getAttributeModifier(11)).toBe(0);  // 11-11 = 0
-      expect(getAttributeModifier(12)).toBe(1);  // 12-11 = 1
-      expect(getAttributeModifier(14)).toBe(2);  // 14-11 = 2
-      expect(getAttributeModifier(16)).toBe(3);  // 16-11 = 3
-      expect(getAttributeModifier(18)).toBe(4);  // 18-11 = 4
-      expect(getAttributeModifier(20)).toBe(5);  // 20-11 = 5
-      expect(getAttributeModifier(8)).toBe(-1);  // 8-11 = -1
-      expect(getAttributeModifier(6)).toBe(-2);  // 6-11 = -2
+      expect(getAttributeModifier(10)).toBe(0); // 10-11 = 0
+      expect(getAttributeModifier(11)).toBe(0); // 11-11 = 0
+      expect(getAttributeModifier(12)).toBe(1); // 12-11 = 1
+      expect(getAttributeModifier(14)).toBe(2); // 14-11 = 2
+      expect(getAttributeModifier(16)).toBe(3); // 16-11 = 3
+      expect(getAttributeModifier(18)).toBe(4); // 18-11 = 4
+      expect(getAttributeModifier(20)).toBe(5); // 20-11 = 5
+      expect(getAttributeModifier(8)).toBe(-1); // 8-11 = -1
+      expect(getAttributeModifier(6)).toBe(-2); // 6-11 = -2
     });
   });
 
@@ -172,8 +176,16 @@ describe('Character Calculations', () => {
         social: 5,
       };
 
-      const lowLevelSkills = calculateSkills(attributes, lowLevelProgression, baseSkills);
-      const highLevelSkills = calculateSkills(attributes, highLevelProgression, baseSkills);
+      const lowLevelSkills = calculateSkills(
+        attributes,
+        lowLevelProgression,
+        baseSkills
+      );
+      const highLevelSkills = calculateSkills(
+        attributes,
+        highLevelProgression,
+        baseSkills
+      );
 
       expect(highLevelSkills.stealth).toBeGreaterThan(lowLevelSkills.stealth);
       expect(highLevelSkills.combat).toBeGreaterThan(lowLevelSkills.combat);
@@ -222,14 +234,14 @@ describe('Character Calculations', () => {
 
   describe('Experience Calculations', () => {
     it('should calculate experience for next level correctly', () => {
-      expect(calculateExperienceToNext(1)).toBe(100);  // 1^2 * 100
-      expect(calculateExperienceToNext(2)).toBe(400);  // 2^2 * 100
-      expect(calculateExperienceToNext(3)).toBe(900);  // 3^2 * 100
+      expect(calculateExperienceToNext(1)).toBe(100); // 1^2 * 100
+      expect(calculateExperienceToNext(2)).toBe(400); // 2^2 * 100
+      expect(calculateExperienceToNext(3)).toBe(900); // 3^2 * 100
       expect(calculateExperienceToNext(5)).toBe(2500); // 5^2 * 100
     });
 
     it('should calculate total experience for level', () => {
-      expect(calculateTotalExperience(1)).toBe(0);   // Starting level
+      expect(calculateTotalExperience(1)).toBe(0); // Starting level
       expect(calculateTotalExperience(2)).toBe(100); // 0 + 100
       expect(calculateTotalExperience(3)).toBe(500); // 100 + 400
       expect(calculateTotalExperience(4)).toBe(1400); // 500 + 900
@@ -312,8 +324,22 @@ describe('Character Calculations', () => {
         background: 'Test',
         rarity: 'common',
         characterClass: 'muscle',
-        attributes: { strength: 10, dexterity: 10, intelligence: 10, wisdom: 10, charisma: 10, constitution: 10 },
-        skills: { stealth: 1, athletics: 1, combat: 1, lockpicking: 1, hacking: 1, social: 1 },
+        attributes: {
+          strength: 10,
+          dexterity: 10,
+          intelligence: 10,
+          wisdom: 10,
+          charisma: 10,
+          constitution: 10,
+        },
+        skills: {
+          stealth: 1,
+          athletics: 1,
+          combat: 1,
+          lockpicking: 1,
+          hacking: 1,
+          social: 1,
+        },
         progression: {
           level: 5,
           experience: 2500,
@@ -325,7 +351,14 @@ describe('Character Calculations', () => {
           successRate: 0,
         },
         equipment: {},
-        derivedStats: { health: 10, stamina: 10, initiative: 0, carryingCapacity: 150, criticalChance: 0.05, criticalMultiplier: 1.5 },
+        derivedStats: {
+          health: 10,
+          stamina: 10,
+          initiative: 0,
+          carryingCapacity: 150,
+          criticalChance: 0.05,
+          criticalMultiplier: 1.5,
+        },
         special_ability: 'Test',
         cost: 1000,
         fatigue: 0,
@@ -338,7 +371,7 @@ describe('Character Calculations', () => {
       const leveledUp = levelUpCharacter(mockCharacter);
 
       expect(leveledUp.progression.attributePoints).toBe(4); // 3 + 1
-      expect(leveledUp.progression.skillPoints).toBe(10);   // 8 + 2
+      expect(leveledUp.progression.skillPoints).toBe(10); // 8 + 2
     });
   });
 
@@ -360,10 +393,19 @@ describe('Character Calculations', () => {
 
     it('should have higher stats for higher rarity', () => {
       const commonAttrs = generateStartingAttributes('infiltrator', 'common');
-      const legendaryAttrs = generateStartingAttributes('infiltrator', 'legendary');
+      const legendaryAttrs = generateStartingAttributes(
+        'infiltrator',
+        'legendary'
+      );
 
-      const commonTotal = Object.values(commonAttrs).reduce((sum, val) => sum + val, 0);
-      const legendaryTotal = Object.values(legendaryAttrs).reduce((sum, val) => sum + val, 0);
+      const commonTotal = Object.values(commonAttrs).reduce(
+        (sum, val) => sum + val,
+        0
+      );
+      const legendaryTotal = Object.values(legendaryAttrs).reduce(
+        (sum, val) => sum + val,
+        0
+      );
 
       expect(legendaryTotal).toBeGreaterThan(commonTotal);
     });
@@ -394,11 +436,41 @@ describe('Character Calculations', () => {
         background: 'Test',
         rarity: 'common',
         characterClass: 'face',
-        attributes: { strength: 8, dexterity: 8, intelligence: 8, wisdom: 8, charisma: 8, constitution: 8 },
-        skills: { stealth: 1, athletics: 1, combat: 1, lockpicking: 1, hacking: 1, social: 1 },
-        progression: { level: 1, experience: 0, experienceToNext: 100, attributePoints: 0, skillPoints: 0, masteryLevel: 0, heistsCompleted: 0, successRate: 0 },
+        attributes: {
+          strength: 8,
+          dexterity: 8,
+          intelligence: 8,
+          wisdom: 8,
+          charisma: 8,
+          constitution: 8,
+        },
+        skills: {
+          stealth: 1,
+          athletics: 1,
+          combat: 1,
+          lockpicking: 1,
+          hacking: 1,
+          social: 1,
+        },
+        progression: {
+          level: 1,
+          experience: 0,
+          experienceToNext: 100,
+          attributePoints: 0,
+          skillPoints: 0,
+          masteryLevel: 0,
+          heistsCompleted: 0,
+          successRate: 0,
+        },
         equipment: {},
-        derivedStats: { health: 10, stamina: 10, initiative: 0, carryingCapacity: 120, criticalChance: 0.05, criticalMultiplier: 1.5 },
+        derivedStats: {
+          health: 10,
+          stamina: 10,
+          initiative: 0,
+          carryingCapacity: 120,
+          criticalChance: 0.05,
+          criticalMultiplier: 1.5,
+        },
         special_ability: 'Test',
         cost: 1000,
         fatigue: 0,
@@ -410,9 +482,32 @@ describe('Character Calculations', () => {
 
       const strongCharacter: TeamMember = {
         ...weakCharacter,
-        attributes: { strength: 18, dexterity: 16, intelligence: 14, wisdom: 14, charisma: 16, constitution: 15 },
-        skills: { stealth: 10, athletics: 8, combat: 9, lockpicking: 8, hacking: 7, social: 10 },
-        progression: { level: 10, experience: 0, experienceToNext: 10000, attributePoints: 0, skillPoints: 0, masteryLevel: 5, heistsCompleted: 50, successRate: 85 },
+        attributes: {
+          strength: 18,
+          dexterity: 16,
+          intelligence: 14,
+          wisdom: 14,
+          charisma: 16,
+          constitution: 15,
+        },
+        skills: {
+          stealth: 10,
+          athletics: 8,
+          combat: 9,
+          lockpicking: 8,
+          hacking: 7,
+          social: 10,
+        },
+        progression: {
+          level: 10,
+          experience: 0,
+          experienceToNext: 10000,
+          attributePoints: 0,
+          skillPoints: 0,
+          masteryLevel: 5,
+          heistsCompleted: 50,
+          successRate: 85,
+        },
       };
 
       const weakPower = calculatePowerLevel(weakCharacter);
@@ -430,11 +525,41 @@ describe('Character Calculations', () => {
         background: 'Test',
         rarity: 'common',
         characterClass: 'muscle',
-        attributes: { strength: 14, dexterity: 12, intelligence: 10, wisdom: 10, charisma: 10, constitution: 14 },
-        skills: { stealth: 5, athletics: 7, combat: 8, lockpicking: 3, hacking: 2, social: 3 },
-        progression: { level: 5, experience: 0, experienceToNext: 2500, attributePoints: 0, skillPoints: 0, masteryLevel: 0, heistsCompleted: 0, successRate: 0 },
+        attributes: {
+          strength: 14,
+          dexterity: 12,
+          intelligence: 10,
+          wisdom: 10,
+          charisma: 10,
+          constitution: 14,
+        },
+        skills: {
+          stealth: 5,
+          athletics: 7,
+          combat: 8,
+          lockpicking: 3,
+          hacking: 2,
+          social: 3,
+        },
+        progression: {
+          level: 5,
+          experience: 0,
+          experienceToNext: 2500,
+          attributePoints: 0,
+          skillPoints: 0,
+          masteryLevel: 0,
+          heistsCompleted: 0,
+          successRate: 0,
+        },
         equipment: {},
-        derivedStats: { health: 15, stamina: 12, initiative: 1, carryingCapacity: 210, criticalChance: 0.06, criticalMultiplier: 1.5 },
+        derivedStats: {
+          health: 15,
+          stamina: 12,
+          initiative: 1,
+          carryingCapacity: 210,
+          criticalChance: 0.06,
+          criticalMultiplier: 1.5,
+        },
         special_ability: 'Test',
         cost: 2000,
         fatigue: 0,
@@ -487,9 +612,32 @@ describe('Character Calculations', () => {
         background: 'Test',
         rarity: 'common',
         characterClass: 'muscle',
-        attributes: { strength: 14, dexterity: 12, intelligence: 10, wisdom: 10, charisma: 10, constitution: 14 },
-        skills: { stealth: 5, athletics: 7, combat: 8, lockpicking: 3, hacking: 2, social: 3 },
-        progression: { level: 5, experience: 0, experienceToNext: 2500, attributePoints: 0, skillPoints: 0, masteryLevel: 0, heistsCompleted: 0, successRate: 0 },
+        attributes: {
+          strength: 14,
+          dexterity: 12,
+          intelligence: 10,
+          wisdom: 10,
+          charisma: 10,
+          constitution: 14,
+        },
+        skills: {
+          stealth: 5,
+          athletics: 7,
+          combat: 8,
+          lockpicking: 3,
+          hacking: 2,
+          social: 3,
+        },
+        progression: {
+          level: 5,
+          experience: 0,
+          experienceToNext: 2500,
+          attributePoints: 0,
+          skillPoints: 0,
+          masteryLevel: 0,
+          heistsCompleted: 0,
+          successRate: 0,
+        },
         equipment: {
           weapon: {
             id: 'strength-weapon',
@@ -502,7 +650,14 @@ describe('Character Calculations', () => {
             cost: 100,
           },
         },
-        derivedStats: { health: 15, stamina: 12, initiative: 1, carryingCapacity: 210, criticalChance: 0.06, criticalMultiplier: 1.5 },
+        derivedStats: {
+          health: 15,
+          stamina: 12,
+          initiative: 1,
+          carryingCapacity: 210,
+          criticalChance: 0.06,
+          criticalMultiplier: 1.5,
+        },
         special_ability: 'Test',
         cost: 2000,
         fatigue: 0,
@@ -515,7 +670,7 @@ describe('Character Calculations', () => {
       const enhanced = applyEquipmentBonuses(mockCharacter);
 
       expect(enhanced.attributes.strength).toBe(16); // 14 + 2
-      expect(enhanced.skills.combat).toBe(9);        // 8 + 1
+      expect(enhanced.skills.combat).toBe(9); // 8 + 1
     });
 
     it('should stack bonuses from multiple equipment pieces', () => {
@@ -526,9 +681,32 @@ describe('Character Calculations', () => {
         background: 'Test',
         rarity: 'common',
         characterClass: 'infiltrator',
-        attributes: { strength: 10, dexterity: 16, intelligence: 12, wisdom: 12, charisma: 10, constitution: 10 },
-        skills: { stealth: 8, athletics: 5, combat: 4, lockpicking: 7, hacking: 4, social: 3 },
-        progression: { level: 5, experience: 0, experienceToNext: 2500, attributePoints: 0, skillPoints: 0, masteryLevel: 0, heistsCompleted: 0, successRate: 0 },
+        attributes: {
+          strength: 10,
+          dexterity: 16,
+          intelligence: 12,
+          wisdom: 12,
+          charisma: 10,
+          constitution: 10,
+        },
+        skills: {
+          stealth: 8,
+          athletics: 5,
+          combat: 4,
+          lockpicking: 7,
+          hacking: 4,
+          social: 3,
+        },
+        progression: {
+          level: 5,
+          experience: 0,
+          experienceToNext: 2500,
+          attributePoints: 0,
+          skillPoints: 0,
+          masteryLevel: 0,
+          heistsCompleted: 0,
+          successRate: 0,
+        },
         equipment: {
           armor: {
             id: 'stealth-armor',
@@ -551,7 +729,14 @@ describe('Character Calculations', () => {
             cost: 300,
           },
         },
-        derivedStats: { health: 12, stamina: 10, initiative: 4, carryingCapacity: 150, criticalChance: 0.08, criticalMultiplier: 1.5 },
+        derivedStats: {
+          health: 12,
+          stamina: 10,
+          initiative: 4,
+          carryingCapacity: 150,
+          criticalChance: 0.08,
+          criticalMultiplier: 1.5,
+        },
         special_ability: 'Test',
         cost: 3000,
         fatigue: 0,
@@ -564,7 +749,7 @@ describe('Character Calculations', () => {
       const enhanced = applyEquipmentBonuses(mockCharacter);
 
       expect(enhanced.attributes.dexterity).toBe(18); // 16 + 2
-      expect(enhanced.skills.stealth).toBe(13);       // 8 + 3 + 2
+      expect(enhanced.skills.stealth).toBe(13); // 8 + 3 + 2
     });
 
     it('should recalculate derived stats with enhanced attributes', () => {
@@ -575,9 +760,32 @@ describe('Character Calculations', () => {
         background: 'Test',
         rarity: 'common',
         characterClass: 'muscle',
-        attributes: { strength: 14, dexterity: 10, intelligence: 10, wisdom: 10, charisma: 10, constitution: 12 },
-        skills: { stealth: 3, athletics: 7, combat: 8, lockpicking: 2, hacking: 2, social: 3 },
-        progression: { level: 5, experience: 0, experienceToNext: 2500, attributePoints: 0, skillPoints: 0, masteryLevel: 0, heistsCompleted: 0, successRate: 0 },
+        attributes: {
+          strength: 14,
+          dexterity: 10,
+          intelligence: 10,
+          wisdom: 10,
+          charisma: 10,
+          constitution: 12,
+        },
+        skills: {
+          stealth: 3,
+          athletics: 7,
+          combat: 8,
+          lockpicking: 2,
+          hacking: 2,
+          social: 3,
+        },
+        progression: {
+          level: 5,
+          experience: 0,
+          experienceToNext: 2500,
+          attributePoints: 0,
+          skillPoints: 0,
+          masteryLevel: 0,
+          heistsCompleted: 0,
+          successRate: 0,
+        },
         equipment: {
           armor: {
             id: 'con-armor',
@@ -590,7 +798,14 @@ describe('Character Calculations', () => {
             cost: 500,
           },
         },
-        derivedStats: { health: 15, stamina: 12, initiative: 0, carryingCapacity: 210, criticalChance: 0.05, criticalMultiplier: 1.5 },
+        derivedStats: {
+          health: 15,
+          stamina: 12,
+          initiative: 0,
+          carryingCapacity: 210,
+          criticalChance: 0.05,
+          criticalMultiplier: 1.5,
+        },
         special_ability: 'Test',
         cost: 2000,
         fatigue: 0,
@@ -602,7 +817,9 @@ describe('Character Calculations', () => {
 
       const enhanced = applyEquipmentBonuses(mockCharacter);
 
-      expect(enhanced.derivedStats.health).toBeGreaterThan(mockCharacter.derivedStats.health);
+      expect(enhanced.derivedStats.health).toBeGreaterThan(
+        mockCharacter.derivedStats.health
+      );
     });
   });
 });

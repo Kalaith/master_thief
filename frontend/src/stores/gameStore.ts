@@ -10,7 +10,7 @@ import type {
   PlayerProgress,
   MissionResult,
   TutorialState,
-  TutorialStep
+  TutorialStep,
 } from '../types/game';
 import { characters } from '../data/characters';
 import { automatedHeists } from '../data/automatedHeists';
@@ -64,20 +64,20 @@ const initialState: GameState = {
   budget: 3500, // Enough for two common thieves
   reputation: 0,
   notoriety: 0,
-  
+
   // Team management
   selectedTeam: [],
   availableCharacters: characters,
-  
+
   // Heist system
   selectedHeist: null,
   automatedHeists: automatedHeists,
   activeAutomatedHeists: [],
-  
+
   // Encounter system
   currentEncounter: 0,
   encounterResults: [],
-  
+
   // Progression
   playerProgress: {
     level: 1,
@@ -87,16 +87,16 @@ const initialState: GameState = {
     territoryControlled: [],
     completedHeistLines: [],
     unlockedEquipment: [],
-    characterRelationships: {}
+    characterRelationships: {},
   },
   heistsCompleted: 0,
   totalEarnings: 0,
-  
+
   // New Phase 1 features
   equipmentInventory: [],
   craftingMaterials: {},
   dailyChallenges: [],
-  achievements: []
+  achievements: [],
 };
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -119,7 +119,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   addTeamMember: (member: TeamMember) => {
     const state = get();
     if (state.budget >= member.cost && state.selectedTeam.length < 4) {
-      const existingIndex = state.selectedTeam.findIndex(m => m.id === member.id);
+      const existingIndex = state.selectedTeam.findIndex(
+        m => m.id === member.id
+      );
       if (existingIndex === -1) {
         set({
           selectedTeam: [...state.selectedTeam, member],
@@ -162,7 +164,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   selectHeist: (heist: HeistTarget) => set({ selectedHeist: heist }),
 
-  setCurrentEncounter: (encounter: number) => set({ currentEncounter: encounter }),
+  setCurrentEncounter: (encounter: number) =>
+    set({ currentEncounter: encounter }),
 
   addEncounterResult: (result: EncounterResult) => {
     const state = get();
@@ -213,7 +216,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         currentStep: null,
         completedSteps: [],
         skipped: false,
-      }
+      },
     });
   },
 
@@ -232,10 +235,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         craftingMaterials: state.craftingMaterials,
         achievements: state.achievements,
         activeAutomatedHeists: state.activeAutomatedHeists, // Save active missions
-        tutorial: state.tutorial // Save tutorial progress
+        tutorial: state.tutorial, // Save tutorial progress
       };
 
-      localStorage.setItem('masterThief_gameState', JSON.stringify(gameStateToSave));
+      localStorage.setItem(
+        'masterThief_gameState',
+        JSON.stringify(gameStateToSave)
+      );
       localStorage.setItem('masterThief_currentPhase', state.currentPhase);
     } catch (error) {
       console.error('Failed to save game:', error);
@@ -245,7 +251,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   loadGame: () => {
     try {
       const savedGameState = localStorage.getItem('masterThief_gameState');
-      const savedCurrentPhase = localStorage.getItem('masterThief_currentPhase');
+      const savedCurrentPhase = localStorage.getItem(
+        'masterThief_currentPhase'
+      );
 
       if (savedGameState) {
         const parsedState = JSON.parse(savedGameState);
@@ -263,7 +271,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             currentStep: null,
             completedSteps: [],
             skipped: false,
-          }
+          },
         });
       }
     } catch (error) {
@@ -277,7 +285,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           currentStep: null,
           completedSteps: [],
           skipped: false,
-        }
+        },
       });
     }
 
@@ -291,27 +299,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const newActiveHeist = {
       heist,
       team: [...team],
-      timeRemaining: heist.duration * 60 // Convert hours to minutes
+      timeRemaining: heist.duration * 60, // Convert hours to minutes
     };
-    
+
     set({
-      activeAutomatedHeists: [...state.activeAutomatedHeists, newActiveHeist]
+      activeAutomatedHeists: [...state.activeAutomatedHeists, newActiveHeist],
     });
-    
+
     // Auto-save after starting mission
     setTimeout(() => get().saveGame(), 0);
   },
 
   updateActiveHeistTime: (heistId: string, timeRemaining: number) => {
     const state = get();
-    const updatedHeists = state.activeAutomatedHeists.map(heist => 
-      heist.heist.id === heistId 
+    const updatedHeists = state.activeAutomatedHeists.map(heist =>
+      heist.heist.id === heistId
         ? { ...heist, timeRemaining: Math.max(0, timeRemaining) }
         : heist
     );
-    
+
     set({ activeAutomatedHeists: updatedHeists });
-    
+
     // Auto-save after time update
     setTimeout(() => get().saveGame(), 0);
   },
@@ -328,12 +336,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Calculate team power and success chance
       const teamPower = team.reduce((total, member) => {
-        const avgSkill = Object.values(member.skills).reduce((a, b) => a + b, 0) / Object.keys(member.skills).length;
-        return total + avgSkill + (member.progression.level * 2);
+        const avgSkill =
+          Object.values(member.skills).reduce((a, b) => a + b, 0) /
+          Object.keys(member.skills).length;
+        return total + avgSkill + member.progression.level * 2;
       }, 0);
 
       const expectedPower = heist.riskLevel * 10; // Risk 1-10 * 10 = 10-100 expected power
-      const successChance = Math.min(95, Math.max(5, (teamPower / expectedPower) * 100));
+      const successChance = Math.min(
+        95,
+        Math.max(5, (teamPower / expectedPower) * 100)
+      );
       const roll = Math.random() * 100;
       const missionSuccess = roll <= successChance;
 
@@ -346,23 +359,34 @@ export const useGameStore = create<GameStore>((set, get) => ({
       if (missionSuccess) {
         // Success rewards
         payout = heist.rewards.basePayout;
-        experiencePerMember = Math.floor(payout * heist.rewards.experienceMultiplier / team.length);
+        experiencePerMember = Math.floor(
+          (payout * heist.rewards.experienceMultiplier) / team.length
+        );
         reputation = Math.floor(heist.riskLevel * 10);
 
         // Equipment loot drop (30% chance for successful missions)
         if (Math.random() < 0.3 && heist.rewards.possibleLoot.length > 0) {
-          const lootItem = heist.rewards.possibleLoot[Math.floor(Math.random() * heist.rewards.possibleLoot.length)];
+          const lootItem =
+            heist.rewards.possibleLoot[
+              Math.floor(Math.random() * heist.rewards.possibleLoot.length)
+            ];
           newEquipment = [lootItem];
         }
       } else {
         // Failure - partial rewards
         payout = Math.floor(heist.rewards.basePayout * 0.2); // 20% of payout
-        experiencePerMember = Math.floor(payout * heist.rewards.experienceMultiplier / team.length / 2); // Half XP
+        experiencePerMember = Math.floor(
+          (payout * heist.rewards.experienceMultiplier) / team.length / 2
+        ); // Half XP
         reputation = 0;
       }
 
       // Track level ups
-      const levelUps: { characterId: number; oldLevel: number; newLevel: number; }[] = [];
+      const levelUps: {
+        characterId: number;
+        oldLevel: number;
+        newLevel: number;
+      }[] = [];
 
       // Update character experience
       const updatedCharacters = [...state.availableCharacters];
@@ -375,18 +399,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
           char.progression = {
             ...char.progression,
             experience: char.progression.experience + experiencePerMember,
-            heistsCompleted: char.progression.heistsCompleted + 1
+            heistsCompleted: char.progression.heistsCompleted + 1,
           };
 
           // Auto-level up if enough XP
-          while (char.progression.experience >= char.progression.experienceToNext) {
+          while (
+            char.progression.experience >= char.progression.experienceToNext
+          ) {
             char.progression = {
               ...char.progression,
               level: char.progression.level + 1,
-              experience: char.progression.experience - char.progression.experienceToNext,
-              experienceToNext: Math.floor(char.progression.experienceToNext * 1.5),
+              experience:
+                char.progression.experience - char.progression.experienceToNext,
+              experienceToNext: Math.floor(
+                char.progression.experienceToNext * 1.5
+              ),
               attributePoints: char.progression.attributePoints + 1,
-              skillPoints: char.progression.skillPoints + 2
+              skillPoints: char.progression.skillPoints + 2,
             };
           }
 
@@ -395,7 +424,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             levelUps.push({
               characterId: char.id,
               oldLevel,
-              newLevel: char.progression.level
+              newLevel: char.progression.level,
             });
           }
 
@@ -413,17 +442,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
           totalXP: experiencePerMember * team.length,
           experiencePerMember,
           reputation,
-          equipmentDrops: newEquipment
+          equipmentDrops: newEquipment,
         },
         teamPower,
         requiredPower: expectedPower,
         successChance,
-        levelUps
+        levelUps,
       };
 
       // Update game state
       set({
-        activeAutomatedHeists: state.activeAutomatedHeists.filter((_, index) => index !== activeHeistIndex),
+        activeAutomatedHeists: state.activeAutomatedHeists.filter(
+          (_, index) => index !== activeHeistIndex
+        ),
         availableCharacters: updatedCharacters,
         budget: state.budget + payout,
         heistsCompleted: state.heistsCompleted + 1,
@@ -431,10 +462,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
         equipmentInventory: [...state.equipmentInventory, ...newEquipment],
         playerProgress: {
           ...state.playerProgress,
-          totalExperience: state.playerProgress.totalExperience + (experiencePerMember * team.length),
-          reputation: state.playerProgress.reputation + reputation
+          totalExperience:
+            state.playerProgress.totalExperience +
+            experiencePerMember * team.length,
+          reputation: state.playerProgress.reputation + reputation,
         },
-        currentMissionResult: missionResult
+        currentMissionResult: missionResult,
       });
 
       // Auto-save after heist completion
@@ -444,7 +477,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   equipItem: (characterId: number, item: Equipment) => {
     const state = get();
-    const characterIndex = state.availableCharacters.findIndex(c => c.id === characterId);
+    const characterIndex = state.availableCharacters.findIndex(
+      c => c.id === characterId
+    );
 
     if (characterIndex >= 0) {
       const updatedCharacters = [...state.availableCharacters];
@@ -456,20 +491,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Equip new item
       character.equipment = {
         ...character.equipment,
-        [item.type]: item
+        [item.type]: item,
       };
 
       updatedCharacters[characterIndex] = character;
 
       // Update inventory: remove new item, add old item if exists
-      let updatedInventory = state.equipmentInventory.filter(i => i.id !== item.id);
+      let updatedInventory = state.equipmentInventory.filter(
+        i => i.id !== item.id
+      );
       if (currentlyEquipped) {
         updatedInventory = [...updatedInventory, currentlyEquipped];
       }
 
       set({
         availableCharacters: updatedCharacters,
-        equipmentInventory: updatedInventory
+        equipmentInventory: updatedInventory,
       });
 
       // Auto-save after equipment change
@@ -479,7 +516,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   unequipItem: (characterId: number, slot: Equipment['type']) => {
     const state = get();
-    const characterIndex = state.availableCharacters.findIndex(c => c.id === characterId);
+    const characterIndex = state.availableCharacters.findIndex(
+      c => c.id === characterId
+    );
 
     if (characterIndex >= 0) {
       const updatedCharacters = [...state.availableCharacters];
@@ -499,7 +538,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         set({
           availableCharacters: updatedCharacters,
           // Add item back to inventory
-          equipmentInventory: [...state.equipmentInventory, equippedItem]
+          equipmentInventory: [...state.equipmentInventory, equippedItem],
         });
 
         // Auto-save after equipment change
@@ -524,7 +563,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Purchase successful
     set({
       budget: state.budget - item.cost,
-      equipmentInventory: [...state.equipmentInventory, item]
+      equipmentInventory: [...state.equipmentInventory, item],
     });
 
     // Auto-save after purchase
@@ -535,27 +574,37 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   levelUpCharacter: (characterId: number) => {
     const state = get();
-    const characterIndex = state.availableCharacters.findIndex(c => c.id === characterId);
-    
+    const characterIndex = state.availableCharacters.findIndex(
+      c => c.id === characterId
+    );
+
     if (characterIndex >= 0) {
       const updatedCharacters = [...state.availableCharacters];
       const character = { ...updatedCharacters[characterIndex] };
-      
-      if (character.progression.experience >= character.progression.experienceToNext) {
+
+      if (
+        character.progression.experience >=
+        character.progression.experienceToNext
+      ) {
         character.progression = {
           ...character.progression,
           level: character.progression.level + 1,
-          experience: character.progression.experience - character.progression.experienceToNext,
-          experienceToNext: (character.progression.level + 1) * (character.progression.level + 1) * 100,
+          experience:
+            character.progression.experience -
+            character.progression.experienceToNext,
+          experienceToNext:
+            (character.progression.level + 1) *
+            (character.progression.level + 1) *
+            100,
           attributePoints: character.progression.attributePoints + 1,
-          skillPoints: character.progression.skillPoints + 2
+          skillPoints: character.progression.skillPoints + 2,
         };
       }
-      
+
       updatedCharacters[characterIndex] = character;
-      
+
       set({
-        availableCharacters: updatedCharacters
+        availableCharacters: updatedCharacters,
       });
     }
   },
@@ -565,14 +614,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({
       playerProgress: {
         ...state.playerProgress,
-        ...progress
-      }
+        ...progress,
+      },
     });
   },
 
   addExperience: (characterId: number, experience: number) => {
     const state = get();
-    const characterIndex = state.availableCharacters.findIndex(c => c.id === characterId);
+    const characterIndex = state.availableCharacters.findIndex(
+      c => c.id === characterId
+    );
 
     if (characterIndex >= 0) {
       const updatedCharacters = [...state.availableCharacters];
@@ -580,19 +631,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       character.progression = {
         ...character.progression,
-        experience: character.progression.experience + experience
+        experience: character.progression.experience + experience,
       };
 
       updatedCharacters[characterIndex] = character;
 
       set({
-        availableCharacters: updatedCharacters
+        availableCharacters: updatedCharacters,
       });
     }
   },
 
   // Mission results modal actions
-  setMissionResult: (result: MissionResult | null) => set({ currentMissionResult: result }),
+  setMissionResult: (result: MissionResult | null) =>
+    set({ currentMissionResult: result }),
 
   clearMissionResult: () => set({ currentMissionResult: null }),
 
@@ -604,7 +656,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         currentStep: 'welcome',
         completedSteps: [],
         skipped: false,
-      }
+      },
     });
     setTimeout(() => get().saveGame(), 0);
   },
@@ -616,7 +668,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         currentStep: null,
         completedSteps: [],
         skipped: true,
-      }
+      },
     });
     setTimeout(() => get().saveGame(), 0);
   },
@@ -645,9 +697,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ? tutorialStepOrder.indexOf(state.tutorial.currentStep)
       : -1;
 
-    const nextStep = currentIndex < tutorialStepOrder.length - 1
-      ? tutorialStepOrder[currentIndex + 1]
-      : null;
+    const nextStep =
+      currentIndex < tutorialStepOrder.length - 1
+        ? tutorialStepOrder[currentIndex + 1]
+        : null;
 
     if (nextStep) {
       set({
@@ -657,7 +710,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           completedSteps: state.tutorial.currentStep
             ? [...state.tutorial.completedSteps, state.tutorial.currentStep]
             : state.tutorial.completedSteps,
-        }
+        },
       });
     } else {
       // Tutorial complete
@@ -666,7 +719,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ...state.tutorial,
           active: false,
           currentStep: null,
-        }
+        },
       });
     }
     setTimeout(() => get().saveGame(), 0);
@@ -678,7 +731,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       tutorial: {
         ...state.tutorial,
         currentStep: step,
-      }
+      },
     });
     setTimeout(() => get().saveGame(), 0);
   },
@@ -690,7 +743,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         tutorial: {
           ...state.tutorial,
           completedSteps: [...state.tutorial.completedSteps, step],
-        }
+        },
       });
       setTimeout(() => get().saveGame(), 0);
     }

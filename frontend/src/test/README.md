@@ -73,6 +73,7 @@ describe('Component/Feature Name', () => {
 ### Known Issues
 
 Some component tests may need adjustment based on actual component implementations:
+
 - Character card components may need optional chaining for optional fields
 - Game header component tests may need specific class names
 

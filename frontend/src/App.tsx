@@ -4,7 +4,12 @@ import { useGameStore } from './stores/gameStore';
 import HeistGame from './components/game/HeistGame';
 
 const App: React.FC = () => {
-  const { loadGame, activeAutomatedHeists, updateActiveHeistTime, completeAutomatedHeist } = useGameStore();
+  const {
+    loadGame,
+    activeAutomatedHeists,
+    updateActiveHeistTime,
+    completeAutomatedHeist,
+  } = useGameStore();
   const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -27,7 +32,7 @@ const App: React.FC = () => {
     timerRef.current = window.setInterval(() => {
       const currentHeists = useGameStore.getState().activeAutomatedHeists;
 
-      currentHeists.forEach((activeHeist) => {
+      currentHeists.forEach(activeHeist => {
         const newTimeRemaining = activeHeist.timeRemaining - 1;
 
         if (newTimeRemaining <= 0) {
@@ -46,7 +51,11 @@ const App: React.FC = () => {
         clearInterval(timerRef.current);
       }
     };
-  }, [activeAutomatedHeists.length]); // Re-create timer when missions change
+  }, [
+    activeAutomatedHeists.length,
+    completeAutomatedHeist,
+    updateActiveHeistTime,
+  ]); // Re-create timer when missions change
 
   return (
     <>

@@ -8,7 +8,8 @@ interface TeamPageProps {
 }
 
 const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
-  const { selectedTeam, removeTeamMember, isCharacterOnMission } = useGameStore();
+  const { selectedTeam, removeTeamMember, isCharacterOnMission } =
+    useGameStore();
   void onBackToGame;
 
   return (
@@ -22,21 +23,34 @@ const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
       {selectedTeam.length === 0 ? (
         <div className="bg-heist-panel border border-heist-border rounded-xl p-12 text-center">
           <Users className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-gray-400 mb-2 uppercase tracking-wide">No Crew Members</h3>
-          <p className="text-gray-500 font-mono text-sm">Visit Recruitment to hire operatives for your crew.</p>
+          <h3 className="text-xl font-bold text-gray-400 mb-2 uppercase tracking-wide">
+            No Crew Members
+          </h3>
+          <p className="text-gray-500 font-mono text-sm">
+            Visit Recruitment to hire operatives for your crew.
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {selectedTeam.map((member) => (
-            <div key={member.id} className="bg-heist-panel border border-purple-400/30 rounded-xl p-6 shadow-hud-panel hover:shadow-purple-glow transition-all">
+          {selectedTeam.map(member => (
+            <div
+              key={member.id}
+              className="bg-heist-panel border border-purple-400/30 rounded-xl p-6 shadow-hud-panel hover:shadow-purple-glow transition-all"
+            >
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-lg font-bold text-cyan-400 mb-1 uppercase tracking-wide">{member.name}</h3>
-                  <p className="text-gray-400 text-sm capitalize font-mono">{member.specialty}</p>
+                  <h3 className="text-lg font-bold text-cyan-400 mb-1 uppercase tracking-wide">
+                    {member.name}
+                  </h3>
+                  <p className="text-gray-400 text-sm capitalize font-mono">
+                    {member.specialty}
+                  </p>
                 </div>
                 <div className="flex items-center gap-1 bg-cyan-400/10 border border-cyan-400/30 rounded px-2 py-1">
                   <Star className="w-4 h-4 text-cyan-400" />
-                  <span className="text-cyan-400 font-bold font-mono">Lv. {member.progression.level}</span>
+                  <span className="text-cyan-400 font-bold font-mono">
+                    Lv. {member.progression.level}
+                  </span>
                 </div>
               </div>
 
@@ -46,21 +60,27 @@ const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
                     <Heart className="w-3 h-3" />
                     HP
                   </div>
-                  <div className="text-emerald-400 font-bold font-mono">{member.derivedStats.health}</div>
+                  <div className="text-emerald-400 font-bold font-mono">
+                    {member.derivedStats.health}
+                  </div>
                 </div>
                 <div className="bg-heist-dark/60 border border-heist-border rounded p-2">
                   <div className="flex items-center gap-1 text-gray-400 text-xs font-mono uppercase mb-1">
                     <Zap className="w-3 h-3" />
                     Fatigue
                   </div>
-                  <div className="text-amber-400 font-bold font-mono">{member.fatigue}%</div>
+                  <div className="text-amber-400 font-bold font-mono">
+                    {member.fatigue}%
+                  </div>
                 </div>
                 <div className="bg-heist-dark/60 border border-heist-border rounded p-2">
                   <div className="flex items-center gap-1 text-gray-400 text-xs font-mono uppercase mb-1">
                     <TrendingUp className="w-3 h-3" />
                     XP
                   </div>
-                  <div className="text-purple-400 font-bold font-mono">{member.progression.experience}</div>
+                  <div className="text-purple-400 font-bold font-mono">
+                    {member.progression.experience}
+                  </div>
                 </div>
               </div>
 
@@ -70,14 +90,27 @@ const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
                   Equipment
                 </div>
                 {Object.entries(member.equipment).map(([slot, item]) => (
-                  <div key={slot} className="flex justify-between items-center bg-heist-dark/60 border border-heist-border rounded p-2">
+                  <div
+                    key={slot}
+                    className="flex justify-between items-center bg-heist-dark/60 border border-heist-border rounded p-2"
+                  >
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-300 text-sm capitalize font-mono">{slot}</span>
-                      <span className="text-gray-500 text-xs font-mono">({item ? item.name : 'Empty'})</span>
+                      <span className="text-gray-300 text-sm capitalize font-mono">
+                        {slot}
+                      </span>
+                      <span className="text-gray-500 text-xs font-mono">
+                        ({item ? item.name : 'Empty'})
+                      </span>
                     </div>
                     {item && (
                       <div className="text-right text-xs">
-                        <div className="text-cyan-400 font-mono">+{Object.values(item.skillBonuses).reduce((a, b) => a + b, 0)}</div>
+                        <div className="text-cyan-400 font-mono">
+                          +
+                          {Object.values(item.skillBonuses).reduce(
+                            (a, b) => a + b,
+                            0
+                          )}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -85,16 +118,23 @@ const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
               </div>
 
               <div className="space-y-1 mb-4">
-                <div className="text-gray-400 text-xs font-mono uppercase mb-2">Top Skills</div>
+                <div className="text-gray-400 text-xs font-mono uppercase mb-2">
+                  Top Skills
+                </div>
                 {Object.entries(member.skills)
-                  .sort(([,a], [,b]) => b - a)
+                  .sort(([, a], [, b]) => b - a)
                   .slice(0, 4)
                   .map(([skill, value]) => (
-                  <div key={skill} className="flex justify-between text-sm font-mono">
-                    <span className="text-gray-300 capitalize">{skill.replace('_', ' ')}</span>
-                    <span className="text-cyan-400 font-bold">{value}</span>
-                  </div>
-                ))}
+                    <div
+                      key={skill}
+                      className="flex justify-between text-sm font-mono"
+                    >
+                      <span className="text-gray-300 capitalize">
+                        {skill.replace('_', ' ')}
+                      </span>
+                      <span className="text-cyan-400 font-bold">{value}</span>
+                    </div>
+                  ))}
               </div>
 
               {isCharacterOnMission(member.id) ? (
