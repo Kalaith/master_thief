@@ -21,7 +21,7 @@ const App: React.FC = () => {
     // Timer interval configuration
     // TESTING: Use 10000 (10 seconds) for faster testing
     // PRODUCTION: Use 60000 (60 seconds / 1 minute) for normal gameplay
-    const TIMER_INTERVAL = 10000; // 10 seconds for testing
+    const timerInterval = 10000; // 10 seconds for testing
 
     // Start mission timer
     timerRef.current = window.setInterval(() => {
@@ -38,7 +38,7 @@ const App: React.FC = () => {
           updateActiveHeistTime(activeHeist.heist.id, newTimeRemaining);
         }
       });
-    }, TIMER_INTERVAL);
+    }, timerInterval);
 
     // Cleanup on unmount
     return () => {

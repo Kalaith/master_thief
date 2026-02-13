@@ -10,7 +10,7 @@ function createCharacter(
   rarity: TeamMember['rarity'],
   characterClass: TeamMember['characterClass'],
   baseSkills: TeamMember['skills'],
-  special_ability: string,
+  specialAbility: string,
   cost: number,
   personalityTraits: string[] = [],
   backstoryEvents: string[] = []
@@ -42,7 +42,7 @@ function createCharacter(
     progression,
     equipment: {},
     derivedStats,
-    special_ability,
+    special_ability: specialAbility,
     cost,
     loyalty: 75 + Math.floor(Math.random() * 25), // 75-100 starting loyalty
     fatigue: 0,
