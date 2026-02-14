@@ -4,27 +4,15 @@ import EquipmentShop from '../ui/EquipmentShop';
 import PageHeader from '../ui/PageHeader';
 import toast from 'react-hot-toast';
 import type { Equipment } from '../../../types/game';
-import {
-  Shield,
-  Package,
-  ShoppingCart,
-  TrendingUp,
-  Star,
-  Sparkles,
-} from 'lucide-react';
+import { Shield, Package, ShoppingCart, TrendingUp, Star, Sparkles } from 'lucide-react';
 
 interface EquipmentPageProps {
   onBackToGame: () => void;
 }
 
 const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
-  const {
-    equipmentInventory,
-    selectedTeam,
-    equipItem,
-    tutorial,
-    nextTutorialStep,
-  } = useGameStore();
+  const { equipmentInventory, selectedTeam, equipItem, tutorial, nextTutorialStep } =
+    useGameStore();
   const [activeTab, setActiveTab] = useState<'inventory' | 'shop'>('inventory');
   void onBackToGame;
 
@@ -32,20 +20,14 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
     setActiveTab(tab);
 
     // Advance tutorial if on equipment-shop-tab step and switching to shop
-    if (
-      tutorial.active &&
-      tutorial.currentStep === 'equipment-shop-tab' &&
-      tab === 'shop'
-    ) {
+    if (tutorial.active && tutorial.currentStep === 'equipment-shop-tab' && tab === 'shop') {
       setTimeout(() => nextTutorialStep(), 500);
     }
   };
 
   const handleEquip = (memberId: number, item: Equipment) => {
     equipItem(memberId, item);
-    toast.success(
-      `Equipped ${item.name} to ${selectedTeam.find(m => m.id === memberId)?.name}`
-    );
+    toast.success(`Equipped ${item.name} to ${selectedTeam.find(m => m.id === memberId)?.name}`);
 
     // Advance tutorial if on equip-character step
     if (tutorial.active && tutorial.currentStep === 'equip-character') {
@@ -99,8 +81,8 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
                 Armory Empty
               </h3>
               <p className="text-gray-500 font-mono text-sm mb-6">
-                No equipment in inventory. Acquire gear through black market
-                procurement or mission rewards.
+                No equipment in inventory. Acquire gear through black market procurement or mission
+                rewards.
               </p>
               <button
                 onClick={() => handleTabChange('shop')}
@@ -154,9 +136,7 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
                     </div>
                   </div>
 
-                  <div className="text-gray-300 text-sm mb-4 font-mono">
-                    {item.description}
-                  </div>
+                  <div className="text-gray-300 text-sm mb-4 font-mono">{item.description}</div>
 
                   {/* Bonuses */}
                   <div className="space-y-2 mb-4">
@@ -167,16 +147,14 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
                           Attributes:
                         </div>
                         <div className="flex flex-wrap gap-1">
-                          {Object.entries(item.attributeBonuses).map(
-                            ([attr, bonus]) => (
-                              <span
-                                key={attr}
-                                className="px-2 py-0.5 bg-cyan-400/10 border border-cyan-400/30 text-cyan-400 text-xs rounded font-mono font-bold"
-                              >
-                                {attr.slice(0, 3).toUpperCase()} +{bonus}
-                              </span>
-                            )
-                          )}
+                          {Object.entries(item.attributeBonuses).map(([attr, bonus]) => (
+                            <span
+                              key={attr}
+                              className="px-2 py-0.5 bg-cyan-400/10 border border-cyan-400/30 text-cyan-400 text-xs rounded font-mono font-bold"
+                            >
+                              {attr.slice(0, 3).toUpperCase()} +{bonus}
+                            </span>
+                          ))}
                         </div>
                       </div>
                     )}
@@ -188,16 +166,14 @@ const EquipmentPage: React.FC<EquipmentPageProps> = ({ onBackToGame }) => {
                           Skills:
                         </div>
                         <div className="flex flex-wrap gap-1">
-                          {Object.entries(item.skillBonuses).map(
-                            ([skill, bonus]) => (
-                              <span
-                                key={skill}
-                                className="px-2 py-0.5 bg-purple-400/10 border border-purple-400/30 text-purple-400 text-xs rounded capitalize font-mono font-bold"
-                              >
-                                {skill} +{bonus}
-                              </span>
-                            )
-                          )}
+                          {Object.entries(item.skillBonuses).map(([skill, bonus]) => (
+                            <span
+                              key={skill}
+                              className="px-2 py-0.5 bg-purple-400/10 border border-purple-400/30 text-purple-400 text-xs rounded capitalize font-mono font-bold"
+                            >
+                              {skill} +{bonus}
+                            </span>
+                          ))}
                         </div>
                       </div>
                     )}

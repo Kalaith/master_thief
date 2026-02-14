@@ -104,22 +104,16 @@ describe('Heist Execution', () => {
       expect(result.roll).toBeGreaterThanOrEqual(1);
       expect(result.roll).toBeLessThanOrEqual(20);
       expect(result.outcome).toBeDefined();
-      expect([
-        'critical_failure',
-        'failure',
-        'neutral',
-        'success',
-        'critical_success',
-      ]).toContain(result.outcome);
+      expect(['critical_failure', 'failure', 'neutral', 'success', 'critical_success']).toContain(
+        result.outcome
+      );
     });
 
     it('should calculate modifiers correctly', () => {
       const result = resolveEncounter(mockMember, mockEncounter);
 
       expect(result.attributeModifier).toBeDefined();
-      expect(result.skillBonus).toBe(
-        mockMember.skills[mockEncounter.primary_skill]
-      );
+      expect(result.skillBonus).toBe(mockMember.skills[mockEncounter.primary_skill]);
       expect(result.total).toBeDefined();
     });
 
@@ -155,9 +149,7 @@ describe('Heist Execution', () => {
       const tiredResult = resolveEncounter(tiredMember, mockEncounter);
 
       // Tired member should have lower modifier (or less likely to succeed due to fatigue penalty)
-      expect(tiredResult.situationalModifiers).toBeLessThan(
-        normalResult.situationalModifiers
-      );
+      expect(tiredResult.situationalModifiers).toBeLessThan(normalResult.situationalModifiers);
     });
 
     it('should bonus high loyalty', () => {
@@ -188,9 +180,7 @@ describe('Heist Execution', () => {
       const healthyResult = resolveEncounter(mockMember, mockEncounter);
       const injuredResult = resolveEncounter(injuredMember, mockEncounter);
 
-      expect(injuredResult.situationalModifiers).toBeLessThan(
-        healthyResult.situationalModifiers
-      );
+      expect(injuredResult.situationalModifiers).toBeLessThan(healthyResult.situationalModifiers);
     });
 
     it('should always be critical_success on natural 20', () => {
@@ -234,11 +224,9 @@ describe('Heist Execution', () => {
 
       if (successResults.length > 0 && failureResults.length > 0) {
         const avgSuccessXP =
-          successResults.reduce((sum, r) => sum + r.experienceGained, 0) /
-          successResults.length;
+          successResults.reduce((sum, r) => sum + r.experienceGained, 0) / successResults.length;
         const avgFailureXP =
-          failureResults.reduce((sum, r) => sum + r.experienceGained, 0) /
-          failureResults.length;
+          failureResults.reduce((sum, r) => sum + r.experienceGained, 0) / failureResults.length;
 
         expect(avgSuccessXP).toBeGreaterThan(avgFailureXP);
       }
@@ -260,11 +248,9 @@ describe('Heist Execution', () => {
 
       if (successResults.length > 0 && failureResults.length > 0) {
         const avgSuccessStress =
-          successResults.reduce((sum, r) => sum + r.stressInflicted, 0) /
-          successResults.length;
+          successResults.reduce((sum, r) => sum + r.stressInflicted, 0) / successResults.length;
         const avgFailureStress =
-          failureResults.reduce((sum, r) => sum + r.stressInflicted, 0) /
-          failureResults.length;
+          failureResults.reduce((sum, r) => sum + r.stressInflicted, 0) / failureResults.length;
 
         expect(avgFailureStress).toBeGreaterThan(avgSuccessStress);
       }
@@ -421,11 +407,7 @@ describe('Heist Execution', () => {
       };
 
       const fogMod = getEnvironmentalModifiers(stealthEncounter, 'day', 'fog');
-      const clearMod = getEnvironmentalModifiers(
-        stealthEncounter,
-        'day',
-        'clear'
-      );
+      const clearMod = getEnvironmentalModifiers(stealthEncounter, 'day', 'clear');
 
       expect(fogMod).toBeGreaterThan(clearMod);
     });
@@ -436,16 +418,8 @@ describe('Heist Execution', () => {
         primary_skill: 'athletics',
       };
 
-      const rainMod = getEnvironmentalModifiers(
-        athleticsEncounter,
-        'day',
-        'rain'
-      );
-      const clearMod = getEnvironmentalModifiers(
-        athleticsEncounter,
-        'day',
-        'clear'
-      );
+      const rainMod = getEnvironmentalModifiers(athleticsEncounter, 'day', 'rain');
+      const clearMod = getEnvironmentalModifiers(athleticsEncounter, 'day', 'clear');
 
       expect(rainMod).toBeLessThan(clearMod);
     });
@@ -588,10 +562,7 @@ describe('Heist Execution', () => {
         },
       ];
 
-      const encounters: Encounter[] = [
-        mockEncounter,
-        { ...mockEncounter, difficulty: 10 },
-      ];
+      const encounters: Encounter[] = [mockEncounter, { ...mockEncounter, difficulty: 10 }];
 
       const strongResult = simulateAutomatedHeist(strongTeam, encounters);
       const weakResult = simulateAutomatedHeist(weakTeam, encounters);
@@ -603,11 +574,7 @@ describe('Heist Execution', () => {
 
     it('should accumulate team fatigue across encounters', () => {
       const team: TeamMember[] = [mockMember];
-      const encounters: Encounter[] = [
-        mockEncounter,
-        { ...mockEncounter },
-        { ...mockEncounter },
-      ];
+      const encounters: Encounter[] = [mockEncounter, { ...mockEncounter }, { ...mockEncounter }];
 
       const result = simulateAutomatedHeist(team, encounters);
 

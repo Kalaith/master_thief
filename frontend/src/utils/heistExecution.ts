@@ -1,9 +1,4 @@
-import type {
-  TeamMember,
-  Encounter,
-  EncounterResult,
-  Equipment,
-} from '../types/game';
+import type { TeamMember, Encounter, EncounterResult, Equipment } from '../types/game';
 import { getAttributeModifier } from './characterCalculations';
 
 // D20 dice system (1-20)
@@ -26,9 +21,7 @@ export function resolveEncounter(
   // Calculate attribute modifier
   let attributeModifier = 0;
   if (encounter.primary_attribute) {
-    attributeModifier = getAttributeModifier(
-      member.attributes[encounter.primary_attribute]
-    );
+    attributeModifier = getAttributeModifier(member.attributes[encounter.primary_attribute]);
   } else {
     // Default attribute mapping for skills
     switch (encounter.primary_skill) {
@@ -75,11 +68,7 @@ export function resolveEncounter(
     }
 
     // Special equipment type bonuses for encounters
-    if (
-      item &&
-      encounter.equipment_bonuses &&
-      encounter.equipment_bonuses[item.type]
-    ) {
+    if (item && encounter.equipment_bonuses && encounter.equipment_bonuses[item.type]) {
       equipmentBonus += encounter.equipment_bonuses[item.type]!;
     }
   });
@@ -492,10 +481,7 @@ export function simulateAutomatedHeist(
     }
 
     // Apply stress to member
-    bestMember.fatigue = Math.min(
-      100,
-      bestMember.fatigue + result.stressInflicted
-    );
+    bestMember.fatigue = Math.min(100, bestMember.fatigue + result.stressInflicted);
 
     // Check for mission failure
     if (result.outcome === 'critical_failure' && Math.random() < 0.3) {

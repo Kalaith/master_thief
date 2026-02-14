@@ -22,18 +22,8 @@ export interface Attributes {
 }
 
 // Equipment system
-export type EquipmentSlot =
-  | 'weapon'
-  | 'armor'
-  | 'accessory'
-  | 'tool'
-  | 'gadget';
-export type EquipmentRarity =
-  | 'basic'
-  | 'improved'
-  | 'advanced'
-  | 'masterwork'
-  | 'legendary';
+export type EquipmentSlot = 'weapon' | 'armor' | 'accessory' | 'tool' | 'gadget';
+export type EquipmentRarity = 'basic' | 'improved' | 'advanced' | 'masterwork' | 'legendary';
 
 export interface Equipment {
   id: string;
@@ -163,12 +153,7 @@ export interface EncounterResult {
   situationalModifiers: number; // Other modifiers
   total: number; // Final result
 
-  outcome:
-    | 'critical_failure'
-    | 'failure'
-    | 'neutral'
-    | 'success'
-    | 'critical_success';
+  outcome: 'critical_failure' | 'failure' | 'neutral' | 'success' | 'critical_success';
 
   // Enhanced results
   experienceGained: number;

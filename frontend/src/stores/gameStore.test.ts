@@ -44,8 +44,7 @@ describe('GameStore', () => {
       const state = useGameStore.getState();
       // Find first affordable character (budget is 1500)
       const character =
-        state.availableCharacters.find(c => c.cost <= state.budget) ||
-        state.availableCharacters[2];
+        state.availableCharacters.find(c => c.cost <= state.budget) || state.availableCharacters[2];
 
       const initialBudget = state.budget;
       state.addTeamMember(character);
@@ -57,12 +56,10 @@ describe('GameStore', () => {
     });
 
     it('should not add team member if insufficient budget', () => {
-      const { setBudget, addTeamMember, availableCharacters } =
-        useGameStore.getState();
+      const { setBudget, addTeamMember, availableCharacters } = useGameStore.getState();
 
       // Find an expensive character
-      const expensiveChar =
-        availableCharacters.find(c => c.cost > 1500) || availableCharacters[0];
+      const expensiveChar = availableCharacters.find(c => c.cost > 1500) || availableCharacters[0];
 
       setBudget(100); // Set low budget
       addTeamMember(expensiveChar);
@@ -73,8 +70,7 @@ describe('GameStore', () => {
     });
 
     it('should not add more than 4 team members', () => {
-      const { addTeamMember, availableCharacters, setBudget } =
-        useGameStore.getState();
+      const { addTeamMember, availableCharacters, setBudget } = useGameStore.getState();
 
       setBudget(100000); // Set high budget
 
@@ -88,8 +84,7 @@ describe('GameStore', () => {
     });
 
     it('should not add duplicate team member', () => {
-      const { addTeamMember, availableCharacters, setBudget } =
-        useGameStore.getState();
+      const { addTeamMember, availableCharacters, setBudget } = useGameStore.getState();
 
       setBudget(10000);
       const character = availableCharacters[0];
@@ -102,14 +97,12 @@ describe('GameStore', () => {
     });
 
     it('should remove team member and refund 50% of signup bonus', () => {
-      const { addTeamMember, removeTeamMember, availableCharacters } =
-        useGameStore.getState();
+      const { addTeamMember, removeTeamMember, availableCharacters } = useGameStore.getState();
 
       // Find first affordable character
       const character =
-        availableCharacters.find(
-          c => c.cost <= useGameStore.getState().budget
-        ) || availableCharacters[2];
+        availableCharacters.find(c => c.cost <= useGameStore.getState().budget) ||
+        availableCharacters[2];
       addTeamMember(character);
 
       const budgetBeforeRemoval = useGameStore.getState().budget;
@@ -118,9 +111,7 @@ describe('GameStore', () => {
       const state = useGameStore.getState();
       expect(state.selectedTeam).toHaveLength(0);
       // Should refund only 50% of character cost
-      expect(state.budget).toBe(
-        budgetBeforeRemoval + Math.floor(character.cost / 2)
-      );
+      expect(state.budget).toBe(budgetBeforeRemoval + Math.floor(character.cost / 2));
     });
   });
 
@@ -195,13 +186,8 @@ describe('GameStore', () => {
     });
 
     it('should equip item to character and move to equipment slot', () => {
-      const {
-        addTeamMember,
-        equipItem,
-        availableCharacters,
-        setBudget,
-        purchaseEquipment,
-      } = useGameStore.getState();
+      const { addTeamMember, equipItem, availableCharacters, setBudget, purchaseEquipment } =
+        useGameStore.getState();
 
       setBudget(10000);
       const character = availableCharacters[0];
@@ -222,9 +208,7 @@ describe('GameStore', () => {
       equipItem(character.id, testEquipment);
 
       const state = useGameStore.getState();
-      const updatedChar = state.availableCharacters.find(
-        c => c.id === character.id
-      );
+      const updatedChar = state.availableCharacters.find(c => c.id === character.id);
 
       expect(updatedChar?.equipment.weapon).toEqual(testEquipment);
       expect(state.equipmentInventory).not.toContainEqual(testEquipment);
@@ -260,9 +244,7 @@ describe('GameStore', () => {
       unequipItem(character.id, 'armor');
 
       const state = useGameStore.getState();
-      const updatedChar = state.availableCharacters.find(
-        c => c.id === character.id
-      );
+      const updatedChar = state.availableCharacters.find(c => c.id === character.id);
 
       expect(updatedChar?.equipment.armor).toBeUndefined();
       expect(state.equipmentInventory).toContainEqual(testEquipment);
@@ -292,9 +274,7 @@ describe('GameStore', () => {
       expect(state.activeAutomatedHeists).toHaveLength(1);
       expect(state.activeAutomatedHeists[0].heist).toEqual(heist);
       expect(state.activeAutomatedHeists[0].team).toEqual(team);
-      expect(state.activeAutomatedHeists[0].timeRemaining).toBe(
-        heist.duration * 60
-      );
+      expect(state.activeAutomatedHeists[0].timeRemaining).toBe(heist.duration * 60);
     });
 
     it('should update heist time remaining', () => {
@@ -367,27 +347,21 @@ describe('GameStore', () => {
       completeAutomatedHeist(heist.id);
 
       const state = useGameStore.getState();
-      const updatedChar = state.availableCharacters.find(
-        c => c.id === character.id
-      );
+      const updatedChar = state.availableCharacters.find(c => c.id === character.id);
 
       // Experience should increase (at minimum from failure, which still grants some XP)
-      expect(updatedChar?.progression.experience).toBeGreaterThanOrEqual(
-        initialXP
-      );
+      expect(updatedChar?.progression.experience).toBeGreaterThanOrEqual(initialXP);
       expect(updatedChar?.progression.heistsCompleted).toBe(1);
     });
   });
 
   describe('Save/Load System', () => {
     it('should save game state to localStorage', () => {
-      const { addTeamMember, saveGame, availableCharacters, setBudget } =
-        useGameStore.getState();
+      const { addTeamMember, saveGame, availableCharacters, setBudget } = useGameStore.getState();
 
       setBudget(5000);
       // Find first affordable character
-      const character =
-        availableCharacters.find(c => c.cost <= 5000) || availableCharacters[0];
+      const character = availableCharacters.find(c => c.cost <= 5000) || availableCharacters[0];
       addTeamMember(character);
       saveGame();
 
@@ -400,20 +374,13 @@ describe('GameStore', () => {
     });
 
     it('should load game state from localStorage', () => {
-      const {
-        addTeamMember,
-        saveGame,
-        loadGame,
-        availableCharacters,
-        setBudget,
-        initializeGame,
-      } = useGameStore.getState();
+      const { addTeamMember, saveGame, loadGame, availableCharacters, setBudget, initializeGame } =
+        useGameStore.getState();
 
       // Set up game state
       setBudget(5000);
       // Find first affordable character
-      const character =
-        availableCharacters.find(c => c.cost <= 5000) || availableCharacters[0];
+      const character = availableCharacters.find(c => c.cost <= 5000) || availableCharacters[0];
       addTeamMember(character);
       saveGame();
 
@@ -455,13 +422,8 @@ describe('GameStore', () => {
     });
 
     it('should reset for next heist', () => {
-      const {
-        addTeamMember,
-        selectHeist,
-        resetForNextHeist,
-        availableCharacters,
-        setBudget,
-      } = useGameStore.getState();
+      const { addTeamMember, selectHeist, resetForNextHeist, availableCharacters, setBudget } =
+        useGameStore.getState();
 
       setBudget(10000);
       addTeamMember(availableCharacters[0]);
@@ -509,9 +471,7 @@ describe('GameStore', () => {
       addExperience(character.id, 500);
 
       const state = useGameStore.getState();
-      const updatedChar = state.availableCharacters.find(
-        c => c.id === character.id
-      );
+      const updatedChar = state.availableCharacters.find(c => c.id === character.id);
 
       expect(updatedChar?.progression.experience).toBe(initialXP + 500);
     });
@@ -545,8 +505,7 @@ describe('GameStore', () => {
     });
 
     it('should clear mission result', () => {
-      const { setMissionResult, clearMissionResult, automatedHeists } =
-        useGameStore.getState();
+      const { setMissionResult, clearMissionResult, automatedHeists } = useGameStore.getState();
 
       const mockResult: MissionResult = {
         heist: automatedHeists[0],

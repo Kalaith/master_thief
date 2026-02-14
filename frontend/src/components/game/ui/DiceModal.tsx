@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type {
-  TeamMember,
-  Encounter,
-  EncounterResult,
-  OutcomeType,
-} from '../../../types/game';
+import type { TeamMember, Encounter, EncounterResult, OutcomeType } from '../../../types/game';
 import { gameData } from '../../../data/gameData';
 
 interface DiceModalProps {
@@ -14,12 +9,7 @@ interface DiceModalProps {
   onClose: () => void;
 }
 
-const DiceModal: React.FC<DiceModalProps> = ({
-  member,
-  encounter,
-  onResult,
-  onClose,
-}) => {
+const DiceModal: React.FC<DiceModalProps> = ({ member, encounter, onResult, onClose }) => {
   const [isRolling, setIsRolling] = useState(false);
   const [diceValue, setDiceValue] = useState<number | null>(null);
   const [result, setResult] = useState<EncounterResult | null>(null);
@@ -36,9 +26,7 @@ const DiceModal: React.FC<DiceModalProps> = ({
         const roll = Math.floor(Math.random() * 20) + 1;
         const skillBonus = member.skills[encounter.primary_skill] || 0;
         const attributeModifier = encounter.primary_attribute
-          ? Math.floor(
-              (member.attributes[encounter.primary_attribute] - 10) / 2
-            )
+          ? Math.floor((member.attributes[encounter.primary_attribute] - 10) / 2)
           : 0;
         const total = roll + skillBonus + attributeModifier;
 
@@ -66,10 +54,8 @@ const DiceModal: React.FC<DiceModalProps> = ({
           situationalModifiers: 0,
           total,
           outcome,
-          experienceGained:
-            outcome === 'success' || outcome === 'critical_success' ? 10 : 5,
-          stressInflicted:
-            outcome === 'failure' || outcome === 'critical_failure' ? 10 : 5,
+          experienceGained: outcome === 'success' || outcome === 'critical_success' ? 10 : 5,
+          stressInflicted: outcome === 'failure' || outcome === 'critical_failure' ? 10 : 5,
           narrativeDescription: 'Dice roll completed',
         };
 
@@ -146,12 +132,10 @@ const DiceModal: React.FC<DiceModalProps> = ({
             result && (
               <div className="space-y-2">
                 <p className="text-noir-text">
-                  <strong>{member.name}</strong> rolled {result.roll} +{' '}
-                  {result.skillBonus} = {result.total}
+                  <strong>{member.name}</strong> rolled {result.roll} + {result.skillBonus} ={' '}
+                  {result.total}
                 </p>
-                <p className="text-noir-text-muted text-sm">
-                  Target: {encounter.difficulty}
-                </p>
+                <p className="text-noir-text-muted text-sm">Target: {encounter.difficulty}</p>
               </div>
             )
           )}
@@ -160,9 +144,7 @@ const DiceModal: React.FC<DiceModalProps> = ({
         {/* Outcome Result */}
         {showResult && result && (
           <div className="space-y-4 mb-6">
-            <div
-              className={`text-center text-xl font-bold ${getOutcomeColor(result.outcome)}`}
-            >
+            <div className={`text-center text-xl font-bold ${getOutcomeColor(result.outcome)}`}>
               {getOutcomeTitle(result.outcome)}
             </div>
             <div className="text-center text-noir-text">

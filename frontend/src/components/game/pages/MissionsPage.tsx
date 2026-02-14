@@ -25,16 +25,12 @@ interface MissionsPageProps {
 }
 
 const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
-  const {
-    activeAutomatedHeists,
-    automatedHeists,
-    selectedTeam,
-    tutorial,
-    nextTutorialStep,
-  } = useGameStore();
+  const { activeAutomatedHeists, automatedHeists, selectedTeam, tutorial, nextTutorialStep } =
+    useGameStore();
   const [selectedHeist, setSelectedHeist] = useState<string | null>(null);
-  const [missionForTeamAssignment, setMissionForTeamAssignment] =
-    useState<AutomatedHeist | null>(null);
+  const [missionForTeamAssignment, setMissionForTeamAssignment] = useState<AutomatedHeist | null>(
+    null
+  );
   void onBackToGame;
 
   // No longer need component-level timer - it's now global in the store
@@ -45,16 +41,13 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
       !heist.unlockConditions ||
       heist.unlockConditions.length === 0 ||
       heist.unlockConditions.some(
-        condition =>
-          condition.includes('always available') ||
-          condition.includes('Tutorial')
+        condition => condition.includes('always available') || condition.includes('Tutorial')
       )
     );
   });
 
   // If no heists are available, show the first few as a fallback for development
-  const displayHeists =
-    availableHeists.length > 0 ? availableHeists : automatedHeists.slice(0, 4);
+  const displayHeists = availableHeists.length > 0 ? availableHeists : automatedHeists.slice(0, 4);
 
   const canStartHeist = (heist: AutomatedHeist) => {
     return (
@@ -137,8 +130,7 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
               <div className="bg-heist-panel border border-heist-border rounded-xl p-12 text-center">
                 <AlertTriangle className="w-16 h-16 text-gray-600 mx-auto mb-4" />
                 <p className="text-gray-400 font-mono">
-                  No targets available yet. Complete more heists to unlock new
-                  operations.
+                  No targets available yet. Complete more heists to unlock new operations.
                 </p>
               </div>
             ) : (
@@ -171,9 +163,7 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
 
                     <div className="grid grid-cols-2 gap-2 mb-3">
                       <div className="bg-heist-dark/60 border border-heist-border rounded p-2">
-                        <div className="text-gray-400 text-xs font-mono uppercase">
-                          Risk Level
-                        </div>
+                        <div className="text-gray-400 text-xs font-mono uppercase">Risk Level</div>
                         <div
                           className={`font-bold font-mono ${
                             heist.riskLevel <= 3
@@ -187,12 +177,9 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
                         </div>
                       </div>
                       <div className="bg-heist-dark/60 border border-heist-border rounded p-2">
-                        <div className="text-gray-400 text-xs font-mono uppercase">
-                          Team Size
-                        </div>
+                        <div className="text-gray-400 text-xs font-mono uppercase">Team Size</div>
                         <div className="text-purple-400 font-bold font-mono">
-                          {heist.requirements.minTeamSize}-
-                          {heist.requirements.maxTeamSize}
+                          {heist.requirements.minTeamSize}-{heist.requirements.maxTeamSize}
                         </div>
                       </div>
                     </div>
@@ -200,9 +187,7 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
                     <div className="flex gap-2">
                       <button
                         onClick={() =>
-                          setSelectedHeist(
-                            selectedHeist === heist.id ? null : heist.id
-                          )
+                          setSelectedHeist(selectedHeist === heist.id ? null : heist.id)
                         }
                         className="flex-1 flex items-center justify-center gap-1 py-2 px-3 bg-heist-dark/60 hover:bg-heist-dark border border-heist-border hover:border-cyan-400/50 text-gray-300 rounded text-sm transition-all font-mono"
                       >
@@ -232,41 +217,30 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
                         <div className="text-sm text-gray-300 space-y-2 font-mono">
                           <div className="flex justify-between">
                             <span className="text-gray-500">Duration:</span>
-                            <span className="text-cyan-400">
-                              {formatDuration(heist.duration)}
-                            </span>
+                            <span className="text-cyan-400">{formatDuration(heist.duration)}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-500">Risk:</span>
-                            <span className="text-cyan-400">
-                              {heist.riskLevel}/10
-                            </span>
+                            <span className="text-cyan-400">{heist.riskLevel}/10</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-500">Reward:</span>
-                            <span className="text-amber-300">
-                              ${heist.rewards.basePayout}
-                            </span>
+                            <span className="text-amber-300">${heist.rewards.basePayout}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-500">Experience:</span>
                             <span className="text-purple-400">
                               {Math.floor(
-                                heist.rewards.basePayout *
-                                  heist.rewards.experienceMultiplier
+                                heist.rewards.basePayout * heist.rewards.experienceMultiplier
                               )}{' '}
                               XP
                             </span>
                           </div>
                           {heist.requirements.requiredSkills && (
                             <div className="pt-2 border-t border-heist-border">
-                              <div className="text-gray-500 mb-1">
-                                Required Skills:
-                              </div>
+                              <div className="text-gray-500 mb-1">Required Skills:</div>
                               <div className="text-cyan-400 text-xs">
-                                {Object.entries(
-                                  heist.requirements.requiredSkills
-                                )
+                                {Object.entries(heist.requirements.requiredSkills)
                                   .map(([skill, level]) => `${skill} ${level}+`)
                                   .join(', ')}
                               </div>
@@ -317,11 +291,8 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
                       <div className="ml-4 bg-amber-400/10 border border-amber-400/30 rounded px-3 py-2">
                         <div className="flex items-center gap-1 text-amber-300 font-bold font-mono text-lg whitespace-nowrap">
                           <Clock className="w-4 h-4" />
-                          {Math.max(
-                            0,
-                            Math.floor(activeHeist.timeRemaining / 60)
-                          )}
-                          h {activeHeist.timeRemaining % 60}m
+                          {Math.max(0, Math.floor(activeHeist.timeRemaining / 60))}h{' '}
+                          {activeHeist.timeRemaining % 60}m
                         </div>
                         <div className="text-gray-500 text-xs font-mono uppercase text-center">
                           Remaining
@@ -368,9 +339,7 @@ const MissionsPage: React.FC<MissionsPageProps> = ({ onBackToGame }) => {
                           className="flex justify-between items-center bg-heist-dark/60 border border-heist-border rounded p-2"
                         >
                           <div className="flex items-center gap-2">
-                            <span className="text-white text-sm font-bold">
-                              {member.name}
-                            </span>
+                            <span className="text-white text-sm font-bold">{member.name}</span>
                             <span className="text-gray-500 text-xs font-mono">
                               ({member.specialty})
                             </span>

@@ -89,16 +89,10 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
             ? 'hover:border-cyan-400/50 hover:shadow-cyan-glow cursor-pointer'
             : 'opacity-50 cursor-not-allowed'
       }`}
-      onClick={
-        showAddRemove && (canAfford || isSelected)
-          ? handleToggleSelection
-          : undefined
-      }
+      onClick={showAddRemove && (canAfford || isSelected) ? handleToggleSelection : undefined}
     >
       {/* Rarity indicator bar */}
-      <div
-        className={`absolute top-0 left-0 right-0 h-1 ${rarity.bg} rounded-t-xl`}
-      />
+      <div className={`absolute top-0 left-0 right-0 h-1 ${rarity.bg} rounded-t-xl`} />
 
       {/* Header with Name and Cost */}
       <div className="flex justify-between items-start mb-3 mt-1">
@@ -106,17 +100,13 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
           <div className="font-bold text-white text-base uppercase tracking-wide">
             {member.name}
           </div>
-          <div
-            className={`text-xs font-mono uppercase tracking-wide ${rarity.text}`}
-          >
+          <div className={`text-xs font-mono uppercase tracking-wide ${rarity.text}`}>
             {member.rarity}
           </div>
         </div>
         <div className="flex items-center gap-1 bg-amber-400/10 border border-amber-400/30 rounded px-2 py-1">
           <DollarSign className="w-4 h-4 text-amber-300" />
-          <span className="text-amber-300 font-bold font-mono">
-            {member.cost.toLocaleString()}
-          </span>
+          <span className="text-amber-300 font-bold font-mono">{member.cost.toLocaleString()}</span>
         </div>
       </div>
 
@@ -126,9 +116,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
       </div>
 
       {/* Background */}
-      <div className="text-gray-400 text-xs mb-4 leading-relaxed">
-        {member.background}
-      </div>
+      <div className="text-gray-400 text-xs mb-4 leading-relaxed">{member.background}</div>
 
       {/* Skills */}
       <div className="space-y-2 mb-4">

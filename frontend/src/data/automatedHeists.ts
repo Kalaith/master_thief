@@ -19,8 +19,7 @@ export const automatedHeists: AutomatedHeist[] = [
       masteryGain: 1,
     },
     riskLevel: 1,
-    description:
-      'Quick pickpocket job in a crowded area. Fast cash for nimble fingers.',
+    description: 'Quick pickpocket job in a crowded area. Fast cash for nimble fingers.',
     unlockConditions: [],
   },
 
@@ -40,8 +39,7 @@ export const automatedHeists: AutomatedHeist[] = [
       masteryGain: 1,
     },
     riskLevel: 1,
-    description:
-      'Break into parked cars for valuables. Quick and relatively safe.',
+    description: 'Break into parked cars for valuables. Quick and relatively safe.',
     unlockConditions: [],
   },
 
@@ -61,8 +59,7 @@ export const automatedHeists: AutomatedHeist[] = [
       masteryGain: 1,
     },
     riskLevel: 1,
-    description:
-      'Grab some high-value items from a store. In and out, no one notices.',
+    description: 'Grab some high-value items from a store. In and out, no one notices.',
     unlockConditions: [],
   },
 
@@ -82,8 +79,7 @@ export const automatedHeists: AutomatedHeist[] = [
       masteryGain: 1,
     },
     riskLevel: 1,
-    description:
-      'Steal a bike from a bike rack. Easy money if you can cut a lock quickly.',
+    description: 'Steal a bike from a bike rack. Easy money if you can cut a lock quickly.',
     unlockConditions: [],
   },
 
@@ -126,8 +122,7 @@ export const automatedHeists: AutomatedHeist[] = [
       masteryGain: 1,
     },
     riskLevel: 1,
-    description:
-      'Low-risk collection from city parking meters. Boring but reliable income.',
+    description: 'Low-risk collection from city parking meters. Boring but reliable income.',
     unlockConditions: [],
   },
 
@@ -192,8 +187,7 @@ export const automatedHeists: AutomatedHeist[] = [
       masteryGain: 4,
     },
     riskLevel: 6,
-    description:
-      'Classic jewelry store job. High security but excellent payoff for skilled teams.',
+    description: 'Classic jewelry store job. High security but excellent payoff for skilled teams.',
     unlockConditions: ['Reputation 500+', 'Complete 10 amateur heists'],
   },
 
@@ -216,10 +210,7 @@ export const automatedHeists: AutomatedHeist[] = [
     riskLevel: 5,
     description:
       'Sophisticated art theft requiring cultural knowledge and finesse. High-class target.',
-    unlockConditions: [
-      'Have character with Face class',
-      'Social skill 8+ in team',
-    ],
+    unlockConditions: ['Have character with Face class', 'Social skill 8+ in team'],
   },
 
   {
@@ -241,10 +232,7 @@ export const automatedHeists: AutomatedHeist[] = [
     riskLevel: 7,
     description:
       'Infiltrate corporate headquarters to steal valuable data. High-tech security systems.',
-    unlockConditions: [
-      'Have team member with Tech class level 5+',
-      'Reputation 1000+',
-    ],
+    unlockConditions: ['Have team member with Tech class level 5+', 'Reputation 1000+'],
   },
 
   // ===== EXPERT TIER =====
@@ -303,13 +291,8 @@ export const automatedHeists: AutomatedHeist[] = [
       masteryGain: 10,
     },
     riskLevel: 9,
-    description:
-      "Ocean's Eleven style casino heist. The big leagues with massive security.",
-    unlockConditions: [
-      'Complete bank vault job',
-      'Have Legendary character',
-      'Reputation 3000+',
-    ],
+    description: "Ocean's Eleven style casino heist. The big leagues with massive security.",
+    unlockConditions: ['Complete bank vault job', 'Have Legendary character', 'Reputation 3000+'],
   },
 
   // ===== LEGENDARY TIER =====
@@ -337,8 +320,7 @@ export const automatedHeists: AutomatedHeist[] = [
       masteryGain: 20,
     },
     riskLevel: 10,
-    description:
-      'The ultimate heist. Fort Knox level security with national implications.',
+    description: 'The ultimate heist. Fort Knox level security with national implications.',
     unlockConditions: [
       'Complete 5 expert heists',
       'Reputation 5000+',
@@ -386,12 +368,8 @@ export const automatedHeists: AutomatedHeist[] = [
       masteryGain: 8,
     },
     riskLevel: 8,
-    description:
-      'High-speed intercept of armored car convoy. Dangerous but lucrative.',
-    unlockConditions: [
-      'Complete 15 professional heists',
-      'Have Muscle character level 7+',
-    ],
+    description: 'High-speed intercept of armored car convoy. Dangerous but lucrative.',
+    unlockConditions: ['Complete 15 professional heists', 'Have Muscle character level 7+'],
   },
 
   // ===== TUTORIAL/TRAINING HEISTS =====
@@ -411,8 +389,7 @@ export const automatedHeists: AutomatedHeist[] = [
       masteryGain: 2, // Higher mastery gain for training
     },
     riskLevel: 0,
-    description:
-      'Safe training environment to improve lockpicking skills. No real risk.',
+    description: 'Safe training environment to improve lockpicking skills. No real risk.',
     unlockConditions: [],
   },
 
@@ -458,26 +435,17 @@ export const automatedHeists: AutomatedHeist[] = [
 ];
 
 // Heist difficulty scaling based on team power level
-export function getScaledHeistPayout(
-  heist: AutomatedHeist,
-  teamPowerLevel: number
-): number {
+export function getScaledHeistPayout(heist: AutomatedHeist, teamPowerLevel: number): number {
   const baseMultiplier = 1 + teamPowerLevel / 100; // Higher level teams get bonus rewards
   const riskMultiplier = 1 + heist.riskLevel / 10;
   return Math.floor(heist.rewards.basePayout * baseMultiplier * riskMultiplier);
 }
 
 // Function to check if heist is available
-export function isHeistAvailable(
-  heist: AutomatedHeist,
-  playerState: GameState
-): boolean {
+export function isHeistAvailable(heist: AutomatedHeist, playerState: GameState): boolean {
   // Check unlock conditions
   for (const condition of heist.unlockConditions || []) {
-    if (
-      condition.includes('always available') ||
-      condition.includes('Tutorial')
-    ) {
+    if (condition.includes('always available') || condition.includes('Tutorial')) {
       continue;
     }
 
@@ -506,15 +474,12 @@ export function isHeistAvailable(
       )?.[0];
       if (requiredClass) {
         const hasClass = playerState.availableCharacters.some(
-          char =>
-            char.characterClass.toLowerCase() === requiredClass.toLowerCase()
+          char => char.characterClass.toLowerCase() === requiredClass.toLowerCase()
         );
         if (!hasClass) return false;
       }
 
-      const requiredCharacter = condition.match(
-        /(The Architect|Legendary)/
-      )?.[0];
+      const requiredCharacter = condition.match(/(The Architect|Legendary)/)?.[0];
       if (requiredCharacter === 'The Architect') {
         const hasArchitect = playerState.availableCharacters.some(
           char => char.name === 'The Architect'
@@ -566,11 +531,7 @@ export function getRecommendedTeam(
   scored.sort((a, b) => b.score - a.score);
   const maxSize = Math.min(heist.requirements.maxTeamSize, scored.length);
 
-  for (
-    let i = 0;
-    i < maxSize && recommended.length < heist.requirements.maxTeamSize;
-    i++
-  ) {
+  for (let i = 0; i < maxSize && recommended.length < heist.requirements.maxTeamSize; i++) {
     if (scored[i].score > 0) {
       recommended.push(scored[i].character);
     }
@@ -595,22 +556,16 @@ export function calculateHeistOutcome(
   team.forEach(member => {
     const skills = heist.requirements.requiredSkills || {};
     Object.entries(skills).forEach(([skill]) => {
-      const memberSkill =
-        member.skills[skill as keyof TeamMember['skills']] || 0;
+      const memberSkill = member.skills[skill as keyof TeamMember['skills']] || 0;
       teamPower += memberSkill;
     });
   });
 
   const difficultyThreshold =
-    Object.values(heist.requirements.requiredSkills || {}).reduce(
-      (sum, req) => sum + req,
-      0
-    ) * heist.requirements.minTeamSize;
+    Object.values(heist.requirements.requiredSkills || {}).reduce((sum, req) => sum + req, 0) *
+    heist.requirements.minTeamSize;
 
-  const successChance = Math.min(
-    95,
-    Math.max(5, (teamPower / difficultyThreshold) * 50 + 25)
-  );
+  const successChance = Math.min(95, Math.max(5, (teamPower / difficultyThreshold) * 50 + 25));
   const success = Math.random() * 100 < successChance;
 
   let payout = 0;
@@ -620,9 +575,7 @@ export function calculateHeistOutcome(
 
   if (success) {
     payout = heist.rewards.basePayout;
-    experience = Math.floor(
-      heist.rewards.basePayout * heist.rewards.experienceMultiplier
-    );
+    experience = Math.floor(heist.rewards.basePayout * heist.rewards.experienceMultiplier);
     masteryGained = heist.rewards.masteryGain;
 
     // Bonus for excellent performance
@@ -633,21 +586,14 @@ export function calculateHeistOutcome(
   } else {
     // Failure consequences
     payout = Math.floor(heist.rewards.basePayout * 0.1); // Small consolation
-    experience = Math.floor(
-      heist.rewards.basePayout * heist.rewards.experienceMultiplier * 0.3
-    );
+    experience = Math.floor(heist.rewards.basePayout * heist.rewards.experienceMultiplier * 0.3);
     masteryGained = Math.floor(heist.rewards.masteryGain * 0.5);
 
     // Risk of injuries based on heist risk level
     const injuryChance = heist.riskLevel * 10;
     team.forEach(member => {
       if (Math.random() * 100 < injuryChance) {
-        const injuryTypes = [
-          'Minor bruises',
-          'Sprained ankle',
-          'Exhaustion',
-          'Stress fracture',
-        ];
+        const injuryTypes = ['Minor bruises', 'Sprained ankle', 'Exhaustion', 'Stress fracture'];
         injuries.push(
           `${member.name}: ${injuryTypes[Math.floor(Math.random() * injuryTypes.length)]}`
         );

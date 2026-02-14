@@ -203,11 +203,7 @@ export const characters: TeamMember[] = [
     'Accent changes with mood and has perfect audio memory, can impersonate any voice heard once',
     3200,
     ['Adaptable', 'Theatrical', 'Observant', 'Identity-fluid'],
-    [
-      'Trained as voice actor',
-      'Struggles with personal identity',
-      'Perfect pitch and audio memory',
-    ]
+    ['Trained as voice actor', 'Struggles with personal identity', 'Perfect pitch and audio memory']
   ),
 
   createCharacter(
@@ -405,11 +401,7 @@ export const characters: TeamMember[] = [
     'Always drinking mocha coffee and sees patterns in everything, can predict enemy moves three steps ahead',
     7500,
     ['Analytical', 'Strategic', 'Academic', 'Pattern-focused'],
-    [
-      'Professor of Game Theory',
-      'Applies chess strategy to real life',
-      'Addicted to mocha coffee',
-    ]
+    ['Professor of Game Theory', 'Applies chess strategy to real life', 'Addicted to mocha coffee']
   ),
 
   createCharacter(
@@ -646,13 +638,11 @@ export const characterRelationships = {
   networkConnections: [
     {
       hub: 'Kingpin Zero',
-      description:
-        'Connected to entire roster through shadowy criminal network',
+      description: 'Connected to entire roster through shadowy criminal network',
     },
     {
       hub: 'The Architect',
-      description:
-        'Connected to all heist locations through building design knowledge',
+      description: 'Connected to all heist locations through building design knowledge',
     },
   ],
 };

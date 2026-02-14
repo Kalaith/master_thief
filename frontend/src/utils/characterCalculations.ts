@@ -1,9 +1,4 @@
-import type {
-  Attributes,
-  TeamMember,
-  DerivedStats,
-  CharacterProgression,
-} from '../types/game';
+import type { Attributes, TeamMember, DerivedStats, CharacterProgression } from '../types/game';
 
 // D&D-style attribute modifier calculation
 export function getAttributeModifier(score: number): number {
@@ -11,10 +6,7 @@ export function getAttributeModifier(score: number): number {
 }
 
 // Calculate derived stats from attributes
-export function calculateDerivedStats(
-  attributes: Attributes,
-  level: number
-): DerivedStats {
+export function calculateDerivedStats(attributes: Attributes, level: number): DerivedStats {
   const conMod = getAttributeModifier(attributes.constitution);
   const dexMod = getAttributeModifier(attributes.dexterity);
   const intMod = getAttributeModifier(attributes.intelligence);
@@ -51,15 +43,9 @@ export function calculateSkills(
     stealth: Math.max(0, baseSkills.stealth + dexMod + wisMod + levelBonus),
     athletics: Math.max(0, baseSkills.athletics + strMod + conMod + levelBonus),
     combat: Math.max(0, baseSkills.combat + strMod + dexMod + levelBonus),
-    lockpicking: Math.max(
-      0,
-      baseSkills.lockpicking + dexMod + intMod + levelBonus
-    ),
+    lockpicking: Math.max(0, baseSkills.lockpicking + dexMod + intMod + levelBonus),
     hacking: Math.max(0, baseSkills.hacking + intMod + wisMod + levelBonus),
-    social: Math.max(
-      0,
-      baseSkills.social + chaMod + wisMod + levelBonus + masteryBonus
-    ),
+    social: Math.max(0, baseSkills.social + chaMod + wisMod + levelBonus + masteryBonus),
   };
 }
 
@@ -88,9 +74,7 @@ export function levelUpCharacter(character: TeamMember): TeamMember {
     progression: {
       ...character.progression,
       level: newLevel,
-      experience:
-        character.progression.experience -
-        character.progression.experienceToNext,
+      experience: character.progression.experience - character.progression.experienceToNext,
       experienceToNext: newExperienceToNext,
       attributePoints: character.progression.attributePoints + 1,
       skillPoints: character.progression.skillPoints + 2,
@@ -176,8 +160,7 @@ export function generateStartingAttributes(
       'charisma',
       'constitution',
     ];
-    const randomAttr =
-      attributes[Math.floor(Math.random() * attributes.length)];
+    const randomAttr = attributes[Math.floor(Math.random() * attributes.length)];
 
     switch (randomAttr) {
       case 'strength':
@@ -241,16 +224,9 @@ export function generateStartingAttributes(
 
 // Calculate character power level (for balancing)
 export function calculatePowerLevel(character: TeamMember): number {
-  const attributeTotal = Object.values(character.attributes).reduce(
-    (sum, attr) => sum + attr,
-    0
-  );
-  const skillTotal = Object.values(character.skills).reduce(
-    (sum, skill) => sum + skill,
-    0
-  );
-  const equipmentBonus =
-    Object.values(character.equipment).filter(Boolean).length * 5;
+  const attributeTotal = Object.values(character.attributes).reduce((sum, attr) => sum + attr, 0);
+  const skillTotal = Object.values(character.skills).reduce((sum, skill) => sum + skill, 0);
+  const equipmentBonus = Object.values(character.equipment).filter(Boolean).length * 5;
   const levelBonus = character.progression.level * 2;
 
   return attributeTotal + skillTotal + equipmentBonus + levelBonus;
@@ -270,18 +246,13 @@ export function restCharacter(character: TeamMember): TeamMember {
     fatigue: Math.max(0, character.fatigue - restRecovery * 10),
     // Heal minor injuries with good constitution
     injuries: character.injuries.filter(injury =>
-      injury.includes('minor') && Math.random() > 0.5 + conMod * 0.1
-        ? false
-        : true
+      injury.includes('minor') && Math.random() > 0.5 + conMod * 0.1 ? false : true
     ),
   };
 }
 
 // Stress and morale system
-export function applyStress(
-  character: TeamMember,
-  stressAmount: number
-): TeamMember {
+export function applyStress(character: TeamMember, stressAmount: number): TeamMember {
   const wisMod = getAttributeModifier(character.attributes.wisdom);
   const stressResistance = Math.max(1, wisMod + 1);
   const actualStress = Math.max(0, stressAmount - stressResistance);
@@ -321,14 +292,11 @@ export function applyEquipmentBonuses(character: TeamMember): TeamMember {
   const enhancedAttributes = {
     ...character.attributes,
     strength: character.attributes.strength + (attributeBonuses.strength || 0),
-    dexterity:
-      character.attributes.dexterity + (attributeBonuses.dexterity || 0),
-    intelligence:
-      character.attributes.intelligence + (attributeBonuses.intelligence || 0),
+    dexterity: character.attributes.dexterity + (attributeBonuses.dexterity || 0),
+    intelligence: character.attributes.intelligence + (attributeBonuses.intelligence || 0),
     wisdom: character.attributes.wisdom + (attributeBonuses.wisdom || 0),
     charisma: character.attributes.charisma + (attributeBonuses.charisma || 0),
-    constitution:
-      character.attributes.constitution + (attributeBonuses.constitution || 0),
+    constitution: character.attributes.constitution + (attributeBonuses.constitution || 0),
   };
 
   const enhancedSkills = {
@@ -345,9 +313,6 @@ export function applyEquipmentBonuses(character: TeamMember): TeamMember {
     ...character,
     attributes: enhancedAttributes,
     skills: enhancedSkills,
-    derivedStats: calculateDerivedStats(
-      enhancedAttributes,
-      character.progression.level
-    ),
+    derivedStats: calculateDerivedStats(enhancedAttributes, character.progression.level),
   };
 }

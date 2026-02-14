@@ -5,15 +5,12 @@ import { MissionService } from '../services/missionService';
 import toast from 'react-hot-toast';
 
 export const useTeamAssignment = () => {
-  const { selectedTeam, startAutomatedHeist, activeAutomatedHeists } =
-    useGameStore();
+  const { selectedTeam, startAutomatedHeist, activeAutomatedHeists } = useGameStore();
   const [assignedTeam, setAssignedTeam] = useState<TeamMember[]>([]);
 
   const toggleTeamMember = (member: TeamMember) => {
     setAssignedTeam(prev =>
-      prev.some(m => m.id === member.id)
-        ? prev.filter(m => m.id !== member.id)
-        : [...prev, member]
+      prev.some(m => m.id === member.id) ? prev.filter(m => m.id !== member.id) : [...prev, member]
     );
   };
 
@@ -23,14 +20,9 @@ export const useTeamAssignment = () => {
     assignedTeam.length >= mission.requirements.minTeamSize &&
     assignedTeam.length <= mission.requirements.maxTeamSize;
 
-  const assignTeamForMission = (
-    mission: AutomatedHeist,
-    onSuccess?: () => void
-  ) => {
+  const assignTeamForMission = (mission: AutomatedHeist, onSuccess?: () => void) => {
     // Check if there are active missions
-    const activeMissionCheck = MissionService.canStartNewMission(
-      activeAutomatedHeists.length
-    );
+    const activeMissionCheck = MissionService.canStartNewMission(activeAutomatedHeists.length);
     if (!activeMissionCheck.canStart) {
       toast.error(activeMissionCheck.message!);
       return false;

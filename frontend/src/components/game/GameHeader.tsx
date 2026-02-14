@@ -1,21 +1,10 @@
 import React from 'react';
 import { useGameStore } from '../../stores/gameStore';
-import {
-  Target,
-  Map,
-  UserPlus,
-  Users,
-  Shield,
-  DollarSign,
-  Trophy,
-  RotateCcw,
-} from 'lucide-react';
+import { Target, Map, UserPlus, Users, Shield, DollarSign, Trophy, RotateCcw } from 'lucide-react';
 
 interface GameHeaderProps {
   activeTab: 'game' | 'missions' | 'recruitment' | 'team' | 'equipment';
-  onTabChange: (
-    tab: 'game' | 'missions' | 'recruitment' | 'team' | 'equipment'
-  ) => void;
+  onTabChange: (tab: 'game' | 'missions' | 'recruitment' | 'team' | 'equipment') => void;
 }
 
 const GameHeader: React.FC<GameHeaderProps> = ({ activeTab, onTabChange }) => {
@@ -29,11 +18,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({ activeTab, onTabChange }) => {
   } = useGameStore();
 
   const handleNewGame = () => {
-    if (
-      window.confirm(
-        'Are you sure you want to start a new game? All progress will be lost!'
-      )
-    ) {
+    if (window.confirm('Are you sure you want to start a new game? All progress will be lost!')) {
       newGame();
     }
   };
@@ -46,9 +31,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({ activeTab, onTabChange }) => {
           <div className="flex items-center gap-3">
             <Target className="w-8 h-8 text-cyan-400" />
             <div>
-              <h1 className="text-3xl font-bold text-cyan-400 tracking-tight">
-                MASTER THIEF
-              </h1>
+              <h1 className="text-3xl font-bold text-cyan-400 tracking-tight">MASTER THIEF</h1>
               <span className="text-gray-400 text-sm font-mono uppercase tracking-wider">
                 Heist Operations Terminal
               </span>
@@ -60,9 +43,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({ activeTab, onTabChange }) => {
             <div className="flex items-center gap-2 bg-heist-panel/80 px-4 py-2 rounded border border-heist-border backdrop-blur-sm">
               <DollarSign className="w-4 h-4 text-amber-300" />
               <div className="flex flex-col">
-                <span className="text-gray-400 text-xs font-mono uppercase">
-                  Budget
-                </span>
+                <span className="text-gray-400 text-xs font-mono uppercase">Budget</span>
                 <span className="text-amber-300 font-bold font-mono text-lg">
                   ${budget.toLocaleString()}
                 </span>
@@ -73,12 +54,8 @@ const GameHeader: React.FC<GameHeaderProps> = ({ activeTab, onTabChange }) => {
             <div className="flex items-center gap-2 bg-heist-panel/80 px-4 py-2 rounded border border-heist-border backdrop-blur-sm">
               <Trophy className="w-4 h-4 text-cyan-400" />
               <div className="flex flex-col">
-                <span className="text-gray-400 text-xs font-mono uppercase">
-                  Completed
-                </span>
-                <span className="text-cyan-400 font-bold font-mono text-lg">
-                  {heistsCompleted}
-                </span>
+                <span className="text-gray-400 text-xs font-mono uppercase">Completed</span>
+                <span className="text-cyan-400 font-bold font-mono text-lg">{heistsCompleted}</span>
               </div>
             </div>
 

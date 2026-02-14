@@ -10,15 +10,9 @@ describe('GameHeader', () => {
     render(<GameHeader activeTab="game" onTabChange={mockOnTabChange} />);
 
     // Get all buttons and check their labels
-    expect(
-      screen.getByRole('button', { name: /operations/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /targets/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /recruit/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /operations/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /targets/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /recruit/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /crew/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /gear/i })).toBeInTheDocument();
   });

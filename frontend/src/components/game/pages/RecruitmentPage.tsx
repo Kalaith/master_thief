@@ -8,14 +8,8 @@ interface RecruitmentPageProps {
 }
 
 const RecruitmentPage: React.FC<RecruitmentPageProps> = ({ onBackToGame }) => {
-  const {
-    availableCharacters,
-    budget,
-    selectedTeam,
-    addTeamMember,
-    tutorial,
-    nextTutorialStep,
-  } = useGameStore();
+  const { availableCharacters, budget, selectedTeam, addTeamMember, tutorial, nextTutorialStep } =
+    useGameStore();
   void onBackToGame;
 
   const handleRecruit = (character: (typeof availableCharacters)[0]) => {
@@ -23,16 +17,10 @@ const RecruitmentPage: React.FC<RecruitmentPageProps> = ({ onBackToGame }) => {
 
     // Advance tutorial if active
     if (tutorial.active) {
-      if (
-        tutorial.currentStep === 'recruit-first-character' &&
-        selectedTeam.length === 0
-      ) {
+      if (tutorial.currentStep === 'recruit-first-character' && selectedTeam.length === 0) {
         // Just recruited first character
         setTimeout(() => nextTutorialStep(), 500);
-      } else if (
-        tutorial.currentStep === 'recruit-second-character' &&
-        selectedTeam.length === 1
-      ) {
+      } else if (tutorial.currentStep === 'recruit-second-character' && selectedTeam.length === 1) {
         // Just recruited second character
         setTimeout(() => nextTutorialStep(), 500);
       }
@@ -58,15 +46,11 @@ const RecruitmentPage: React.FC<RecruitmentPageProps> = ({ onBackToGame }) => {
                 <h3 className="text-lg font-bold text-cyan-400 mb-1 uppercase tracking-wide">
                   {character.name}
                 </h3>
-                <p className="text-gray-400 text-sm capitalize font-mono">
-                  {character.specialty}
-                </p>
+                <p className="text-gray-400 text-sm capitalize font-mono">{character.specialty}</p>
               </div>
               <div className="flex items-center gap-1 bg-amber-400/10 border border-amber-400/30 rounded px-2 py-1">
                 <DollarSign className="w-4 h-4 text-amber-300" />
-                <span className="text-amber-300 font-bold font-mono">
-                  {character.cost}
-                </span>
+                <span className="text-amber-300 font-bold font-mono">{character.cost}</span>
               </div>
             </div>
 
@@ -92,19 +76,12 @@ const RecruitmentPage: React.FC<RecruitmentPageProps> = ({ onBackToGame }) => {
             </div>
 
             <div className="space-y-2 mb-4">
-              <div className="text-gray-400 text-xs font-mono uppercase">
-                Primary Skills:
-              </div>
+              <div className="text-gray-400 text-xs font-mono uppercase">Primary Skills:</div>
               {Object.entries(character.skills)
                 .slice(0, 3)
                 .map(([skill, value]) => (
-                  <div
-                    key={skill}
-                    className="flex justify-between text-sm font-mono"
-                  >
-                    <span className="text-gray-300 capitalize">
-                      {skill.replace('_', ' ')}
-                    </span>
+                  <div key={skill} className="flex justify-between text-sm font-mono">
+                    <span className="text-gray-300 capitalize">{skill.replace('_', ' ')}</span>
                     <span className="text-cyan-400 font-bold">{value}</span>
                   </div>
                 ))}

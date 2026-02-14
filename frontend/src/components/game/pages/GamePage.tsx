@@ -3,8 +3,7 @@ import { useGameStore } from '../../../stores/gameStore';
 import { DollarSign, Trophy, Users, Target, Clock, Timer } from 'lucide-react';
 
 const GameOverview: React.FC = () => {
-  const { budget, selectedTeam, heistsCompleted, activeAutomatedHeists } =
-    useGameStore();
+  const { budget, selectedTeam, heistsCompleted, activeAutomatedHeists } = useGameStore();
 
   console.log('GameOverview component rendered');
 
@@ -19,8 +18,7 @@ const GameOverview: React.FC = () => {
           </h2>
         </div>
         <p className="text-gray-300 max-w-3xl mx-auto text-base leading-relaxed font-mono">
-          Monitor active operations, manage your crew, and plan your next big
-          score.
+          Monitor active operations, manage your crew, and plan your next big score.
         </p>
       </div>
 
@@ -30,9 +28,7 @@ const GameOverview: React.FC = () => {
           <div className="flex items-center gap-3">
             <DollarSign className="w-8 h-8 text-amber-300" />
             <div>
-              <div className="text-gray-400 text-xs font-mono uppercase">
-                Budget
-              </div>
+              <div className="text-gray-400 text-xs font-mono uppercase">Budget</div>
               <div className="text-amber-300 font-bold text-2xl font-mono">
                 ${budget.toLocaleString()}
               </div>
@@ -44,12 +40,8 @@ const GameOverview: React.FC = () => {
           <div className="flex items-center gap-3">
             <Trophy className="w-8 h-8 text-cyan-400" />
             <div>
-              <div className="text-gray-400 text-xs font-mono uppercase">
-                Jobs Completed
-              </div>
-              <div className="text-cyan-400 font-bold text-2xl font-mono">
-                {heistsCompleted}
-              </div>
+              <div className="text-gray-400 text-xs font-mono uppercase">Jobs Completed</div>
+              <div className="text-cyan-400 font-bold text-2xl font-mono">{heistsCompleted}</div>
             </div>
           </div>
         </div>
@@ -58,9 +50,7 @@ const GameOverview: React.FC = () => {
           <div className="flex items-center gap-3">
             <Users className="w-8 h-8 text-purple-400" />
             <div>
-              <div className="text-gray-400 text-xs font-mono uppercase">
-                Crew Size
-              </div>
+              <div className="text-gray-400 text-xs font-mono uppercase">Crew Size</div>
               <div className="text-purple-400 font-bold text-2xl font-mono">
                 {selectedTeam.length}/4
               </div>
@@ -72,9 +62,7 @@ const GameOverview: React.FC = () => {
           <div className="flex items-center gap-3">
             <Target className="w-8 h-8 text-emerald-400" />
             <div>
-              <div className="text-gray-400 text-xs font-mono uppercase">
-                Active Ops
-              </div>
+              <div className="text-gray-400 text-xs font-mono uppercase">Active Ops</div>
               <div className="text-emerald-400 font-bold text-2xl font-mono">
                 {activeAutomatedHeists.length}
               </div>
@@ -102,8 +90,7 @@ const GameOverview: React.FC = () => {
                   </h4>
                   <div className="flex items-center gap-1 text-amber-300 font-bold font-mono text-sm bg-amber-400/10 px-2 py-1 rounded border border-amber-400/30">
                     <Clock className="w-3 h-3" />
-                    {Math.max(0, Math.floor(heist.timeRemaining / 60))}h{' '}
-                    {heist.timeRemaining % 60}m
+                    {Math.max(0, Math.floor(heist.timeRemaining / 60))}h {heist.timeRemaining % 60}m
                   </div>
                 </div>
                 <p className="text-gray-400 text-sm mb-3 leading-relaxed">
@@ -114,9 +101,7 @@ const GameOverview: React.FC = () => {
                     <Users className="w-3 h-3" />
                     <span>{heist.team.length} OPERATORS</span>
                   </div>
-                  <div className="text-purple-400 font-mono">
-                    RISK: {heist.heist.riskLevel}/10
-                  </div>
+                  <div className="text-purple-400 font-mono">RISK: {heist.heist.riskLevel}/10</div>
                 </div>
               </div>
             ))}

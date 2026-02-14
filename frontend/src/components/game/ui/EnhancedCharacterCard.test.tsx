@@ -53,10 +53,7 @@ describe('EnhancedCharacterCard', () => {
     loyalty: 85,
     injuries: [],
     personalityTraits: ['Stealthy', 'Cautious', 'Professional'],
-    backstoryEvents: [
-      'Former intelligence operative',
-      'Specialized in infiltration',
-    ],
+    backstoryEvents: ['Former intelligence operative', 'Specialized in infiltration'],
   };
 
   it('should render character name', () => {
@@ -78,9 +75,7 @@ describe('EnhancedCharacterCard', () => {
   });
 
   it('should display character cost', () => {
-    render(
-      <EnhancedCharacterCard character={mockCharacter} onRecruit={() => {}} />
-    );
+    render(<EnhancedCharacterCard character={mockCharacter} onRecruit={() => {}} />);
 
     expect(screen.getByText(/\$4,500/)).toBeInTheDocument();
   });
@@ -95,12 +90,7 @@ describe('EnhancedCharacterCard', () => {
     const handleClick = vi.fn();
     const user = userEvent.setup();
 
-    render(
-      <EnhancedCharacterCard
-        character={mockCharacter}
-        onRecruit={handleClick}
-      />
-    );
+    render(<EnhancedCharacterCard character={mockCharacter} onRecruit={handleClick} />);
 
     const button = screen.getByRole('button');
     await user.click(button);
@@ -111,11 +101,7 @@ describe('EnhancedCharacterCard', () => {
 
   it('should disable button when character is recruited', () => {
     render(
-      <EnhancedCharacterCard
-        character={mockCharacter}
-        isRecruited={true}
-        onRemove={() => {}}
-      />
+      <EnhancedCharacterCard character={mockCharacter} isRecruited={true} onRemove={() => {}} />
     );
 
     const button = screen.getByRole('button');
@@ -124,11 +110,7 @@ describe('EnhancedCharacterCard', () => {
 
   it('should show recruited text when character is recruited', () => {
     render(
-      <EnhancedCharacterCard
-        character={mockCharacter}
-        isRecruited={true}
-        onRemove={() => {}}
-      />
+      <EnhancedCharacterCard character={mockCharacter} isRecruited={true} onRemove={() => {}} />
     );
 
     expect(screen.getByText(/Remove/)).toBeInTheDocument();
@@ -156,9 +138,7 @@ describe('EnhancedCharacterCard', () => {
       backstoryEvents: ['Epic story'],
       rarity: 'legendary' as const,
     };
-    const { container, rerender } = render(
-      <EnhancedCharacterCard character={mockCharacter} />
-    );
+    const { container, rerender } = render(<EnhancedCharacterCard character={mockCharacter} />);
 
     // Check for rare rarity colors in classes
     expect(container.firstChild).toHaveClass('border-blue-400');
@@ -170,12 +150,7 @@ describe('EnhancedCharacterCard', () => {
   });
 
   it('should display experience progress when showDetails is true', () => {
-    render(
-      <EnhancedCharacterCard
-        character={mockCharacter}
-        showDetailedStats={true}
-      />
-    );
+    render(<EnhancedCharacterCard character={mockCharacter} showDetailedStats={true} />);
 
     // Should show experience (without commas)
     expect(screen.getByText(/1200/)).toBeInTheDocument(); // Current XP
@@ -183,12 +158,7 @@ describe('EnhancedCharacterCard', () => {
   });
 
   it('should show special ability when showDetails is true', () => {
-    render(
-      <EnhancedCharacterCard
-        character={mockCharacter}
-        showDetailedStats={true}
-      />
-    );
+    render(<EnhancedCharacterCard character={mockCharacter} showDetailedStats={true} />);
 
     expect(screen.getByText(/Master of Shadows/i)).toBeInTheDocument();
   });

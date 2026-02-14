@@ -1,10 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type {
-  AutomatedHeist,
-  TeamMember,
-  Equipment,
-} from '../../../types/game';
+import type { AutomatedHeist, TeamMember, Equipment } from '../../../types/game';
 import {
   CheckCircle,
   XCircle,
@@ -41,22 +37,11 @@ interface MissionResultsModalProps {
   onClose: () => void;
 }
 
-const MissionResultsModal: React.FC<MissionResultsModalProps> = ({
-  result,
-  onClose,
-}) => {
+const MissionResultsModal: React.FC<MissionResultsModalProps> = ({ result, onClose }) => {
   if (!result) return null;
 
-  const {
-    heist,
-    team,
-    success,
-    rewards,
-    teamPower,
-    requiredPower,
-    successChance,
-    levelUps,
-  } = result;
+  const { heist, team, success, rewards, teamPower, requiredPower, successChance, levelUps } =
+    result;
 
   return (
     <AnimatePresence>
@@ -123,9 +108,7 @@ const MissionResultsModal: React.FC<MissionResultsModalProps> = ({
                   </div>
                 </div>
                 <div className="bg-heist-panel border border-heist-border rounded p-3">
-                  <div className="text-gray-400 font-mono uppercase text-xs mb-1">
-                    Risk Level
-                  </div>
+                  <div className="text-gray-400 font-mono uppercase text-xs mb-1">Risk Level</div>
                   <div
                     className={`font-mono font-bold ${
                       heist.riskLevel <= 3
@@ -139,17 +122,11 @@ const MissionResultsModal: React.FC<MissionResultsModalProps> = ({
                   </div>
                 </div>
                 <div className="bg-heist-panel border border-heist-border rounded p-3">
-                  <div className="text-gray-400 font-mono uppercase text-xs mb-1">
-                    Team Power
-                  </div>
-                  <div className="text-purple-400 font-mono font-bold">
-                    {teamPower.toFixed(0)}
-                  </div>
+                  <div className="text-gray-400 font-mono uppercase text-xs mb-1">Team Power</div>
+                  <div className="text-purple-400 font-mono font-bold">{teamPower.toFixed(0)}</div>
                 </div>
                 <div className="bg-heist-panel border border-heist-border rounded p-3">
-                  <div className="text-gray-400 font-mono uppercase text-xs mb-1">
-                    Success Rate
-                  </div>
+                  <div className="text-gray-400 font-mono uppercase text-xs mb-1">Success Rate</div>
                   <div
                     className={`font-mono font-bold ${
                       successChance >= 70
@@ -173,9 +150,7 @@ const MissionResultsModal: React.FC<MissionResultsModalProps> = ({
               </h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center p-3 bg-heist-panel border border-amber-400/30 rounded">
-                  <span className="text-gray-300 font-mono uppercase text-sm">
-                    Cash Earned
-                  </span>
+                  <span className="text-gray-300 font-mono uppercase text-sm">Cash Earned</span>
                   <span className="text-2xl font-bold font-mono text-amber-300">
                     ${rewards.payout}
                   </span>
@@ -206,17 +181,10 @@ const MissionResultsModal: React.FC<MissionResultsModalProps> = ({
                       Equipment Found!
                     </div>
                     {rewards.equipmentDrops.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center justify-between mb-2 last:mb-0"
-                      >
+                      <div key={idx} className="flex items-center justify-between mb-2 last:mb-0">
                         <div>
-                          <div className="text-white font-bold">
-                            {item.name}
-                          </div>
-                          <div className="text-gray-400 text-sm">
-                            {item.description}
-                          </div>
+                          <div className="text-white font-bold">{item.name}</div>
+                          <div className="text-gray-400 text-sm">{item.description}</div>
                         </div>
                         <div
                           className={`px-3 py-1 rounded text-xs font-bold font-mono border ${
@@ -248,9 +216,7 @@ const MissionResultsModal: React.FC<MissionResultsModalProps> = ({
               </h3>
               <div className="space-y-2">
                 {team.map(member => {
-                  const levelUp = levelUps.find(
-                    lu => lu.characterId === member.id
-                  );
+                  const levelUp = levelUps.find(lu => lu.characterId === member.id);
                   return (
                     <div
                       key={member.id}
@@ -263,9 +229,7 @@ const MissionResultsModal: React.FC<MissionResultsModalProps> = ({
                       <div className="flex justify-between items-center">
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-white font-bold">
-                              {member.name}
-                            </span>
+                            <span className="text-white font-bold">{member.name}</span>
                             {levelUp && (
                               <motion.div
                                 initial={{ scale: 0 }}
@@ -273,14 +237,11 @@ const MissionResultsModal: React.FC<MissionResultsModalProps> = ({
                                 className="flex items-center gap-1 px-2 py-1 bg-amber-400/20 border border-amber-400 text-amber-400 text-xs font-bold font-mono rounded"
                               >
                                 <TrendingUp className="w-3 h-3" />
-                                LEVEL UP! {levelUp.oldLevel} →{' '}
-                                {levelUp.newLevel}
+                                LEVEL UP! {levelUp.oldLevel} → {levelUp.newLevel}
                               </motion.div>
                             )}
                           </div>
-                          <div className="text-gray-400 text-sm font-mono">
-                            {member.specialty}
-                          </div>
+                          <div className="text-gray-400 text-sm font-mono">{member.specialty}</div>
                         </div>
                         <div className="text-right">
                           <div className="text-cyan-400 font-bold font-mono">
@@ -297,10 +258,8 @@ const MissionResultsModal: React.FC<MissionResultsModalProps> = ({
                             New Rewards:
                           </div>
                           <div className="text-gray-300 text-xs font-mono">
-                            +{levelUp.newLevel - levelUp.oldLevel} Attribute
-                            Points • +
-                            {(levelUp.newLevel - levelUp.oldLevel) * 2} Skill
-                            Points
+                            +{levelUp.newLevel - levelUp.oldLevel} Attribute Points • +
+                            {(levelUp.newLevel - levelUp.oldLevel) * 2} Skill Points
                           </div>
                         </div>
                       )}
@@ -320,15 +279,13 @@ const MissionResultsModal: React.FC<MissionResultsModalProps> = ({
                       Mission Failed
                     </h4>
                     <p className="text-gray-300 text-sm leading-relaxed">
-                      Your team's power ({teamPower.toFixed(0)}) was
-                      insufficient for this mission (required:{' '}
-                      {requiredPower.toFixed(0)}). You received partial rewards
-                      for the attempt.
+                      Your team's power ({teamPower.toFixed(0)}) was insufficient for this mission
+                      (required: {requiredPower.toFixed(0)}). You received partial rewards for the
+                      attempt.
                     </p>
                     <p className="text-gray-300 text-sm mt-2">
-                      <strong className="text-red-400">Tip:</strong> Level up
-                      your team, acquire better equipment, or choose lower-risk
-                      missions.
+                      <strong className="text-red-400">Tip:</strong> Level up your team, acquire
+                      better equipment, or choose lower-risk missions.
                     </p>
                   </div>
                 </div>

@@ -10,11 +10,7 @@ import {
   calculatePowerLevel,
   applyEquipmentBonuses,
 } from './characterCalculations';
-import type {
-  Attributes,
-  TeamMember,
-  CharacterProgression,
-} from '../types/game';
+import type { Attributes, TeamMember, CharacterProgression } from '../types/game';
 
 describe('Character Calculations', () => {
   describe('getAttributeModifier', () => {
@@ -176,16 +172,8 @@ describe('Character Calculations', () => {
         social: 5,
       };
 
-      const lowLevelSkills = calculateSkills(
-        attributes,
-        lowLevelProgression,
-        baseSkills
-      );
-      const highLevelSkills = calculateSkills(
-        attributes,
-        highLevelProgression,
-        baseSkills
-      );
+      const lowLevelSkills = calculateSkills(attributes, lowLevelProgression, baseSkills);
+      const highLevelSkills = calculateSkills(attributes, highLevelProgression, baseSkills);
 
       expect(highLevelSkills.stealth).toBeGreaterThan(lowLevelSkills.stealth);
       expect(highLevelSkills.combat).toBeGreaterThan(lowLevelSkills.combat);
@@ -393,19 +381,10 @@ describe('Character Calculations', () => {
 
     it('should have higher stats for higher rarity', () => {
       const commonAttrs = generateStartingAttributes('infiltrator', 'common');
-      const legendaryAttrs = generateStartingAttributes(
-        'infiltrator',
-        'legendary'
-      );
+      const legendaryAttrs = generateStartingAttributes('infiltrator', 'legendary');
 
-      const commonTotal = Object.values(commonAttrs).reduce(
-        (sum, val) => sum + val,
-        0
-      );
-      const legendaryTotal = Object.values(legendaryAttrs).reduce(
-        (sum, val) => sum + val,
-        0
-      );
+      const commonTotal = Object.values(commonAttrs).reduce((sum, val) => sum + val, 0);
+      const legendaryTotal = Object.values(legendaryAttrs).reduce((sum, val) => sum + val, 0);
 
       expect(legendaryTotal).toBeGreaterThan(commonTotal);
     });
@@ -817,9 +796,7 @@ describe('Character Calculations', () => {
 
       const enhanced = applyEquipmentBonuses(mockCharacter);
 
-      expect(enhanced.derivedStats.health).toBeGreaterThan(
-        mockCharacter.derivedStats.health
-      );
+      expect(enhanced.derivedStats.health).toBeGreaterThan(mockCharacter.derivedStats.health);
     });
   });
 });

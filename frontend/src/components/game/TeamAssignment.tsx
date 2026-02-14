@@ -12,31 +12,17 @@ interface TeamAssignmentProps {
   onCancel: () => void;
 }
 
-const TeamAssignment: React.FC<TeamAssignmentProps> = ({
-  mission,
-  onConfirm,
-  onCancel,
-}) => {
-  const {
-    assignedTeam,
-    availableCharacters,
-    toggleTeamMember,
-    isTeamValid,
-    assignTeamForMission,
-  } = useTeamAssignment();
+const TeamAssignment: React.FC<TeamAssignmentProps> = ({ mission, onConfirm, onCancel }) => {
+  const { assignedTeam, availableCharacters, toggleTeamMember, isTeamValid, assignTeamForMission } =
+    useTeamAssignment();
   const { activeAutomatedHeists } = useGameStore();
 
-  const canStartMission = MissionService.canStartNewMission(
-    activeAutomatedHeists.length
-  ).canStart;
+  const canStartMission = MissionService.canStartNewMission(activeAutomatedHeists.length).canStart;
 
   const handleConfirm = () => {
     const success = assignTeamForMission(mission, onConfirm);
     if (!success) {
-      const validation = MissionService.validateTeamForMission(
-        assignedTeam,
-        mission
-      );
+      const validation = MissionService.validateTeamForMission(assignedTeam, mission);
       toast.error(validation.message!);
     }
   };
@@ -48,8 +34,7 @@ const TeamAssignment: React.FC<TeamAssignmentProps> = ({
           Team Assignment
         </h2>
         <p className="text-gray-300 max-w-2xl mx-auto font-mono">
-          Select team members for the mission:{' '}
-          <span className="text-cyan-400">{mission.name}</span>
+          Select team members for the mission: <span className="text-cyan-400">{mission.name}</span>
         </p>
       </div>
 
@@ -63,11 +48,10 @@ const TeamAssignment: React.FC<TeamAssignmentProps> = ({
                 Active Mission in Progress
               </h3>
               <p className="text-red-200 text-sm font-mono">
-                You cannot start a new mission while you have{' '}
-                {activeAutomatedHeists.length} active mission
-                {activeAutomatedHeists.length > 1 ? 's' : ''}. Please wait for
-                the current mission{activeAutomatedHeists.length > 1 ? 's' : ''}{' '}
-                to complete.
+                You cannot start a new mission while you have {activeAutomatedHeists.length} active
+                mission
+                {activeAutomatedHeists.length > 1 ? 's' : ''}. Please wait for the current mission
+                {activeAutomatedHeists.length > 1 ? 's' : ''} to complete.
               </p>
             </div>
           </div>
@@ -88,9 +72,7 @@ const TeamAssignment: React.FC<TeamAssignmentProps> = ({
             </div>
           </div>
           <div>
-            <span className="text-gray-400 font-mono uppercase">
-              Risk Level:
-            </span>
+            <span className="text-gray-400 font-mono uppercase">Risk Level:</span>
             <div
               className={`font-semibold font-mono ${MissionService.getMissionRiskColor(mission.riskLevel)}`}
             >
@@ -98,9 +80,7 @@ const TeamAssignment: React.FC<TeamAssignmentProps> = ({
             </div>
           </div>
           <div>
-            <span className="text-gray-400 font-mono uppercase">
-              Team Size:
-            </span>
+            <span className="text-gray-400 font-mono uppercase">Team Size:</span>
             <div className="text-cyan-400 font-semibold font-mono">
               {assignedTeam.length} / {mission.requirements.minTeamSize}-
               {mission.requirements.maxTeamSize}
@@ -116,9 +96,7 @@ const TeamAssignment: React.FC<TeamAssignmentProps> = ({
 
         {mission.requirements.requiredSkills && (
           <div className="mt-4">
-            <span className="text-gray-400 text-sm font-mono uppercase">
-              Required Skills:
-            </span>
+            <span className="text-gray-400 text-sm font-mono uppercase">Required Skills:</span>
             <div className="text-cyan-400 text-sm font-mono">
               {MissionService.getMissionRequirementsText(mission)}
             </div>
@@ -186,12 +164,8 @@ const TeamAssignment: React.FC<TeamAssignmentProps> = ({
                       {Object.entries(member.skills)
                         .slice(0, 3)
                         .map(([skill, level]) => (
-                          <div
-                            key={skill}
-                            className="text-xs text-gray-300 font-mono capitalize"
-                          >
-                            {skill}:{' '}
-                            <span className="text-cyan-400">{level}</span>
+                          <div key={skill} className="text-xs text-gray-300 font-mono capitalize">
+                            {skill}: <span className="text-cyan-400">{level}</span>
                           </div>
                         ))}
                     </div>

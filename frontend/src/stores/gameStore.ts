@@ -119,9 +119,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   addTeamMember: (member: TeamMember) => {
     const state = get();
     if (state.budget >= member.cost && state.selectedTeam.length < 4) {
-      const existingIndex = state.selectedTeam.findIndex(
-        m => m.id === member.id
-      );
+      const existingIndex = state.selectedTeam.findIndex(m => m.id === member.id);
       if (existingIndex === -1) {
         set({
           selectedTeam: [...state.selectedTeam, member],
@@ -164,8 +162,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   selectHeist: (heist: HeistTarget) => set({ selectedHeist: heist }),
 
-  setCurrentEncounter: (encounter: number) =>
-    set({ currentEncounter: encounter }),
+  setCurrentEncounter: (encounter: number) => set({ currentEncounter: encounter }),
 
   addEncounterResult: (result: EncounterResult) => {
     const state = get();
@@ -238,10 +235,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         tutorial: state.tutorial, // Save tutorial progress
       };
 
-      localStorage.setItem(
-        'masterThief_gameState',
-        JSON.stringify(gameStateToSave)
-      );
+      localStorage.setItem('masterThief_gameState', JSON.stringify(gameStateToSave));
       localStorage.setItem('masterThief_currentPhase', state.currentPhase);
     } catch (error) {
       console.error('Failed to save game:', error);
@@ -251,9 +245,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   loadGame: () => {
     try {
       const savedGameState = localStorage.getItem('masterThief_gameState');
-      const savedCurrentPhase = localStorage.getItem(
-        'masterThief_currentPhase'
-      );
+      const savedCurrentPhase = localStorage.getItem('masterThief_currentPhase');
 
       if (savedGameState) {
         const parsedState = JSON.parse(savedGameState);
@@ -313,9 +305,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   updateActiveHeistTime: (heistId: string, timeRemaining: number) => {
     const state = get();
     const updatedHeists = state.activeAutomatedHeists.map(heist =>
-      heist.heist.id === heistId
-        ? { ...heist, timeRemaining: Math.max(0, timeRemaining) }
-        : heist
+      heist.heist.id === heistId ? { ...heist, timeRemaining: Math.max(0, timeRemaining) } : heist
     );
 
     set({ activeAutomatedHeists: updatedHeists });
@@ -326,9 +316,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   completeAutomatedHeist: (heistId: string) => {
     const state = get();
-    const activeHeistIndex = state.activeAutomatedHeists.findIndex(
-      ah => ah.heist.id === heistId
-    );
+    const activeHeistIndex = state.activeAutomatedHeists.findIndex(ah => ah.heist.id === heistId);
 
     if (activeHeistIndex >= 0) {
       const completedHeist = state.activeAutomatedHeists[activeHeistIndex];
@@ -343,10 +331,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }, 0);
 
       const expectedPower = heist.riskLevel * 10; // Risk 1-10 * 10 = 10-100 expected power
-      const successChance = Math.min(
-        95,
-        Math.max(5, (teamPower / expectedPower) * 100)
-      );
+      const successChance = Math.min(95, Math.max(5, (teamPower / expectedPower) * 100));
       const roll = Math.random() * 100;
       const missionSuccess = roll <= successChance;
 
@@ -403,17 +388,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
           };
 
           // Auto-level up if enough XP
-          while (
-            char.progression.experience >= char.progression.experienceToNext
-          ) {
+          while (char.progression.experience >= char.progression.experienceToNext) {
             char.progression = {
               ...char.progression,
               level: char.progression.level + 1,
-              experience:
-                char.progression.experience - char.progression.experienceToNext,
-              experienceToNext: Math.floor(
-                char.progression.experienceToNext * 1.5
-              ),
+              experience: char.progression.experience - char.progression.experienceToNext,
+              experienceToNext: Math.floor(char.progression.experienceToNext * 1.5),
               attributePoints: char.progression.attributePoints + 1,
               skillPoints: char.progression.skillPoints + 2,
             };
@@ -462,9 +442,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         equipmentInventory: [...state.equipmentInventory, ...newEquipment],
         playerProgress: {
           ...state.playerProgress,
-          totalExperience:
-            state.playerProgress.totalExperience +
-            experiencePerMember * team.length,
+          totalExperience: state.playerProgress.totalExperience + experiencePerMember * team.length,
           reputation: state.playerProgress.reputation + reputation,
         },
         currentMissionResult: missionResult,
@@ -477,9 +455,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   equipItem: (characterId: number, item: Equipment) => {
     const state = get();
-    const characterIndex = state.availableCharacters.findIndex(
-      c => c.id === characterId
-    );
+    const characterIndex = state.availableCharacters.findIndex(c => c.id === characterId);
 
     if (characterIndex >= 0) {
       const updatedCharacters = [...state.availableCharacters];
@@ -497,9 +473,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       updatedCharacters[characterIndex] = character;
 
       // Update inventory: remove new item, add old item if exists
-      let updatedInventory = state.equipmentInventory.filter(
-        i => i.id !== item.id
-      );
+      let updatedInventory = state.equipmentInventory.filter(i => i.id !== item.id);
       if (currentlyEquipped) {
         updatedInventory = [...updatedInventory, currentlyEquipped];
       }
@@ -516,9 +490,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   unequipItem: (characterId: number, slot: Equipment['type']) => {
     const state = get();
-    const characterIndex = state.availableCharacters.findIndex(
-      c => c.id === characterId
-    );
+    const characterIndex = state.availableCharacters.findIndex(c => c.id === characterId);
 
     if (characterIndex >= 0) {
       const updatedCharacters = [...state.availableCharacters];
@@ -574,28 +546,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   levelUpCharacter: (characterId: number) => {
     const state = get();
-    const characterIndex = state.availableCharacters.findIndex(
-      c => c.id === characterId
-    );
+    const characterIndex = state.availableCharacters.findIndex(c => c.id === characterId);
 
     if (characterIndex >= 0) {
       const updatedCharacters = [...state.availableCharacters];
       const character = { ...updatedCharacters[characterIndex] };
 
-      if (
-        character.progression.experience >=
-        character.progression.experienceToNext
-      ) {
+      if (character.progression.experience >= character.progression.experienceToNext) {
         character.progression = {
           ...character.progression,
           level: character.progression.level + 1,
-          experience:
-            character.progression.experience -
-            character.progression.experienceToNext,
+          experience: character.progression.experience - character.progression.experienceToNext,
           experienceToNext:
-            (character.progression.level + 1) *
-            (character.progression.level + 1) *
-            100,
+            (character.progression.level + 1) * (character.progression.level + 1) * 100,
           attributePoints: character.progression.attributePoints + 1,
           skillPoints: character.progression.skillPoints + 2,
         };
@@ -621,9 +584,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addExperience: (characterId: number, experience: number) => {
     const state = get();
-    const characterIndex = state.availableCharacters.findIndex(
-      c => c.id === characterId
-    );
+    const characterIndex = state.availableCharacters.findIndex(c => c.id === characterId);
 
     if (characterIndex >= 0) {
       const updatedCharacters = [...state.availableCharacters];
@@ -643,8 +604,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   // Mission results modal actions
-  setMissionResult: (result: MissionResult | null) =>
-    set({ currentMissionResult: result }),
+  setMissionResult: (result: MissionResult | null) => set({ currentMissionResult: result }),
 
   clearMissionResult: () => set({ currentMissionResult: null }),
 
@@ -698,9 +658,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       : -1;
 
     const nextStep =
-      currentIndex < tutorialStepOrder.length - 1
-        ? tutorialStepOrder[currentIndex + 1]
-        : null;
+      currentIndex < tutorialStepOrder.length - 1 ? tutorialStepOrder[currentIndex + 1] : null;
 
     if (nextStep) {
       set({

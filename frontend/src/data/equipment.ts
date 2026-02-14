@@ -8,15 +8,11 @@ export const basicEquipment: Equipment[] = [
     name: 'Standard Crowbar',
     type: 'weapon',
     rarity: 'basic',
-    description:
-      'A reliable prying tool. Simple, effective, and gets the job done.',
+    description: 'A reliable prying tool. Simple, effective, and gets the job done.',
     attributeBonuses: { strength: 1 },
     skillBonuses: { lockpicking: 2, combat: 1 },
     cost: 150,
-    specialEffects: [
-      'Can force locked doors',
-      'Intimidation bonus in conversations',
-    ],
+    specialEffects: ['Can force locked doors', 'Intimidation bonus in conversations'],
   },
 
   {
@@ -24,8 +20,7 @@ export const basicEquipment: Equipment[] = [
     name: 'Professional Lockpicks',
     type: 'weapon',
     rarity: 'improved',
-    description:
-      'High-quality picks for the discerning burglar. Precision engineered.',
+    description: 'High-quality picks for the discerning burglar. Precision engineered.',
     attributeBonuses: { dexterity: 2 },
     skillBonuses: { lockpicking: 4, stealth: 1 },
     cost: 750,
@@ -51,17 +46,12 @@ export const basicEquipment: Equipment[] = [
     name: 'Whisper Gun',
     type: 'weapon',
     rarity: 'masterwork',
-    description:
-      'Silent, non-lethal takedown weapon. Favored by professionals.',
+    description: 'Silent, non-lethal takedown weapon. Favored by professionals.',
     attributeBonuses: { dexterity: 2, wisdom: 1 },
     skillBonuses: { stealth: 5, combat: 3 },
     cost: 8500,
     requiredLevel: 8,
-    specialEffects: [
-      'Silent takedowns',
-      'No alarms triggered',
-      '+50% stealth during combat',
-    ],
+    specialEffects: ['Silent takedowns', 'No alarms triggered', '+50% stealth during combat'],
   },
 
   // ===== ARMOR =====
@@ -70,8 +60,7 @@ export const basicEquipment: Equipment[] = [
     name: 'Inconspicuous Clothing',
     type: 'armor',
     rarity: 'basic',
-    description:
-      'Blend in with the crowd. Nothing says innocent like looking ordinary.',
+    description: 'Blend in with the crowd. Nothing says innocent like looking ordinary.',
     attributeBonuses: { charisma: 1 },
     skillBonuses: { social: 2, stealth: 1 },
     cost: 200,
@@ -82,8 +71,7 @@ export const basicEquipment: Equipment[] = [
     name: 'Reinforced Leather Jacket',
     type: 'armor',
     rarity: 'improved',
-    description:
-      'Stylish protection with hidden armor plating. Looks cool, saves lives.',
+    description: 'Stylish protection with hidden armor plating. Looks cool, saves lives.',
     attributeBonuses: { constitution: 2, charisma: 1 },
     skillBonuses: { combat: 2 },
     cost: 1200,
@@ -95,17 +83,12 @@ export const basicEquipment: Equipment[] = [
     name: 'Adaptive Stealth Suit',
     type: 'armor',
     rarity: 'advanced',
-    description:
-      'High-tech fabric that adapts to surroundings. Military surplus.',
+    description: 'High-tech fabric that adapts to surroundings. Military surplus.',
     attributeBonuses: { dexterity: 3, constitution: 1 },
     skillBonuses: { stealth: 6, athletics: 2 },
     cost: 6500,
     requiredLevel: 6,
-    specialEffects: [
-      'Chameleon effect',
-      'Reduced detection radius',
-      'Climate controlled',
-    ],
+    specialEffects: ['Chameleon effect', 'Reduced detection radius', 'Climate controlled'],
   },
 
   // ===== ACCESSORIES =====
@@ -114,8 +97,7 @@ export const basicEquipment: Equipment[] = [
     name: 'Lucky Coin',
     type: 'accessory',
     rarity: 'basic',
-    description:
-      'Everyone needs a little luck. This old coin has seen many heists.',
+    description: 'Everyone needs a little luck. This old coin has seen many heists.',
     attributeBonuses: { charisma: 1 },
     skillBonuses: { social: 1 },
     cost: 50,
@@ -131,10 +113,7 @@ export const basicEquipment: Equipment[] = [
     attributeBonuses: { charisma: 2, intelligence: 1 },
     skillBonuses: { social: 4, stealth: 2 },
     cost: 2000,
-    specialEffects: [
-      'Access to restricted areas',
-      'Reduced suspicion when caught',
-    ],
+    specialEffects: ['Access to restricted areas', 'Reduced suspicion when caught'],
   },
 
   {
@@ -142,8 +121,7 @@ export const basicEquipment: Equipment[] = [
     name: 'Neural Enhancement Implant',
     type: 'accessory',
     rarity: 'legendary',
-    description:
-      'Experimental cybernetic upgrade. Enhances cognitive function.',
+    description: 'Experimental cybernetic upgrade. Enhances cognitive function.',
     attributeBonuses: { intelligence: 4, wisdom: 2 },
     skillBonuses: { hacking: 8, lockpicking: 4 },
     cost: 25000,
@@ -161,8 +139,7 @@ export const basicEquipment: Equipment[] = [
     name: 'Basic Tool Kit',
     type: 'tool',
     rarity: 'basic',
-    description:
-      'Essential tools for any job. Screwdrivers, pliers, wire cutters.',
+    description: 'Essential tools for any job. Screwdrivers, pliers, wire cutters.',
     attributeBonuses: { intelligence: 1 },
     skillBonuses: { lockpicking: 1, hacking: 1 },
     cost: 300,
@@ -173,8 +150,7 @@ export const basicEquipment: Equipment[] = [
     name: 'Electronics Repair Kit',
     type: 'tool',
     rarity: 'improved',
-    description:
-      'Sophisticated electronics tools. Bypass, repair, or reprogram.',
+    description: 'Sophisticated electronics tools. Bypass, repair, or reprogram.',
     attributeBonuses: { intelligence: 2, dexterity: 1 },
     skillBonuses: { hacking: 5, lockpicking: 2 },
     cost: 1800,
@@ -206,8 +182,7 @@ export const basicEquipment: Equipment[] = [
     name: 'Communication Earpiece',
     type: 'gadget',
     rarity: 'basic',
-    description:
-      'Stay in contact with your team. Essential for coordinated operations.',
+    description: 'Stay in contact with your team. Essential for coordinated operations.',
     attributeBonuses: { wisdom: 1 },
     skillBonuses: { social: 2 },
     cost: 400,
@@ -232,8 +207,7 @@ export const basicEquipment: Equipment[] = [
     name: 'Holographic Projector',
     type: 'gadget',
     rarity: 'advanced',
-    description:
-      'Create realistic illusions and distractions. Theater meets technology.',
+    description: 'Create realistic illusions and distractions. Theater meets technology.',
     attributeBonuses: { charisma: 3, intelligence: 2 },
     skillBonuses: { social: 5, stealth: 4 },
     cost: 7800,
@@ -289,9 +263,7 @@ export const equipmentSets = [
       5: {
         attributeBonuses: { dexterity: 2 },
         skillBonuses: { stealth: 4, lockpicking: 4 },
-        specialEffects: [
-          'Ghost Mode: Become undetectable for one encounter per heist',
-        ],
+        specialEffects: ['Ghost Mode: Become undetectable for one encounter per heist'],
         description: '5-piece: Ghost Mode ability unlocked',
       },
     },
@@ -376,17 +348,13 @@ export function getAffordableEquipment(budget: number): Equipment[] {
 }
 
 // Function to get equipment suitable for character
-export function getSuitableEquipment(
-  characterClass: CharacterClass,
-  level: number
-): Equipment[] {
+export function getSuitableEquipment(characterClass: CharacterClass, level: number): Equipment[] {
   return basicEquipment.filter(item => {
     // Check level requirement
     if (item.requiredLevel && item.requiredLevel > level) return false;
 
     // Check class requirement
-    if (item.requiredClass && !item.requiredClass.includes(characterClass))
-      return false;
+    if (item.requiredClass && !item.requiredClass.includes(characterClass)) return false;
 
     return true;
   });

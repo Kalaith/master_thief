@@ -3,11 +3,7 @@ import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { useGameStore } from '../../../stores/gameStore';
 import { basicEquipment } from '../../../data/equipment';
-import type {
-  Equipment,
-  EquipmentSlot,
-  EquipmentRarity,
-} from '../../../types/game';
+import type { Equipment, EquipmentSlot, EquipmentRarity } from '../../../types/game';
 
 const EquipmentShop: React.FC = () => {
   const {
@@ -18,15 +14,9 @@ const EquipmentShop: React.FC = () => {
     tutorial,
     nextTutorialStep,
   } = useGameStore();
-  const [selectedType, setSelectedType] = useState<EquipmentSlot | 'all'>(
-    'all'
-  );
-  const [selectedRarity, setSelectedRarity] = useState<EquipmentRarity | 'all'>(
-    'all'
-  );
-  const [sortBy, setSortBy] = useState<
-    'price-asc' | 'price-desc' | 'rarity' | 'name'
-  >('price-asc');
+  const [selectedType, setSelectedType] = useState<EquipmentSlot | 'all'>('all');
+  const [selectedRarity, setSelectedRarity] = useState<EquipmentRarity | 'all'>('all');
+  const [sortBy, setSortBy] = useState<'price-asc' | 'price-desc' | 'rarity' | 'name'>('price-asc');
 
   // Get owned equipment IDs for comparison
   const ownedEquipmentIds = useMemo(
@@ -90,9 +80,7 @@ const EquipmentShop: React.FC = () => {
 
     // Check level requirement
     if (item.requiredLevel) {
-      const hasQualifiedMember = selectedTeam.some(
-        m => m.progression.level >= item.requiredLevel!
-      );
+      const hasQualifiedMember = selectedTeam.some(m => m.progression.level >= item.requiredLevel!);
       if (!hasQualifiedMember) {
         toast.error(`No team member is level ${item.requiredLevel} or higher!`);
         return;
@@ -105,9 +93,7 @@ const EquipmentShop: React.FC = () => {
         item.requiredClass!.includes(m.characterClass)
       );
       if (!hasQualifiedMember) {
-        toast.error(
-          `No team member has required class: ${item.requiredClass.join(', ')}`
-        );
+        toast.error(`No team member has required class: ${item.requiredClass.join(', ')}`);
         return;
       }
     }
@@ -171,12 +157,8 @@ const EquipmentShop: React.FC = () => {
             </p>
           </div>
           <div className="text-right">
-            <div className="text-gray-400 text-sm font-mono uppercase">
-              Available Funds
-            </div>
-            <div className="text-2xl font-bold text-amber-400 font-mono">
-              ${budget}
-            </div>
+            <div className="text-gray-400 text-sm font-mono uppercase">Available Funds</div>
+            <div className="text-2xl font-bold text-amber-400 font-mono">${budget}</div>
           </div>
         </div>
       </div>
@@ -191,9 +173,7 @@ const EquipmentShop: React.FC = () => {
             </label>
             <select
               value={selectedType}
-              onChange={e =>
-                setSelectedType(e.target.value as EquipmentSlot | 'all')
-              }
+              onChange={e => setSelectedType(e.target.value as EquipmentSlot | 'all')}
               className="w-full px-3 py-2 bg-heist-dark border border-heist-border rounded text-gray-300 focus:outline-none focus:border-cyan-400 font-mono"
             >
               <option value="all">All Types</option>
@@ -207,14 +187,10 @@ const EquipmentShop: React.FC = () => {
 
           {/* Rarity Filter */}
           <div>
-            <label className="text-gray-400 text-sm mb-2 block font-mono uppercase">
-              Rarity
-            </label>
+            <label className="text-gray-400 text-sm mb-2 block font-mono uppercase">Rarity</label>
             <select
               value={selectedRarity}
-              onChange={e =>
-                setSelectedRarity(e.target.value as EquipmentRarity | 'all')
-              }
+              onChange={e => setSelectedRarity(e.target.value as EquipmentRarity | 'all')}
               className="w-full px-3 py-2 bg-heist-dark border border-heist-border rounded text-gray-300 focus:outline-none focus:border-cyan-400 font-mono"
             >
               <option value="all">All Rarities</option>
@@ -228,9 +204,7 @@ const EquipmentShop: React.FC = () => {
 
           {/* Sort */}
           <div>
-            <label className="text-gray-400 text-sm mb-2 block font-mono uppercase">
-              Sort By
-            </label>
+            <label className="text-gray-400 text-sm mb-2 block font-mono uppercase">Sort By</label>
             <select
               value={sortBy}
               onChange={e => setSortBy(e.target.value as typeof sortBy)}
@@ -247,18 +221,12 @@ const EquipmentShop: React.FC = () => {
         {/* Quick Stats */}
         <div className="flex gap-4 text-sm font-mono">
           <div className="text-gray-400">
-            Showing{' '}
-            <span className="text-cyan-400 font-bold">
-              {filteredEquipment.length}
-            </span>{' '}
+            Showing <span className="text-cyan-400 font-bold">{filteredEquipment.length}</span>{' '}
             items
           </div>
           <div className="text-gray-400">|</div>
           <div className="text-gray-400">
-            Owned:{' '}
-            <span className="text-emerald-400 font-bold">
-              {equipmentInventory.length}
-            </span>
+            Owned: <span className="text-emerald-400 font-bold">{equipmentInventory.length}</span>
           </div>
         </div>
       </div>
@@ -304,9 +272,7 @@ const EquipmentShop: React.FC = () => {
                 </div>
 
                 {/* Description */}
-                <p className="text-gray-300 text-sm mb-3 flex-1 font-mono">
-                  {item.description}
-                </p>
+                <p className="text-gray-300 text-sm mb-3 flex-1 font-mono">{item.description}</p>
 
                 {/* Bonuses */}
                 <div className="space-y-2 mb-3">
@@ -316,36 +282,30 @@ const EquipmentShop: React.FC = () => {
                         Attributes:
                       </div>
                       <div className="flex flex-wrap gap-1">
-                        {Object.entries(item.attributeBonuses).map(
-                          ([attr, bonus]) => (
-                            <span
-                              key={attr}
-                              className="px-2 py-0.5 bg-purple-400/20 border border-purple-400/30 text-purple-400 text-xs rounded font-mono"
-                            >
-                              {attr.slice(0, 3).toUpperCase()} +{bonus}
-                            </span>
-                          )
-                        )}
+                        {Object.entries(item.attributeBonuses).map(([attr, bonus]) => (
+                          <span
+                            key={attr}
+                            className="px-2 py-0.5 bg-purple-400/20 border border-purple-400/30 text-purple-400 text-xs rounded font-mono"
+                          >
+                            {attr.slice(0, 3).toUpperCase()} +{bonus}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   )}
 
                   {Object.keys(item.skillBonuses).length > 0 && (
                     <div>
-                      <div className="text-gray-400 text-xs mb-1 font-mono uppercase">
-                        Skills:
-                      </div>
+                      <div className="text-gray-400 text-xs mb-1 font-mono uppercase">Skills:</div>
                       <div className="flex flex-wrap gap-1">
-                        {Object.entries(item.skillBonuses).map(
-                          ([skill, bonus]) => (
-                            <span
-                              key={skill}
-                              className="px-2 py-0.5 bg-cyan-400/20 border border-cyan-400/30 text-cyan-400 text-xs rounded capitalize font-mono"
-                            >
-                              {skill} +{bonus}
-                            </span>
-                          )
-                        )}
+                        {Object.entries(item.skillBonuses).map(([skill, bonus]) => (
+                          <span
+                            key={skill}
+                            className="px-2 py-0.5 bg-cyan-400/20 border border-cyan-400/30 text-cyan-400 text-xs rounded capitalize font-mono"
+                          >
+                            {skill} +{bonus}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   )}
@@ -354,9 +314,7 @@ const EquipmentShop: React.FC = () => {
                 {/* Special Effects */}
                 {item.specialEffects && item.specialEffects.length > 0 && (
                   <div className="mb-3">
-                    <div className="text-gray-400 text-xs mb-1 font-mono uppercase">
-                      Special:
-                    </div>
+                    <div className="text-gray-400 text-xs mb-1 font-mono uppercase">Special:</div>
                     <ul className="text-xs text-amber-300 space-y-0.5 font-mono">
                       {item.specialEffects.map((effect, idx) => (
                         <li key={idx}>• {effect}</li>
@@ -388,9 +346,7 @@ const EquipmentShop: React.FC = () => {
                 <div className="mt-auto pt-3 border-t border-heist-border">
                   <div className="flex justify-between items-center">
                     <div>
-                      <div className="text-gray-400 text-xs font-mono uppercase">
-                        Price
-                      </div>
+                      <div className="text-gray-400 text-xs font-mono uppercase">Price</div>
                       <div
                         className={`text-xl font-bold font-mono ${affordable ? 'text-amber-400' : 'text-gray-600'}`}
                       >
@@ -408,11 +364,7 @@ const EquipmentShop: React.FC = () => {
                             : 'bg-heist-dark border border-heist-border text-gray-600 cursor-not-allowed'
                       }`}
                     >
-                      {owned
-                        ? 'Owned'
-                        : affordable
-                          ? 'Purchase'
-                          : 'Too Expensive'}
+                      {owned ? 'Owned' : affordable ? 'Purchase' : 'Too Expensive'}
                     </button>
                   </div>
                 </div>

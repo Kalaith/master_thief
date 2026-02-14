@@ -8,8 +8,7 @@ interface TeamPageProps {
 }
 
 const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
-  const { selectedTeam, removeTeamMember, isCharacterOnMission } =
-    useGameStore();
+  const { selectedTeam, removeTeamMember, isCharacterOnMission } = useGameStore();
   void onBackToGame;
 
   return (
@@ -42,9 +41,7 @@ const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
                   <h3 className="text-lg font-bold text-cyan-400 mb-1 uppercase tracking-wide">
                     {member.name}
                   </h3>
-                  <p className="text-gray-400 text-sm capitalize font-mono">
-                    {member.specialty}
-                  </p>
+                  <p className="text-gray-400 text-sm capitalize font-mono">{member.specialty}</p>
                 </div>
                 <div className="flex items-center gap-1 bg-cyan-400/10 border border-cyan-400/30 rounded px-2 py-1">
                   <Star className="w-4 h-4 text-cyan-400" />
@@ -69,9 +66,7 @@ const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
                     <Zap className="w-3 h-3" />
                     Fatigue
                   </div>
-                  <div className="text-amber-400 font-bold font-mono">
-                    {member.fatigue}%
-                  </div>
+                  <div className="text-amber-400 font-bold font-mono">{member.fatigue}%</div>
                 </div>
                 <div className="bg-heist-dark/60 border border-heist-border rounded p-2">
                   <div className="flex items-center gap-1 text-gray-400 text-xs font-mono uppercase mb-1">
@@ -95,9 +90,7 @@ const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
                     className="flex justify-between items-center bg-heist-dark/60 border border-heist-border rounded p-2"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-300 text-sm capitalize font-mono">
-                        {slot}
-                      </span>
+                      <span className="text-gray-300 text-sm capitalize font-mono">{slot}</span>
                       <span className="text-gray-500 text-xs font-mono">
                         ({item ? item.name : 'Empty'})
                       </span>
@@ -105,11 +98,7 @@ const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
                     {item && (
                       <div className="text-right text-xs">
                         <div className="text-cyan-400 font-mono">
-                          +
-                          {Object.values(item.skillBonuses).reduce(
-                            (a, b) => a + b,
-                            0
-                          )}
+                          +{Object.values(item.skillBonuses).reduce((a, b) => a + b, 0)}
                         </div>
                       </div>
                     )}
@@ -118,20 +107,13 @@ const TeamPage: React.FC<TeamPageProps> = ({ onBackToGame }) => {
               </div>
 
               <div className="space-y-1 mb-4">
-                <div className="text-gray-400 text-xs font-mono uppercase mb-2">
-                  Top Skills
-                </div>
+                <div className="text-gray-400 text-xs font-mono uppercase mb-2">Top Skills</div>
                 {Object.entries(member.skills)
                   .sort(([, a], [, b]) => b - a)
                   .slice(0, 4)
                   .map(([skill, value]) => (
-                    <div
-                      key={skill}
-                      className="flex justify-between text-sm font-mono"
-                    >
-                      <span className="text-gray-300 capitalize">
-                        {skill.replace('_', ' ')}
-                      </span>
+                    <div key={skill} className="flex justify-between text-sm font-mono">
+                      <span className="text-gray-300 capitalize">{skill.replace('_', ' ')}</span>
                       <span className="text-cyan-400 font-bold">{value}</span>
                     </div>
                   ))}

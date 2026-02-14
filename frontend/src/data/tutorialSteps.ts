@@ -66,8 +66,7 @@ export const tutorialSteps: Record<string, TutorialStepData> = {
     description:
       "Select which crew members to send on this mission. Each mission has team size requirements and skill checks. Match your crew's skills to the mission requirements for better success chances.",
     position: 'center',
-    action:
-      'Click on your recruited characters to assign them, then click "Start Mission"',
+    action: 'Click on your recruited characters to assign them, then click "Start Mission"',
     autoAdvance: true,
   },
 

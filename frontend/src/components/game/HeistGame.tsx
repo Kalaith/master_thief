@@ -36,13 +36,7 @@ const HeistGame: React.FC = () => {
     ) {
       startTutorial();
     }
-  }, [
-    tutorial.skipped,
-    tutorial.active,
-    selectedTeam.length,
-    heistsCompleted,
-    startTutorial,
-  ]);
+  }, [tutorial.skipped, tutorial.active, selectedTeam.length, heistsCompleted, startTutorial]);
 
   // Auto-navigate based on tutorial step
   useEffect(() => {
@@ -104,10 +98,7 @@ const HeistGame: React.FC = () => {
         <main className="container mx-auto p-6">{renderCurrentPage()}</main>
 
         {/* Mission Results Modal */}
-        <MissionResultsModal
-          result={currentMissionResult}
-          onClose={clearMissionResult}
-        />
+        <MissionResultsModal result={currentMissionResult} onClose={clearMissionResult} />
 
         {/* Tutorial Overlay */}
         <TutorialOverlay />

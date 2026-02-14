@@ -8,11 +8,7 @@ interface HeistCardProps {
   onSelect: () => void;
 }
 
-const HeistCard: React.FC<HeistCardProps> = ({
-  heist,
-  isSelected,
-  onSelect,
-}) => {
+const HeistCard: React.FC<HeistCardProps> = ({ heist, isSelected, onSelect }) => {
   const getDifficultyColor = (difficulty: HeistTarget['difficulty']) => {
     switch (difficulty) {
       case 'Easy':
@@ -37,9 +33,7 @@ const HeistCard: React.FC<HeistCardProps> = ({
     >
       {/* Header */}
       <div className="flex justify-between items-start mb-4">
-        <h3 className="text-xl font-bold text-cyan-400 uppercase tracking-wide">
-          {heist.name}
-        </h3>
+        <h3 className="text-xl font-bold text-cyan-400 uppercase tracking-wide">{heist.name}</h3>
         <div
           className={`px-3 py-1 rounded text-xs font-bold font-mono border uppercase ${getDifficultyColor(
             heist.difficulty
@@ -54,9 +48,7 @@ const HeistCard: React.FC<HeistCardProps> = ({
         <div className="flex items-center gap-2">
           <DollarSign className="w-5 h-5 text-amber-300" />
           <div className="flex flex-col">
-            <span className="text-gray-400 text-xs font-mono uppercase">
-              Potential Take
-            </span>
+            <span className="text-gray-400 text-xs font-mono uppercase">Potential Take</span>
             <span className="text-amber-300 font-bold font-mono text-xl">
               ${heist.potential_payout.toLocaleString()}
             </span>
@@ -77,14 +69,9 @@ const HeistCard: React.FC<HeistCardProps> = ({
         </h4>
         <ul className="space-y-2">
           {heist.encounters.map((encounter, index) => (
-            <li
-              key={index}
-              className="flex items-center gap-3 text-gray-300 text-sm"
-            >
+            <li key={index} className="flex items-center gap-3 text-gray-300 text-sm">
               <div className="w-6 h-6 bg-cyan-400/20 border border-cyan-400/50 rounded flex items-center justify-center flex-shrink-0">
-                <span className="text-cyan-400 font-mono text-xs font-bold">
-                  {index + 1}
-                </span>
+                <span className="text-cyan-400 font-mono text-xs font-bold">{index + 1}</span>
               </div>
               <span className="font-medium">{encounter.name}</span>
             </li>
@@ -99,9 +86,7 @@ const HeistCard: React.FC<HeistCardProps> = ({
           <span>SELECT TARGET TO PROCEED</span>
         </div>
         {isSelected && (
-          <div className="text-xs font-mono text-cyan-400 animate-pulse">
-            ▶ SELECTED
-          </div>
+          <div className="text-xs font-mono text-cyan-400 animate-pulse">▶ SELECTED</div>
         )}
       </div>
     </div>

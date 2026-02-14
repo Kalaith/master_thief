@@ -120,8 +120,7 @@ export default {
         'purple-glow-lg': '0 0 20px rgba(192, 132, 252, 0.5)',
         'amber-glow': '0 0 10px rgba(251, 191, 36, 0.3)',
         'amber-glow-lg': '0 0 20px rgba(251, 191, 36, 0.5)',
-        'hud-panel':
-          '0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3)',
+        'hud-panel': '0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3)',
         // Legacy support
         xs: 'var(--shadow-xs)',
         sm: 'var(--shadow-sm)',

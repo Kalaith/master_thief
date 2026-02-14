@@ -1,15 +1,7 @@
 import React from 'react';
 import type { TeamMember } from '../../../types/game';
 import { getAttributeModifier } from '../../../utils/characterCalculations';
-import {
-  Heart,
-  Zap,
-  Star,
-  TrendingUp,
-  Shield,
-  Wrench,
-  AlertCircle,
-} from 'lucide-react';
+import { Heart, Zap, Star, TrendingUp, Shield, Wrench, AlertCircle } from 'lucide-react';
 
 interface EnhancedCharacterCardProps {
   character: TeamMember;
@@ -110,9 +102,7 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
       className={`relative bg-heist-panel rounded-xl border ${rarity.border} ${rarity.glow} p-4 shadow-hud-panel transition-all duration-300 hover:-translate-y-1 hover:shadow-lg`}
     >
       {/* Rarity indicator bar */}
-      <div
-        className={`absolute top-0 left-0 right-0 h-1 ${rarity.bg} rounded-t-xl`}
-      />
+      <div className={`absolute top-0 left-0 right-0 h-1 ${rarity.bg} rounded-t-xl`} />
 
       {/* Character Header */}
       <div className="flex items-center justify-between mb-3 mt-1">
@@ -126,9 +116,7 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
             <h3 className="text-white font-bold text-base uppercase tracking-wide">
               {character.name}
             </h3>
-            <p className="text-gray-400 text-xs font-mono">
-              {character.specialty}
-            </p>
+            <p className="text-gray-400 text-xs font-mono">{character.specialty}</p>
           </div>
         </div>
         <div className="text-right">
@@ -136,9 +124,7 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
             <Star className="w-3 h-3" />
             <span>LV.{character.progression.level}</span>
           </div>
-          <div className={`${rarity.text} text-xs font-mono uppercase`}>
-            {character.rarity}
-          </div>
+          <div className={`${rarity.text} text-xs font-mono uppercase`}>{character.rarity}</div>
         </div>
       </div>
 
@@ -172,15 +158,9 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
               key={attr}
               className="bg-heist-dark/60 border border-heist-border rounded p-2 text-center hover:border-cyan-400/30 transition-colors"
             >
-              <div className="text-xs text-gray-400 uppercase font-mono">
-                {attr.slice(0, 3)}
-              </div>
-              <div className="text-cyan-400 font-bold font-mono text-lg">
-                {value}
-              </div>
-              <div className="text-xs text-gray-500 font-mono">
-                ({modifierStr})
-              </div>
+              <div className="text-xs text-gray-400 uppercase font-mono">{attr.slice(0, 3)}</div>
+              <div className="text-cyan-400 font-bold font-mono text-lg">{value}</div>
+              <div className="text-xs text-gray-500 font-mono">({modifierStr})</div>
             </div>
           );
         })}
@@ -189,10 +169,7 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
       {/* Skills */}
       <div className="grid grid-cols-2 gap-1 mb-3 text-xs">
         {Object.entries(character.skills).map(([skill, value]) => (
-          <div
-            key={skill}
-            className="flex justify-between text-gray-300 font-mono"
-          >
+          <div key={skill} className="flex justify-between text-gray-300 font-mono">
             <span className="capitalize text-gray-400">{skill}:</span>
             <span className="font-bold text-cyan-400">{value}</span>
           </div>
@@ -207,9 +184,7 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
               <Heart className="w-3 h-3" />
               HEALTH
             </span>
-            <span className="text-green-400">
-              {character.derivedStats.health}
-            </span>
+            <span className="text-green-400">{character.derivedStats.health}</span>
           </div>
           {getHealthBar()}
         </div>
@@ -238,17 +213,11 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
       {/* Loyalty and Status */}
       <div className="grid grid-cols-2 gap-2 mb-3">
         <div className="bg-heist-dark/60 border border-heist-border rounded px-2 py-1">
-          <div className="text-xs text-gray-400 font-mono uppercase mb-1">
-            Loyalty
-          </div>
-          <div className="text-purple-400 font-bold font-mono">
-            {character.loyalty}%
-          </div>
+          <div className="text-xs text-gray-400 font-mono uppercase mb-1">Loyalty</div>
+          <div className="text-purple-400 font-bold font-mono">{character.loyalty}%</div>
         </div>
         <div className="bg-heist-dark/60 border border-heist-border rounded px-2 py-1">
-          <div className="text-xs text-gray-400 font-mono uppercase mb-1">
-            Mastery
-          </div>
+          <div className="text-xs text-gray-400 font-mono uppercase mb-1">Mastery</div>
           <div className="text-cyan-400 font-bold font-mono">
             {character.progression.masteryLevel}/10
           </div>
@@ -263,8 +232,7 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
         </div>
         <div className="grid grid-cols-5 gap-1">
           {['weapon', 'armor', 'accessory', 'tool', 'gadget'].map(slot => {
-            const item =
-              character.equipment[slot as keyof typeof character.equipment];
+            const item = character.equipment[slot as keyof typeof character.equipment];
             return (
               <div
                 key={slot}
@@ -288,17 +256,13 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
           <Wrench className="w-3 h-3" />
           Special Ability
         </div>
-        <p className="text-gray-300 text-xs leading-relaxed">
-          "{character.special_ability}"
-        </p>
+        <p className="text-gray-300 text-xs leading-relaxed">"{character.special_ability}"</p>
       </div>
 
       {/* Personality Traits */}
       {character.personalityTraits.length > 0 && (
         <div className="mb-3">
-          <div className="text-xs text-gray-400 font-mono uppercase mb-2">
-            Traits
-          </div>
+          <div className="text-xs text-gray-400 font-mono uppercase mb-2">Traits</div>
           <div className="flex flex-wrap gap-1">
             {character.personalityTraits.slice(0, 3).map(trait => (
               <span
@@ -357,15 +321,11 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
           <div className="text-xs text-gray-400 font-mono space-y-1">
             <div className="flex justify-between">
               <span>Initiative:</span>
-              <span className="text-cyan-400">
-                +{character.derivedStats.initiative}
-              </span>
+              <span className="text-cyan-400">+{character.derivedStats.initiative}</span>
             </div>
             <div className="flex justify-between">
               <span>Carry Capacity:</span>
-              <span className="text-cyan-400">
-                {character.derivedStats.carryingCapacity} lbs
-              </span>
+              <span className="text-cyan-400">{character.derivedStats.carryingCapacity} lbs</span>
             </div>
             <div className="flex justify-between">
               <span>Crit Chance:</span>
@@ -381,15 +341,11 @@ const EnhancedCharacterCard: React.FC<EnhancedCharacterCardProps> = ({
             </div>
             <div className="flex justify-between">
               <span>Heists Completed:</span>
-              <span className="text-cyan-400">
-                {character.progression.heistsCompleted}
-              </span>
+              <span className="text-cyan-400">{character.progression.heistsCompleted}</span>
             </div>
             <div className="flex justify-between">
               <span>Success Rate:</span>
-              <span className="text-cyan-400">
-                {character.progression.successRate.toFixed(1)}%
-              </span>
+              <span className="text-cyan-400">{character.progression.successRate.toFixed(1)}%</span>
             </div>
           </div>
         </div>

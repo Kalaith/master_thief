@@ -109,12 +109,8 @@ const TutorialOverlay: React.FC = () => {
                     <ChevronRight className="w-4 h-4 text-cyan-400" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400 uppercase font-mono mb-1">
-                      Next Action
-                    </p>
-                    <p className="text-cyan-300 text-sm font-semibold">
-                      {currentStepData.action}
-                    </p>
+                    <p className="text-xs text-gray-400 uppercase font-mono mb-1">Next Action</p>
+                    <p className="text-cyan-300 text-sm font-semibold">{currentStepData.action}</p>
                   </div>
                 </div>
               </div>
@@ -136,9 +132,7 @@ const TutorialOverlay: React.FC = () => {
                 onClick={handleNext}
                 className="flex items-center gap-2 px-4 py-2 bg-cyan-400/20 hover:bg-cyan-400/30 border border-cyan-400 text-cyan-400 rounded font-mono font-bold uppercase transition-all duration-200 hover:shadow-cyan-glow text-sm"
               >
-                {tutorial.currentStep === 'tutorial-complete'
-                  ? 'Finish'
-                  : 'Next'}
+                {tutorial.currentStep === 'tutorial-complete' ? 'Finish' : 'Next'}
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>

@@ -10,8 +10,7 @@ export const gameData: GameData = {
       name: 'Velvet Room Casino',
       difficulty: 'Easy',
       potential_payout: 180000,
-      description:
-        'Smoky speakeasy casino with loose security and looser morals',
+      description: 'Smoky speakeasy casino with loose security and looser morals',
       encounters: [
         {
           name: 'Bouncer Distraction',
@@ -44,8 +43,7 @@ export const gameData: GameData = {
       name: 'Metropolitan Art Museum',
       difficulty: 'Hard',
       potential_payout: 750000,
-      description:
-        'High-society museum filled with priceless artifacts and marble floors',
+      description: 'High-society museum filled with priceless artifacts and marble floors',
       encounters: [
         {
           name: 'Laser Security Grid',
@@ -53,8 +51,7 @@ export const gameData: GameData = {
           primary_skill: 'athletics',
           difficulty: 15,
           complexity: 'complex',
-          failure_consequence:
-            'Silent alarm activated, time pressure increases',
+          failure_consequence: 'Silent alarm activated, time pressure increases',
         },
         {
           name: 'Night Curator',
@@ -70,8 +67,7 @@ export const gameData: GameData = {
           primary_skill: 'lockpicking',
           difficulty: 16,
           complexity: 'complex',
-          failure_consequence:
-            'Display case alarm sounds throughout the museum',
+          failure_consequence: 'Display case alarm sounds throughout the museum',
         },
       ],
     },
@@ -80,8 +76,7 @@ export const gameData: GameData = {
       name: 'First National Bank Vault',
       difficulty: 'Medium',
       potential_payout: 450000,
-      description:
-        'Classic bank job - vault, guards, and that beautiful marble interior',
+      description: 'Classic bank job - vault, guards, and that beautiful marble interior',
       encounters: [
         {
           name: 'Security Camera System',
@@ -97,8 +92,7 @@ export const gameData: GameData = {
           primary_skill: 'lockpicking',
           difficulty: 15,
           complexity: 'complex',
-          failure_consequence:
-            'Time-lock alarm triggers, police response accelerated',
+          failure_consequence: 'Time-lock alarm triggers, police response accelerated',
         },
         {
           name: 'Night Patrol',
@@ -136,8 +130,7 @@ export const gameData: GameData = {
         },
         {
           name: 'Board Room Infiltration',
-          description:
-            'Navigate through the executive meeting space undetected',
+          description: 'Navigate through the executive meeting space undetected',
           primary_skill: 'stealth',
           difficulty: 15,
           complexity: 'complex',
