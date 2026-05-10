@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { webhatcheryGameApi, type WebHatcheryGameState } from '../api/webhatcheryGameApi';
 import type {
   GameState,
   GamePhase,
@@ -14,6 +15,7 @@ import type {
 } from '../types/game';
 import { characters } from '../data/characters';
 import { automatedHeists } from '../data/automatedHeists';
+import { useWebHatcherySessionStore } from './webhatcherySessionStore';
 
 interface GameStore extends GameState {
   currentPhase: GamePhase;
@@ -34,6 +36,7 @@ interface GameStore extends GameState {
   newGame: () => void;
   saveGame: () => void;
   loadGame: () => void;
+  loadBackendState: () => Promise<void>;
 
   // Enhanced Phase 1 actions
   startAutomatedHeist: (heist: AutomatedHeist, team: TeamMember[]) => void;
@@ -58,6 +61,19 @@ interface GameStore extends GameState {
   setTutorialStep: (step: TutorialStep) => void;
   completeTutorialStep: (step: TutorialStep) => void;
 }
+
+type BackendSnapshot = GameState & {
+  currentPhase: GamePhase;
+  currentMissionResult: MissionResult | null;
+  tutorial: TutorialState;
+};
+
+const defaultTutorialState = (): TutorialState => ({
+  active: false,
+  currentStep: null,
+  completedSteps: [],
+  skipped: false,
+});
 
 const initialState: GameState = {
   // Core resources
@@ -99,17 +115,103 @@ const initialState: GameState = {
   achievements: [],
 };
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+const loadOrCreateBackendGame = async (): Promise<WebHatcheryGameState> => {
+  const sessionStore = useWebHatcherySessionStore.getState();
+  try {
+    return await sessionStore.loadGame();
+  } catch {
+    return sessionStore.continueAsGuest();
+  }
+};
+
+const syncSessionState = (gameState: WebHatcheryGameState): void => {
+  useWebHatcherySessionStore.setState({
+    gameState,
+    user: gameState.user,
+    isLoading: false,
+    error: null,
+  });
+};
+
+const toBackendSnapshot = (state: GameStore): BackendSnapshot => ({
+  budget: state.budget,
+  reputation: state.reputation,
+  notoriety: state.notoriety,
+  selectedTeam: state.selectedTeam,
+  availableCharacters: state.availableCharacters,
+  selectedHeist: state.selectedHeist,
+  automatedHeists: state.automatedHeists,
+  activeAutomatedHeists: state.activeAutomatedHeists,
+  currentEncounter: state.currentEncounter,
+  encounterResults: state.encounterResults,
+  playerProgress: state.playerProgress,
+  heistsCompleted: state.heistsCompleted,
+  totalEarnings: state.totalEarnings,
+  equipmentInventory: state.equipmentInventory,
+  craftingMaterials: state.craftingMaterials,
+  dailyChallenges: state.dailyChallenges,
+  achievements: state.achievements,
+  currentPhase: state.currentPhase,
+  currentMissionResult: state.currentMissionResult,
+  tutorial: state.tutorial,
+});
+
+let backendSyncTimer: ReturnType<typeof setTimeout> | null = null;
+
+const syncBackendSnapshot = (intent: string, snapshot: BackendSnapshot): void => {
+  if (backendSyncTimer) {
+    clearTimeout(backendSyncTimer);
+  }
+
+  backendSyncTimer = setTimeout(() => {
+    void webhatcheryGameApi
+      .applyIntent(intent, { state: snapshot as unknown as Record<string, unknown> })
+      .then(syncSessionState)
+      .catch(error => {
+        console.error('Failed to sync Master Thief backend state:', error);
+      });
+  }, 250);
+};
+
 export const useGameStore = create<GameStore>((set, get) => ({
   ...initialState,
   currentPhase: 'recruitment-phase',
   currentMissionResult: null,
 
   // Tutorial state
-  tutorial: {
-    active: false,
-    currentStep: null,
-    completedSteps: [],
-    skipped: false,
+  tutorial: defaultTutorialState(),
+
+  loadBackendState: async () => {
+    const gameState = await loadOrCreateBackendGame();
+    syncSessionState(gameState);
+    const backendState = gameState.save.state;
+    if (!isRecord(backendState) || !isRecord(backendState.gameState)) {
+      return;
+    }
+
+    const savedState = backendState.gameState as Partial<BackendSnapshot>;
+    set({
+      ...initialState,
+      ...savedState,
+      currentPhase: savedState.currentPhase ?? 'recruitment-phase',
+      currentMissionResult: savedState.currentMissionResult ?? null,
+      availableCharacters: Array.isArray(savedState.availableCharacters)
+        ? savedState.availableCharacters
+        : characters,
+      automatedHeists: Array.isArray(savedState.automatedHeists)
+        ? savedState.automatedHeists
+        : automatedHeists,
+      selectedHeist: savedState.selectedHeist ?? null,
+      currentEncounter:
+        typeof savedState.currentEncounter === 'number' ? savedState.currentEncounter : 0,
+      encounterResults: Array.isArray(savedState.encounterResults)
+        ? savedState.encounterResults
+        : [],
+      tutorial: savedState.tutorial ?? defaultTutorialState(),
+    });
   },
 
   setCurrentPhase: (phase: GamePhase) => set({ currentPhase: phase }),
@@ -200,89 +302,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   newGame: () => {
-    // Clear all local storage
-    localStorage.removeItem('masterThief_gameState');
-    localStorage.removeItem('masterThief_currentPhase');
-
-    // Reset to initial state
-    set({
+    const nextState: BackendSnapshot = {
       ...initialState,
       currentPhase: 'recruitment-phase',
-      tutorial: {
-        active: false,
-        currentStep: null,
-        completedSteps: [],
-        skipped: false,
-      },
-    });
+      currentMissionResult: null,
+      tutorial: defaultTutorialState(),
+    };
+
+    set(nextState);
+    syncBackendSnapshot('new_game', nextState);
   },
 
   saveGame: () => {
-    const state = get();
-    try {
-      const gameStateToSave = {
-        budget: state.budget,
-        reputation: state.reputation,
-        notoriety: state.notoriety,
-        selectedTeam: state.selectedTeam,
-        playerProgress: state.playerProgress,
-        heistsCompleted: state.heistsCompleted,
-        totalEarnings: state.totalEarnings,
-        equipmentInventory: state.equipmentInventory,
-        craftingMaterials: state.craftingMaterials,
-        achievements: state.achievements,
-        activeAutomatedHeists: state.activeAutomatedHeists, // Save active missions
-        tutorial: state.tutorial, // Save tutorial progress
-      };
-
-      localStorage.setItem('masterThief_gameState', JSON.stringify(gameStateToSave));
-      localStorage.setItem('masterThief_currentPhase', state.currentPhase);
-    } catch (error) {
-      console.error('Failed to save game:', error);
-    }
+    syncBackendSnapshot('manual_save', toBackendSnapshot(get()));
   },
 
   loadGame: () => {
-    try {
-      const savedGameState = localStorage.getItem('masterThief_gameState');
-      const savedCurrentPhase = localStorage.getItem('masterThief_currentPhase');
-
-      if (savedGameState) {
-        const parsedState = JSON.parse(savedGameState);
-        set({
-          ...parsedState,
-          currentPhase: savedCurrentPhase || 'recruitment-phase',
-          availableCharacters: characters, // Always load fresh characters
-          automatedHeists: automatedHeists, // Always load fresh heists
-          selectedHeist: null,
-          currentEncounter: 0,
-          encounterResults: [],
-          // Ensure tutorial state exists (for old saves without it)
-          tutorial: parsedState.tutorial || {
-            active: false,
-            currentStep: null,
-            completedSteps: [],
-            skipped: false,
-          },
-        });
-      }
-    } catch (error) {
-      console.error('Failed to load game:', error);
-      // If loading fails, initialize fresh game
-      set({
-        ...initialState,
-        currentPhase: 'recruitment-phase',
-        tutorial: {
-          active: false,
-          currentStep: null,
-          completedSteps: [],
-          skipped: false,
-        },
-      });
-    }
-
-    // Start global mission timer after loading
-    // Removed - using MissionsPage timer instead
+    void get().loadBackendState().catch(error => {
+      console.error('Failed to load Master Thief backend state:', error);
+    });
   },
 
   // Enhanced Phase 1 actions
@@ -707,3 +745,31 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
   },
 }));
+
+useGameStore.subscribe((state, previousState) => {
+  if (
+    state.budget === previousState.budget &&
+    state.reputation === previousState.reputation &&
+    state.notoriety === previousState.notoriety &&
+    state.selectedTeam === previousState.selectedTeam &&
+    state.availableCharacters === previousState.availableCharacters &&
+    state.selectedHeist === previousState.selectedHeist &&
+    state.activeAutomatedHeists === previousState.activeAutomatedHeists &&
+    state.currentEncounter === previousState.currentEncounter &&
+    state.encounterResults === previousState.encounterResults &&
+    state.playerProgress === previousState.playerProgress &&
+    state.heistsCompleted === previousState.heistsCompleted &&
+    state.totalEarnings === previousState.totalEarnings &&
+    state.equipmentInventory === previousState.equipmentInventory &&
+    state.craftingMaterials === previousState.craftingMaterials &&
+    state.dailyChallenges === previousState.dailyChallenges &&
+    state.achievements === previousState.achievements &&
+    state.currentPhase === previousState.currentPhase &&
+    state.currentMissionResult === previousState.currentMissionResult &&
+    state.tutorial === previousState.tutorial
+  ) {
+    return;
+  }
+
+  syncBackendSnapshot('state_updated', toBackendSnapshot(state));
+});
